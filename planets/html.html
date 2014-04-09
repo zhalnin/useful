@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">
+    <title>HTML - AJAX</title>
+    <script type="text/javascript">
+        window.onload = function()
+        {
+//            a = 10;
+//            b = 20;
+//            [b, a] = [a, b]
+//            console.log(a);
+//            console.log(b);
+
+//            function test(){
+//                return ["Джон", "октябрь", "кто-то"];
+//            }
+//            var test1 = test();
+//            console.log(test1);
+//            var [ name , month , title] = test();
+//            console.log(name,month,title);
+
+            var users = [
+                {name: "Джон", month:"октябрь"},
+                {name: "Боб", month:"декабрь"},
+                {name: "Джейн", month:"май"}
+            ];
+            for( [name, month] in users){
+                alert(name + " месяц рождения " + month);
+            }
+
+
+        };
+    </script>
+</head>
+<body>
+    <h1>HTML заргружен AJAX</h1>
+    <div id="scores"></div>
+</body>
+</html>

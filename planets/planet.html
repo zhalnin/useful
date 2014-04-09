@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">
+    <title>Планета</title>
+    <script type="text/javascript">
+        // Инициализация списка
+        var imgs = { sun: null, moon: null, earth: null};
+
+        // Ожидание полной загрузки
+        window.onload = function() {
+            // Загрузка всех изображений
+            for ( var i  in imgs )
+                imgs[i] = document.getElementById(i);
+
+                // Запуск рисования 10 раз в секунду
+                setInterval(draw, 100);
+        };
+
+        function draw(){
+            // Получение необходимых интервалов времени
+            var time = new Date();
+            var s = ( ( 2 * Math.PI ) / 6 ) * time.getSeconds();
+            var m = ( ( 2 * Math.PI ) / 6000 ) * time.getMilliseconds();
+
+            // Получение контекста элемента <canvas>
+            var ctx = document.getElementById('canvas').getContext('2d');
+
+            // Очистка холста
+            ctx.clearRect(0, 0, 300, 300);
+
+            // Новые элементы всегда рисуются под старыми (используется для тени)
+            // Дополнительная информация:
+            // http://developer.mozila.org/en/docs/Canvas_tutorial:Composing
+            ctx.globalCompositeOperation = 'destination-over';
+
+            ctx.save();
+            // Рисование в 0, 0 = рисованию в 150, 150
+            ctx.translate(150,150);
+            // Вращение холста к позиции Земли
+            ctx.rotate(( s + m ) / 10 );
+            // Перемещение на 105 пикселов
+            ctx.translate(105,0);
+            // Заполнение для тени(которая будет наплывать,
+            // и мы сможем видеть сквозь нее)
+            ctx.fillStyle = 'rgba(0,0,0,0.4)';
+            ctx.strokeStyle = 'rgba(0,153,255,0.4)';
+            // Рисование прямоугольника тени( не совсем
+            // безупречного, но близкого к нужному)
+            ctx.fillRect(0,-12,50,24);
+            // Рисование Земли
+            ctx.drawImage(imgs.earth,-12,-12);
+            ctx.save();
+            // Вращение холста
+            ctx.rotate(s + m);
+            // Вращение Луны 'по орбите'
+            ctx.translate(0,28.5);
+            // Рисование изображения Луны
+            ctx.drawImage(imgs.moon, -3.5,-3.5);
+            ctx.restore();
+            ctx.restore();
+            // Рисование орбиты Земли
+            ctx.beginPath();
+            ctx.arc(150,150,105,0,Math.PI*2,false);
+            ctx.stroke();
+            // Рисование неподвижного Солнца
+            ctx.drawImage(imgs.sun,0,0);
+        }
+    </script>
+</head>
+<body style="background: #000;">
+    <canvas id="canvas" height="300" width="300"></canvas>
+    <!-- Предварительная загрузка исходных изображений -->
+    <div style="display: none;">
+        <img src="sun.png" id="sun">
+        <img src="moon.png" id="moon">
+        <img src="earth.png" id="earth">
+    </div>
+</body>
+</html>

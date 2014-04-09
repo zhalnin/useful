@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script type="text/javascript" src="../../../imei-service/js/AlezhalModules.js" ></script>
+</head>
+
+<body>
+
+<div class="carousel">
+    <a href="#" class="arrow left-arrow" id="prev">&#8249; </a>
+    <div class="galery">
+        <ul id="images">
+            <li><img src="1.png"></li>
+            <li><img src="2.png"></li>
+            <li><img src="3.png"></li>
+            <li><img src="4.png"></li>
+            <li><img src="5.png"></li>
+            <li><img src="6.png"></li>
+            <li><img src="7.png"></li>
+            <li><img src="8.png"></li>
+            <li><img src="9.png"></li>
+            <li><img src="10.png"></li>
+        </ul>
+    </div>
+    <a href="#" class="arrow right-arrow" id="next">&#8250; </a>
+</div>
+
+<script>
+
+    /* этот код помечает картинки, для удобства разработки */
+    var lis = document.getElementsByTagName('li');
+    for(var i=0; i<lis.length; i++) {
+        lis[i].style.position='relative';
+        var span = document.createElement('span');
+        span.style.cssText='position:absolute;left:0;top:0';
+        span.innerHTML = i+1;
+        lis[i].appendChild(span);
+    }
+
+    /* конфигурация */
+    var width = 130; // ширина изображения
+    var count = 3; // количество изображений
+    var ul = document.getElementById('images');
+    var imgs = ul.getElementsByTagName('li');
+    var position = 0; // текущий сдвиг влево
+    var animStep = 0; //определяет направление и плавность/скорость кручения
+    var timerId = null;
+
+    document.getElementById('prev').onclick = function() {
+        if (!timerId) timerId = setInterval(animate, 10);
+//        animate();
+//        console.log(" animStep " + animStep);
+        // если крутимся в том же направлении, что и нажатая кнопка,
+        if (animStep > 0) {                                   // то листаем страницу
+            position = Math.min(position + width*count, 0);
+//            console.log(" prev " + position);
+        } else {                                              // иначе меняем направление
+            animStep = +1;
+        }
+    }
+
+    document.getElementById('next').onclick = function() {
+        if (!timerId) timerId = setInterval(animate, 10);
+//        animate();
+//        console.log(" animeStep " + animStep);
+        // если крутимся в том же направлении, что и нажатая кнопка,
+        if (animStep < 0) {                                   //  то листаем страницу
+            position = Math.max(position-width*count, -width*(imgs.length-count));
+//            console.log(" next " + position);
+        } else {                                              // иначе меняем направление
+            animStep = -1;
+        }
+    };
+
+    function animate() {
+
+        position = position + animStep;
+
+        // что делать по достижению границы?
+        if ((position < -width*(imgs.length-count)) || (position > 0)) {
+            clearInterval(timerId);
+            timerId = null;
+        }
+        ul.style.marginLeft = position + 'px';
+    }
+
+</script>
+</body>
+</html>

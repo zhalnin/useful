@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">
+    <title>Drag</title>
+    <script type="text/javascript" src="../useful/helperFunctions.js"></script>
+    <script type="text/javascript">
+        window.onload = function(){
+            var curDrag, origX, origY;
+            document.onmousedown = function(e){
+                e = fixEvent(e);
+                if(e.target.className == 'draggable') {
+                    curDrag = e.target;
+                    origX = getX(e)+(parseInt(curDrag.style.left) || 0);
+                    origY = getY(e)+(parseInt(curDrag.style.top) || 0);
+                    document.onmousemove = dragMove;
+                    document.onmouseup = dragStop;
+                }
+
+            };
+
+            function dragMove(e) {
+                e = fixEvent(e);
+                if(!curDrag || e.target == curDrag) return;
+
+                curDrag.style.left = (getX(e)) + 'px';
+                curDrag.style.top = (getY(e)) + 'px';
+            }
+
+            function dragStop(e){
+                e = fixEvent(e);
+                curDrag = document.mousemove = document.mouseup = null;
+            }
+
+
+            function fixEvent(e){
+                if(!e){
+                    e = window.event;
+                    e.target = e.srcElement;
+                    e.layerX = e.offsetX;
+                    e.layerY = e.offsetY;
+                }
+                return e;
+            }
+        }
+    </script>
+    <style type="text/css">
+        .draggable { position: relative; }
+    </style>
+</head>
+<body>
+    <div id="draggable" class="draggable">Draggable</div>
+</body>
+</html>

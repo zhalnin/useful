@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">
+    <title>Галерея overflow hidden</title>
+    <script type="text/javascript" src="../helperFunctions.js"></script>
+    <script type="text/javascript" src="gallery.js"></script>
+    <script type="text/javascript" src="carousel.js"></script>
+    <script type="text/javascript" src="../../imei-service/js/AlezhalModules.js"></script>
+    <link href="style.css" type="text/css" rel="stylesheet" />
+    <link href="gallery.css" type="text/css" rel="stylesheet" />
+
+</head>
+<body>
+    <div id="content">
+        <h1>Галерея - First Elem In The End Of Gallery And Vice Versa</h1>
+        <!--
+            Наша галерея, которая должна содержать <ul>, class которого
+            равен "gallery", а title связан с этой галереей.
+        --->
+        <div id="gallery_slideshow"></div>
+        <div id="gallery_content">
+            <div id="gallery_middle">
+                <a href="#" class="arrow prev_arrow" id="prev_arrow">&#8250; </a>
+                <ul id="galleryUl" class="gallery" title="Произвольные изображения кошек">
+                    <!--
+                        Каждое изображение галереи должно быть заключено в элементы
+                        <li>, и иметь ссылку, указывающую на текущее место изображения.
+                        Если изображение большое, в него к тому же нужно включить class
+                        "tall".
+                    --->
+
+                    <li class="tall"><a href="img/image1.png"><img src="img/image1.png"
+                                                alt="Спящий жирный кот "/></a></li>
+                    <li><a href="img/image2.png"><img src="img/image2.png"
+                                                alt="На одной кровати "/></a></li>
+                    <li><a href="img/image3.png"><img src="img/image3.png"
+                                                            alt="За окошком "/></a></li>
+                    <li><a href="img/image4.png"><img src="img/image4.png"
+                                                               alt="На солнышке "/></a></li>
+                    <li><a href="img/image5.png"><img src="img/image5.png" alt="Удобно устроился "></a></li>
+                    <li><a href="img/image6.png"><img src="img/image6.png" alt="Удобно устроился "></a></li>
+                    <li><a href="img/image7.png"><img src="img/image7.png" alt="Удобно устроился "></a></li>
+                    <li><a href="img/image5.png"><img src="img/image5.png" alt="Удобно устроился "></a></li>
+                    <li><a href="img/image6.png"><img src="img/image6.png" alt="Удобно устроился "></a></li>
+                    <li><a href="img/image7.png"><img src="img/image7.png" alt="Удобно устроился "></a></li>
+                </ul>
+                <a href="#" class="arrow next_arrow" id="next_arrow">&#8249; </a>
+            </div>
+            <!--end of gallery_middle-->
+        </div>
+        <!--end of gallery_content-->
+        <a href="#" id="slider">slider</a>
+        <img id="img" src="img/image5.png" />
+    </div>
+    <!--end of conent-->
+
+</body>
+</html>

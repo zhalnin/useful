@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">
+    <title>My Wiki</title>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/textile.js"></script>
+
+    <script type="text/javascript" src="js/sql.js"></script>
+    <script type="text/javascript" src="js/wiki.js"></script>
+
+    <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+    <div id="body">
+        <div id="inside">
+            <div id="head">
+                <div class="links"><a href="?HomePage">Home</a> <span id="edit">|
+                    <a href="#edit">Edit this Page</a></span></div>
+                    <h1>My Wiki</h1>
+        <hr/>
+            </div>
+            <div id="post">
+                <form action="" method="post">
+                    <fieldset>
+                        <legend>Update the Page</legend>
+                        <label for="text">Content:</label>
+                        <textarea name="text" id="text">Your page content goes in here!</textarea><br/><br/>
+                        <div class="submit">
+                            &nbsp;<br/>
+                            <input type="submit" value="&raquo; Save Changes" class="submit" />
+                            <span id="cancel">or <a href="">Cancel</a></span>
+                        </div>
+                        <label for="author">Your Name:</label>
+                        <input type="text" name="author" id="author" value="Anonymous" />
+                    </fieldset>
+                </form>
+            </div>
+            <div id="content">
+                <div class="loading">Loading...</div>
+            </div>
+        </div>
+    </div>
+    <div id="side">
+        <h2>Revisions</h2><hr/>
+        <div class="revwrap"><ul id="rev"></ul></div>
+        <br/><br/>
+        <h2>Fomatting</h2><hr/>
+        <p>Wrap <tt>*your text*</tt> with stars to make <b>it bold</b>.</p>
+        <p>Wrap <tt>_your text_</tt> with underscores to make <i>it italic</i>.</p>
+        <p>A link to <a href="?AnotherWikiEntry">AnotherWikiEntry</a>.
+        looks like: <tt>[AnotherWikiEntry]</tt>.</p>
+        <p>A link to <a href="http://ejohn.org/">eJohn</a>
+        looks like: <tt>[http://ejohn.org/eJohn]</tt>.</p>
+        <p>More information about <a href="http://hobix.com/textile/quick.html">the formatting</a> used.</p>
+    </div>
+</body>
+</html>

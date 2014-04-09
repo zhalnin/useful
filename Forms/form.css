@@ -1,0 +1,89 @@
+form
+{
+    font-family: Arial;
+    font-size: 14px;
+    width: 300px;
+}
+
+fieldset
+{
+    border: 1px solid #CCC;
+    margin-bottom: 10px;
+}
+
+fieldset.login input
+{
+    width: 125px;
+}
+
+legend
+{
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+label
+{
+    display: block;
+    width: 80px;
+    text-align: right;
+    float: left;
+    padding-right: 10px;
+    margin: 5px 0;
+}
+
+input
+{
+    margin: 5px 0;
+}
+
+input.text
+{
+    padding: 0 0 0 3px;
+    width: 172px;
+}
+
+input.submit
+{
+    margin: 15px 0 0 70px;
+}
+
+/*Для блока вывода ошибок*/
+ul.errors
+{
+    list-style: none;
+    background: #FFCECE;
+    padding: 3px;
+    margin: 3px 0 3px 70px;
+    font-size: 0.9em;
+    width: 165px;
+}
+
+
+/*Для размещения подписей в полях логин и пароль*/
+div.hover-wrap
+{
+    position: relative;
+    display: inline;
+}
+div.hover-wrap input.invalid
+{
+    border: 2px solid red;
+}
+div.hover-wrap ul.errors
+{
+    display: none;
+}
+div.hover-wrap label.hover
+{
+    position: absolute;
+    top: -0.4em;
+    left: 0px;
+    color: #666;
+}
+
+/*Для блока со звездочками для указания обязательности полей ввода*/
+label span.required
+{
+    color: red;
+}

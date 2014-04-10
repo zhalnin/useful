@@ -193,37 +193,6 @@ var AM = {
             }
         },
         /**
-         * Предотвращение исходных действий браузера
-         * @param e
-         * @returns {boolean}
-         */
-        stopDefault: function(e) {
-            e = AM.Event.getEvent(e);
-            // Предотвращение исходных действий браузера (W3C)
-            if(e && e.preventDefault) {
-                e.preventDefault();
-            } else {
-                // Ссылка на остановку действия браузера в IE
-                window.event.returnValue = false;
-            }
-            return false;
-        },
-        /**
-         * Остановка всплытия события
-         * @param e
-         */
-        stopBubble: function(e) {
-            // Если предоставлен объект события, значит это не IE-браузер
-            if(e && e.stopPropagation) {
-                // и он поддерживает W3C-метод stopPropagation()
-                e.stopPropagation();
-            } else {
-                // В противном случае нужно воспользоваться способом
-                // прекращения всплытия события, существующим в IE
-                window.event.cancelBubble = true;
-            }
-        },
-        /**
          * Функция для извлечения текстового содержимого элементов
          * @param elem
          * @returns {string}
@@ -1793,6 +1762,37 @@ var AM = {
 
         stopPropagation: function() {
             AM.Event.cancelBubble = true;
+        },
+        /**
+         * Предотвращение исходных действий браузера
+         * @param event
+         * @returns {boolean}
+         */
+        stopDefault: function(event) {
+            event = AM.Event.getEvent(event);
+            // Предотвращение исходных действий браузера (W3C)
+            if(event && event.preventDefault) {
+                event.preventDefault();
+            } else {
+                // Ссылка на остановку действия браузера в IE
+                window.event.returnValue = false;
+            }
+            return false;
+        },
+        /**
+         * Остановка всплытия события
+         * @param event
+         */
+        stopBubble: function(event) {
+            // Если предоставлен объект события, значит это не IE-браузер
+            if(event && event.stopPropagation) {
+                // и он поддерживает W3C-метод stopPropagation()
+                event.stopPropagation();
+            } else {
+                // В противном случае нужно воспользоваться способом
+                // прекращения всплытия события, существующим в IE
+                window.event.cancelBubble = true;
+            }
         }
     },
 

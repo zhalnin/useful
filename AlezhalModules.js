@@ -1796,6 +1796,78 @@ var AM = {
         }
     },
 
+    Query: {
+        /**
+         * Parse query string
+         * return object with entire for each argument
+         * @param url (string)
+         * @returns {{}}
+         */
+        getQueryStringArgs: function( url ){
+            var qs = "";
+            // Проверяем, передана строка для парсинга или нет
+            if( url == null ) {
+                // Получаем строку запроса без ?
+                qs = (location.search.length > 0 ? location.search.substring(1) : "");
+            } else {
+                qs = ( url.indexOf("?") ? url.substring(url.indexOf("?")+1) : "" );
+            }
+            // Объект для хранения данных
+            var args = {},
+            // Получаем отдельные части
+                items = qs.length ? qs.split("&"): [],
+                item = null,
+                name = null,
+                value = null,
+            // Используем для цикла
+                i = 0,
+                len = items.length;
+            // Сохраняем каждую часть в объект args, как args[name][value]
+            for(i=0;i<len;i++){
+                item = items[i].split("=");
+                name = decodeURIComponent(item[0]);
+                value = decodeURIComponent(item[1]);
+
+                if(name.length){
+                    args[name] = value;
+                }
+            }
+            return args;
+        },
+
+        /**
+         * Возвращает полную строку запроса
+         * @param url
+         * @returns {string}
+         */
+        getQueryString: function(url){
+            if(typeof url == "string"){
+                var pos = url.indexOf("?");
+                if(pos != -1){
+                    return decodeURIComponent(url.substring(pos+1));
+                }
+            }
+            return "";
+        },
+
+        /**
+         * Собирает строку запроса
+         * @param url
+         * @param name
+         * @param value
+         * @returns {*}
+         */
+        addQueryStringArg: function(url,name,value){
+            if(url.indexOf("?") == -1){
+                url += "?";
+            } else {
+                url += "&";
+            }
+            url += encodeURIComponent(name)+ "=" + encodeURIComponent(value);
+            return url;
+        }
+    },
+
     XML: {
 
         /**

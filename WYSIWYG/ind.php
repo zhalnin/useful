@@ -15,6 +15,7 @@
     <title>WYSIWYG текстовый редактор</title>
     <meta content="text/html ; charset=utf-8" http-equiv="Content-Type" />
     <link rel="stylesheet" href="wysiwyg.css">
+    <link rel="stylesheet" href="style.css">
     <script type="text/javascript" src="../AlezhalModules.js" ></script>
     <script type="text/javascript" src="wysiwyg.js"></script>
     <script type="text/javascript">
@@ -23,8 +24,8 @@
     </script>
     <style>
         .mainIFrame {
-            width: 800px;
-            margin: 20px 40px;
+            width: 50%;
+            margin: 20px auto;
         }
     </style>
 </head>
@@ -36,21 +37,29 @@
 
 <div class="mainIFrame">
     <span class="defaultSkin">
-        <table cellspacing="0" cellpadding="0" style="height: 312px;" class="mceLayout" >
+        <table cellspacing="0" cellpadding="0" style="height: 300px;" class="mceLayout" >
             <tr class="mceFirst">
                 <td style="height: 28px; bottom: 0;" class="mceToolbar mceLeft mceFirst mceLast">
-                    <table cellspacing="0" cellpadding="0" class="mceToolbar">
+                    <table>
                         <tr>
-                            <td class="mceToolbarStart mceToolbarStartButton mceFirst"> </td>
-                            <td><a href="#" id="bold" value="Жирный" class="mce_bold"><span class="mceIcon mce_bold">b</span></a></td>
-                            <td><a href="#" id="italic" value="Курсив" class="mce_italic"><span class="mceIcon mce_italic">i</span></a></td>
-                            <td><a href="#" id="underline" value="Подчеркнутый" class="mce_underline"><span class="mceIcon mce_underline">u</span></a></td>
-                            <td><a href="#" id="strikethrough" value="Перечеркнутый" class="mce_strikethrough"><span class="mceIcon mce_strikethrough">s</span></a></td>
-                            <td><a href="#" id="justifyleft" value="Выровнять влево" class="mce_justifyright"><span class="mceIcon mce_justifyright">l</span></a></td>
-                            <td><a href="#" id="justifycenter" value="Выровнять по центру" class="mce_justifycenter"><span class="mceIcon mce_justifycenter">c</span></a></td>
-                            <td><a href="#" id="justifyright" value="Выровнять вправо" class="mce_justifyright"><span class="mceIcon mce_justifyright">r</span></a></td>
-                            <td><a href="#" id="image" value="Картинка" class="mce_image"><span class="mceIcon mce_image">im</span></a></td>
-                            <td><a href="#" id="url" value="Ссылка" class="mce_link"><span class="mceIcon mce_link">ur</span></a></td>
+                            <td class="mceToolbarStart mceToolbarStartButton mceFirst"><span></span></td>
+                            <td><a href="#" id="bold" class="mceButton mce_bold"><span class="mceIcon mce_bold"></span></a></td>
+                            <td><a href="#" id="italic" class="mceButton mce_italic"><span class="mceIcon mce_italic"></span></a></td>
+                            <td><a href="#" id="underline" class="mceButton mce_underline"><span class="mceIcon mce_underline"></span></a></td>
+                            <td><a href="#" id="strikethrough" class="mceButton mce_strikethrough"><span class="mceIcon mce_strikethrough"></span></a></td>
+                            <td><a href="javascript:;" class="mceButton mceButtonEnabled spacer_button" title="" >
+                                    <span class="mceIcon spacer_button"></span>
+                                </a></td>
+                            <td><a href="#" id="justifyleft" class="mceButton mce_justifyright"><span class="mceIcon mce_justifyright"></span></a></td>
+                            <td><a href="#" id="justifycenter" class="mceButton mce_justifycenter"><span class="mceIcon mce_justifycenter"></span></a></td>
+                            <td><a href="#" id="justifyright" class="mceButton mce_justifyright"><span class="mceIcon mce_justifyright"></span></a></td>
+                            <td>
+                                <a href="javascript:;" class="mceButton mceButtonEnabled spacer_button spacer_button1" >
+                                    <span class="mceIcon spacer_button spacer_button1"></span>
+                                </a>
+                            </td>
+                            <td><a href="#" id="image" class="mceButton mce_image"><span class="mceIcon mce_image"></span></a></td>
+                            <td><a href="#" id="url" class="mceButton mce_link"><span class="mceIcon mce_link"></span></a></td>
                             <td style="padding-right: 2px;" class="mceToolbarEnd mceToolbarEndButton mceLast"></td>
                         </tr>
                     </table>
@@ -73,6 +82,59 @@
     <div><input type="button" value="Пердпросмотр" onclick="addTextToBase()"></div>
     <p id="showmsg"></p>
 </div>
+
+
+
+<div class="mainIFrame">
+    <span class="editorSpan">
+        <table cellspacing="0" cellpadding="0" style="height: 300px;" class="editorMain" >
+            <tr class="editorFirst">
+                <td style="height: 28px; bottom: 0;" class="">
+                    <table cellspacing="0" cellpadding="0" class="">
+                        <tr>
+                            <td class=""><span></span></td>
+                            <td><a href="#" id="bold" value="Жирный" class="bold"><span class="bold"></span></a></td>
+                            <td><a href="#" id="italic" value="Курсив" class="italic"><span class="italic"></span></a></td>
+                            <td><a href="#" id="underline" value="Подчеркнутый" class="underline"><span class="underline"></span></a></td>
+                            <td><a href="#" id="strikethrough" value="Перечеркнутый" class="strikethrough"><span class="strikethrough"></span></a></td>
+                            <td><a href="javascript:;" value="Разделитель" class="spacer_button" title="" >
+                                    <span class="spacer_button"></span>
+                                </a>
+                            </td>
+                            <td><a href="#" id="justifyleft" value="Выровнять влево" class="justifyright"><span class="ustifyright"></span></a></td>
+                            <td><a href="#" id="justifycenter" value="Выровнять по центру" class="justifycenter"><span class="justifycenter"></span></a></td>
+                            <td><a href="#" id="justifyright" value="Выровнять вправо" class="justifyright"><span class="justifyright"></span></a></td>
+                            <td>
+                                <a href="javascript:;" class="spacer_button" >
+                                    <span class="spacer_button"></span>
+                                </a>
+                            </td>
+                            <td><a href="#" id="image" value="Картинка" class="image"><span class="image"></span></a></td>
+                            <td><a href="#" id="url" value="Ссылка" class="link"><span class="ink"></span></a></td>
+                            <td style="padding-right: 2px;" class=""></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr class="editorIFrame">
+                <td class="">
+                    <div style="position: absolute; overflow: hidden; top: 0px; left: 0px; width: 100%; height: 269px;"></div>
+                    <iframe id="iframe_redactor" style="width: 100%; height: 264px; position: relative;" ></iframe>
+                </td>
+            </tr>
+            <tr class="editorLast">
+                <td class="">
+                    <a class="" href="#"></a>
+                </td>
+            </tr>
+        </table>
+    </span>
+
+    <div><input type="button" value="Пердпросмотр" onclick="addTextToBase()"></div>
+    <p id="showmsg"></p>
+</div>
+
+
 
 
 

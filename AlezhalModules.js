@@ -957,6 +957,110 @@ var AM = {
                 document.body.appendChild(console);
             }
             console.innerHTML += "<p>"+ message +"</p>";
+        },
+        /**
+         * Safe Type Detection
+         * @param value
+         * @returns {boolean}
+         */
+        isArray: function(value){
+            return Object.prototype.toString.call(value) == "[object Array]";
+        },
+        isFunction: function(value){
+            return Object.prototype.toString.call(value) == "[object Function]";
+        },
+        isRegExp: function(value){
+            return Object.prototype.toString.call(value) == "[object RegExp]";
+        },
+        /**
+         * Closure, bind function with context(to use "this" for property in object)
+         * Function binding involves creating a function
+         * that calls another function with a specific this value
+         * and with specific arguments. This technique is often used
+         * in conjunction with callbacks and event handlers
+         * to preserve code execution context while passing functions around
+         * as variables
+         * @param fn
+         * @param context
+         */
+        bind: function(fn, context) {
+            return function() {
+                return fn.apply(context, arguments);
+            };
+        },
+        /**
+         * Create queue of items to porcess, use timers to pull the next item to process,
+         * process it, and then set another timer.
+         * @param array
+         * @param process
+         * @param context
+         */
+        chunk: function(array, process, context){
+            setTimeout(function(){
+                var item = array.shift();
+                process.call(context,item);
+
+                if(array.length > 0){
+                    setTimeout(arguments.callee, 100);
+                }
+            }, 100);
+        },
+        /**
+         * Use for resize event to decrease browser calculations
+         * like singltone
+         * @param method
+         * @param context
+         */
+        throttle: function(method, context) {
+            clearTimeout(method.tId);
+            method.tId = setTimeout(function() {
+                method.call(context);
+            }, 100);
+        },
+
+        /**
+         * Convert node.childNodes to array()
+         * @param nodes
+         * @returns array
+         */
+        convertToArray: function(nodes){
+            var array = null;
+            try {
+                array = Array.prototype.slice.call(nodes, 0);
+            } catch(ex) {
+                array = [];
+                for(var i= 0, len=nodes.length; i<len; i++){
+                    array.push(nodes[i]);
+                }
+            }
+            return array;
+        },
+        /**
+         * Detect Plugins over all browser except IE
+         * @param name
+         * @returns {boolean}
+         */
+        hasPlugin: function(name){
+            name = name.toLowerCase();
+            for(var i= 0,len = navigator.plugins.length; i<len;i++){
+                if(navigator.plugins[i].name.toLowerCase().indexOf(name) > -1){
+                    return true;
+                }
+            }
+            return false;
+        },
+        /**
+         * Detect Plugins over IE
+         * @param name
+         * @returns {boolean}
+         */
+        hasIEPlugin: function(name){
+            try{
+                new ActiveXObject(name);
+                return true;
+            } catch (ex){
+                return false;
+            }
         }
 
 
@@ -1868,6 +1972,110 @@ var AM = {
         }
     },
 
+    Form: {
+
+        /**
+         * Меняет фокус с одного элемента управления на другой
+         * в зависимости от количества символов в нем
+         * @param event
+         */
+        tabForward: function( event ){
+            event = AM.Event.getEvent( event );
+            var target = AM.Event.getTarget( event );
+
+            if(target.value.length == target.maxLength){
+                var form = target.form;
+
+                for(var i = 0,len = form.elements.length; i < len; i++){
+                    if(form.elements[i] == target){
+                        if(form.elements[i+1]){
+                            form.elements[i+1].focus();
+                        }
+                        return;
+                    }
+                }
+            }
+        },
+        /**
+         * Функция для определения выделенного элемента в <select></select>
+         * @param selectbox
+         * @returns {Array}
+         */
+        getSelectedOptions: function(selectbox){
+            var result = [];
+            var option = null;
+
+            for(var i= 0, len=selectbox.options.length; i < len; i++){
+                option = selectbox.options[i];
+                if(option.selected){
+                    result.push(option);
+                }
+            }
+            return result;
+        },
+        /**
+         * Сериализация формы ключ значения формы
+         * @param form
+         * @returns {string}
+         */
+        serializeForm: function( form ){
+            var parts = [],
+                field = null,
+                i,
+                len,
+                j,
+                optLen,
+                option,
+                optValue;
+
+            for(i=0,len = form.elements.length; i<len; i++){
+                field = form.elements[i];
+
+                switch(field.type){
+                    case "select-one":
+                    case "select-multiple":
+                        if(field.name.length){
+                            for(j=0,optLen=field.options.length; j<optLen; j++){
+                                option = field.options[j];
+                                if(option.selected){
+                                    optValue = "";
+                                    if(option.hasAttribute){
+                                        optValue = (option.hasAttribute("value") ?
+                                            option.value : option.text);
+                                    } else {
+                                        optValue = (option.attributes["value"].specified ?
+                                            option.value : option.text);
+                                    }
+                                    parts.push(encodeURIComponent(field.name) + "=" +
+                                        encodeURIComponent(optValue));
+                                }
+                            }
+                        }
+                        break;
+                    case "undefined":
+                    case "file":
+                    case "submit":
+                    case "reset":
+                    case "button":
+                        break;
+                    case "radio":
+                    case "checkbox":
+                        if(!field.checked){
+                            break;
+                        }
+                    default:
+                        if(field.name.length){
+                            parts.push(encodeURIComponent(field.name) + "=" +
+                                encodeURIComponent(field.value));
+                        }
+                }
+            }
+            return parts.join("&");
+        }
+    },
+
+
+
     XML: {
 
         /**
@@ -1881,27 +2089,69 @@ var AM = {
                 console.log(typeof DOMParser);
                 xmldom = (new DOMParser()).parseFromString(xml, "text/xml");
                 var errors = xmldom.getElementsByTagName("parsererror");
-                if(errors.length)
-                {
+                if(errors.length) {
                     throw new Error("XML parsing error:" + errors[0].textContent);
                 }
-            }
-            else if (typeof ActiveXObject() != "undefined")
-            {
-                xmldom = createDocument();
+            } else if (typeof ActiveXObject() != "undefined") {
+                xmldom = AM.XML.createDocument();
                 xmldom.loadXml(xml);
-                if(xmldom.parseError != 0)
-                {
+                if(xmldom.parseError != 0) {
                     throw new Error("XML parsing error: " + xmldom.parseError.reason);
                 }
 
-            }
-            else
-            {
+            }  else {
                 throw new Error("No XML parser available.");
             }
             return xmldom;
         }
+    },
+
+    /**
+     * Create xmldom parser for IE
+     * helper function for parseXml(xml)
+     * @returns {ActiveXObject}
+     */
+     createDocument: function(){
+        if(typeof arguments.callee.activeXString != "string"){
+            var versions = ["MSXML2.DOMDocument.6.0", "MSXML2.DOMDocument.3.0",
+                    "MSXML2.DOMDocument"],
+                i,len;
+            for(i=0,len=versions.length;i<len;i++){
+                try{
+                    new ActiveXObject(versions[i]);
+                    arguments.callee.activeXString = versions[i];
+                    break;
+                } catch (ex){
+                    log2(ex.message);
+                }
+            }
+        }
+        return new ActiveXObject(arguments.callee.activeXString);
+    },
+
+    /**
+     * Используется для сериализации атрибутов в элементе
+     * в XML
+     * Function iterates over each attribute on an element and constructs a string in the format
+     * name=“value” name=“value”
+     * @param element
+     * @returns {string}
+     */
+    outputAttributes: function(element){
+        var pairs = [],
+            attrName,
+            attrValue,
+            i,
+            len;
+
+        for(i=0,len=element.attributes.length;i<len;i++){
+            attrName = element.attributes[i].nodeName;
+            attrValue = element.attributes[i].nodeValue;
+            if(element.attributes[i].specified == true){
+                pairs.push(attrName+"=\""+attrValue+"\"");
+            }
+        }
+        return pairs.join(" ");
     }
 
 
@@ -2087,3 +2337,95 @@ var client = function() {
 }();
 
 
+
+/**
+ * Create table
+ */
+//var table = document.createElement("table");
+//table.border = 1;
+//table.width = "100%";
+//
+//var tbody = document.createElement("tbody");
+//table.appendChild(tbody);
+//
+//tbody.insertRow(0);
+//tbody.rows[0].insertCell(0);
+//tbody.rows[0].cells[0].appendChild(document.createTextNode("Cell_1,1"));
+//tbody.rows[0].insertCell(1);
+//tbody.rows[0].cells[1].appendChild(document.createTextNode("Cell_2,1"));
+//
+//tbody.insertRow(1);
+//tbody.rows[1].insertCell(0);
+//tbody.rows[1].cells[0].appendChild(document.createTextNode("Cell_2,1"));
+//tbody.rows[1].insertCell(1);
+//tbody.rows[1].cells[1].appendChild(document.createTextNode("Cell_2,2"));
+
+//document.body.appendChild(table);
+
+
+/**
+ * Scroll element into view
+ */
+//document.forms[0].scrollIntoView()
+
+///////////////////////////////////////////////////////////////////////
+//   Класс доступности javascript                                    //
+///////////////////////////////////////////////////////////////////////
+//<script>document.documentElement.className = "js";</script>
+//<style>.js #fadein { display: none };</style>
+//<div id='fadein'>....</div>
+///////////////////////////////////////////////////////////////////////
+//                                                                   //
+///////////////////////////////////////////////////////////////////////
+
+
+
+//
+//HTMLElement.prototype.prevS = function()
+//{
+//    var elem = this;
+//    do
+//    {
+//        elem = elem.previousSibling;
+//    }
+//    while(elem && elem.nodeType != 1);
+//    return elem;
+//}
+//
+//HTMLElement.prototype.nextS = function()
+//{
+//    var elem = this;
+//    do
+//    {
+//        elem = elem.nextSibling;
+//    }
+//    while(elem && elem.nodeType != 1);
+//    return elem;
+//}
+//
+//HTMLElement.prototype.firstC = function()
+//{
+//    var elem = this;
+//    elem = elem.firstChild;
+//    return elem && elem.nodeType != 1 ? nextS(elem) : elem;
+//}
+//
+//HTMLElement.prototype.lastC = function()
+//{
+//    var elem = this;
+//    elem = elem.lastChild;
+//    return elem && elem.nodeType != 1 ? prevS(elem) : elem;
+//}
+//
+//HTMLElement.prototype.parentN = function(elem, num)
+//{
+//    num = num || 1;
+//    for(var i = 0; i < num; i++)
+//    {
+//        if(elem != null)
+//        {
+//            elem = elem.parentNode;
+//        }
+//    }
+//    return elem;
+//}

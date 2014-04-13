@@ -15,7 +15,7 @@
     <title>Test</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="stylesheet" href="../wiki/css/style.css">
-    <script type="text/javascript" src="../../imei-service/js/AlezhalModules.js" ></script>
+    <script type="text/javascript" src="../AlezhalModules.js" ></script>
     <style type="text/css">
         * {
             padding: 0;

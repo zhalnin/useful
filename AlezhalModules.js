@@ -1535,6 +1535,42 @@ var AM = {
      * Ajax object
      */
     Ajax: {
+        /**
+         * Lazy load creating object XMLHttpRequest
+         * @returns {*}
+         */
+        createXHR: function() {
+          if( typeof XMLHttpRequest != 'undefined' ) {
+              createXHR = function() {
+                  return new XMLHttpRequest();
+              };
+          } else if( typeof ActiveXObject != 'undefined' ) {
+              createXHR = function() {
+                  if( typeof arguments.callee.activeXString != 'string' ) {
+                      var versions = ["MSXML2.XMLHTTP.3.0",
+                                      "MSXML2.XMLHTTP.6.0",
+                                      "MSXML2.XMLHTTP",
+                                      "Microsoft.ActiveXObject"],
+                          i, len;
+                      for( i=0, len=versions.length; i<len; i++ ) {
+                          try {
+                              new ActiveXObject( versions[i] );
+                              arguments.callee.activeXString = versions[i];
+                              break;
+                          } catch ( ex ) {
+                              alert( ex.message );
+                          }
+                      }
+                  }
+                  return new ActiveXObject( arguments.callee.activeXString );
+              };
+          } else {
+              createXHR = function() {
+                  throw new Error ( "No XHR object is available" );
+              };
+          }
+            return createXHR();
+        },
 
         // Извлечение правильных данных из ответа HTTP
         httpData: function(response, dataType) {
@@ -1581,32 +1617,32 @@ var AM = {
             return false;
         },
 
-        ajax: function( options ){
+        ajax: function( option ){
 //            console.log('ajax:');
             // Загрузка объекта параметров по умолчанию, если пользователь не
             // представил никаких значений
             options = {
                 // Метод http-запроса
-                method: options.mode || "POST",
+                method: option.method || "POST",
                 // URL на который должен быть послан запрос
-                url: options.url || "",
+                url: option.url || "",
                 // Время ожидания ответа на запрос
-                timeout: options.timeout || 50000,
+                timeout: option.timeout || 50000,
                 // Функция, запускаемая перед отправкой - типа прогресс
-                onStart: options.onStart || function(){},
+                onStart: option.onStart || function(){},
                 // Функция, запускаемая после получения данных - типа прогресс
-                onEnd: options.onEnd || function(){},
+                onEnd: option.onEnd || function(){},
                 // Функция, вызываемая, когда запрос неудачен, успешен
                 // или завершен (успешно или нет)
-                onComplete: options.onComplete || function(){},
-                onError: options.onError || function(){},
-                onSuccess: options.onSuccess || function(){},
+                onComplete: option.onComplete || function(){},
+                onError: option.onError || function(){},
+                onSuccess: option.onSuccess || function(){},
                 // Тип данных, которые будут возвращены с сервера
                 // по умолчанию просто определить, какие данные были
                 // возвращены, и действовать соответственно
-                dataType: options.dataType || "",
-                getParams: options.getParams || "",
-                postParams: options.postParams || ""
+                dataType: option.dataType || "",
+                getParams: option.getParams || "",
+                postParams: option.postParams || ""
             };
             // Создание объекта запроса
             var xhr = new XMLHttpRequest();

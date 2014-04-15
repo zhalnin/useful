@@ -14,7 +14,7 @@
 <head>
     <title>WYSIWYG текстовый редактор</title>
     <meta content="text/html ; charset=utf-8" http-equiv="Content-Type" />
-    <link rel="stylesheet" type="text/css" href="wysiwyg.css">
+<!--    <link rel="stylesheet" type="text/css" href="wysiwyg.css">-->
     <link rel="stylesheet" type="text/css" href="style.css">
     <script type="text/javascript" src="../AlezhalModules.js" ></script>
     <script type="text/javascript" src="wysiwyg.js"></script>
@@ -62,7 +62,6 @@
             </tr>
             <tr class="editorIFrame">
                 <td class="">
-                    <div style="position: absolute; overflow: hidden; top: 0px; left: 0px; width: 100%; height: 269px;"></div>
                     <iframe id="iframe_redactor" style="width: 100%; height: 264px; position: relative;" ></iframe>
                 </td>
             </tr>

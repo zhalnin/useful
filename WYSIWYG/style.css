@@ -1,11 +1,224 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p,
+blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em,
+font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var,
+b, u, i, center, dl, dt, dd, ol, ul, fieldset, form, label, legend, caption,
+table, tr, tbody, tfoot, thead {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: 0 none;
+    border-collapse: collapse;
+    border-spacing: 0;
+    font-size: 100%;
+    list-style: none outside none;
+    margin: 0;
+    outline: 0 none;
+    padding: 0;
+}
+
+.editorSpan table td {
+    vertical-align: middle;
+}
 .editorMain {
-    border: 1px solid #000000;
+    border: 1px solid #CCCCCC;
     width: 100%;
 }
 .editorFirst {
-    border-bottom: 1px solid #000000;
+    border-bottom: 1px solid #CCCCCC;
 }
 .editorLast {
-    border-top: 1px solid #000000;
+    border-top: 1px solid #CCCCCC;
     height: 20px;
+}
+.editorSpan {
+
+}
+.editorToolbar {
+    background: url("repeater.gif") repeat-x scroll 0 0 rgba(0, 0, 0, 0);
+    background: none repeat scroll 0 0 #F6F6F6;
+    vertical-align: top;
+    border-color: -moz-use-text-color #CCCCCC -moz-use-text-color #999999;
+    /*border-style: none solid;*/
+    /*border-width: 0 1px;*/
+    /*display: block;*/
+    /*height: 57px;*/
+    /*margin: 0 -1px -1px;*/
+    /*padding: 0;*/
+    /*position: relative;*/
+}
+.editorToolbar td {
+    padding: 0 2px;
+}
+.editorStatusbar {
+    background: none repeat scroll 0 0 #F6F6F6;
+    color: #000000;
+    display: block;
+    height: 20px;
+    font-family: 'MS Sans Serif',sans-serif,Verdana,Arial;
+    font-size: 9pt;
+    line-height: 16px;
+    /*overflow: visible;*/
+}
+.editorIcon {
+    background: url("iconmaster.gif") no-repeat scroll 20px 20px rgba(0, 0, 0, 0);
+}
+.editorBold {
+    height: 21px;
+    width: 23px;
+}
+span.editorBold {
+    display: block;
+    background-position: -48px -44px;
+    height: 21px;
+    width: 23px;
+}
+span.editorBold:hover {
+    display: block;
+    background-position: -48px -65px;
+    height: 21px;
+    width: 23px;
+}
+.editorItalic {
+    height: 21px;
+    width: 24px;
+}
+span.editorItalic {
+    display: block;
+    background-position: -24px -44px;
+    height: 21px;
+    width: 24px;
+}
+span.editorItalic:hover {
+    display: block;
+    background-position: -24px -65px;
+    height: 21px;
+    width: 24px;
+}
+.editorUnderline {
+    height: 21px;
+    width: 22px;
+}
+span.editorUnderline {
+    display: block;
+    background-position: -100px -92px;
+    height: 21px;
+    width: 22px;
+}
+span.editorUnderline:hover {
+    display: block;
+    background-position: -122px -92px;
+    height: 21px;
+    width: 22px;
+}
+.editorStrikethrough {
+    height: 21px;
+    width: 24px;
+}
+span.editorStrikethrough {
+    display: block;
+    background-position: 0 -44px;
+    height: 21px;
+    width: 24px;
+}
+span.editorStrikethrough:hover {
+    display: block;
+    background-position: 0 -65px;
+    height: 21px;
+    width: 24px;
+}
+.editorSpacer {
+    height: 21px;
+    width: 24px;
+}
+span.editorSpacer {
+    display: block;
+    background-position: -56px -104px;
+    height: 21px;
+    width: 24px;
+}
+.editorJustifyleft {
+    height: 21px;
+    width: 28px;
+}
+span.editorJustifyleft {
+    display: block;
+    background-position: -315px 0;
+    height: 21px;
+    width: 28px;
+}
+span.editorJustifyleft:hover {
+    display: block;
+    background-position: -315px -21px;
+    height: 21px;
+    width: 28px;
+}
+.editorJustifycenter {
+    height: 21px;
+    width: 28px;
+}
+span.editorJustifycenter {
+    display: block;
+    background-position: -343px 0;
+    height: 21px;
+    width: 28px;
+}
+span.editorJustifycenter:hover {
+    display: block;
+    background-position: -343px -21px;
+    height: 21px;
+    width: 28px;
+}
+.editorJustifyright {
+    height: 21px;
+    width: 28px;
+}
+span.editorJustifyright {
+    display: block;
+    background-position: -371px 0;
+    height: 21px;
+    width: 28px;
+}
+span.editorJustifyright:hover {
+    display: block;
+    background-position: -371px -21px;
+    height: 21px;
+    width: 28px;
+}
+.editorImage {
+    height: 22px;
+    width: 26px;
+}
+span.editorImage {
+    display: block;
+    background-position: -477px 0;
+    height: 22px;
+    width: 26px;
+}
+span.editorImage:hover {
+    display: block;
+    background-position: -477px -22px;
+    height: 22px;
+    width: 26px;
+}
+.editorLink {
+    height: 22px;
+    width: 30px;
+}
+span.editorLink {
+    display: block;
+    background-position: -27px 0;
+    height: 22px;
+    width: 30px;
+}
+span.editorLink:hover {
+    display: block;
+    background-position: -27px -22px;
+    height: 22px;
+    width: 30px;
+}
+.editorStatusbar a.editorResize {
+    background: url("icons_wysiwyg.gif") repeat scroll -800px 0 rgba(0, 0, 0, 0);
+    cursor: se-resize;
+    display: block;
+    float: right;
+    height: 20px;
+    width: 20px;
 }

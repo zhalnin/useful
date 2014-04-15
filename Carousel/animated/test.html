@@ -40,13 +40,22 @@ AM.Event.addEvent(window, 'load', function() {
 
 
     var Carousel = {
-        direction: 1,
-        width: 130,
+        direction: 1, // направление вращения карусели
+        width: 130, // ширина одного изображения
+        count: 3, // количество изображений на странице
+        imgs: document.getElementById('images').getElementsByTagName('li'), // HTML коллекция всех изображений (тегов li)
+        speed: 5, // скорость прокрутки
+        carousel: AM.DOM.$('carousel'), // находим id="carousel"
+        speedDelay: 500, // скорость задержки при смене изображений
+        timeIDIncr: null,  // таймаут для слайда картинки(не между картинками) влево
+        timeIDDecr: null,  // таймаут для слайда картинки(не между картинками) вправо
+        timeIDNext: null,
+        timeIDPrev: null,
         getMarginLeft: function() {
-            return parseInt(ul.style.marginLeft);
+            return parseInt(document.getElementById('images').style.marginLeft);
         },
         setMarginLeft: function( stmt ) {
-            ul.style.marginLeft = stmt + "px";
+            document.getElementById('images').style.marginLeft = stmt + "px";
         },
         setSelectIndicator: function( stmt ) {
             var ulIndicator = document.getElementById('indicator'),
@@ -70,144 +79,10 @@ AM.Event.addEvent(window, 'load', function() {
     };
 
 
+//    // Назначаем обработчик события click
+//    AM.Event.addEvent(carousel, 'click', handleAnimate() );
 
 
-
-
-    /**
-     *  Конфигурация
-     */
-    var width = 130, // ширина одного изображения
-            count = 3, // количество изображений на странице
-            ul = document.getElementById('images'), // указатель на элемент с id='images
-            imgs = ul.getElementsByTagName('li'), // HTML коллекция всех изображений (тегов li)
-            carousel = AM.DOM.$('carousel'),
-            speed = 5, // скорость прокрутки
-            speedDelay = 500, // скорость задержки при смене изображений
-            timeIDIncr = null,  // таймаут для слайда картинки(не между картинками) влево
-            timeIDDecr = null,  // таймаут для слайда картинки(не между картинками) вправо
-            timeIDNext = null,
-            timeIDPrev = null;
-
-
-
-    /**
-     *  Создаем <span></span> с необходимым классом
-     *  и нумерацией в левом верхнем углу изображения
-     */
-    var uls = document.getElementById('images'),
-            lis = uls.getElementsByTagName('li');
-    for(var i=0; i<lis.length; i++) {
-        lis[i].style.position='relative';
-        var span = document.createElement('span');
-        span.style.cssText='position:absolute;left:0;top:0';
-        span.innerHTML = i+1;
-        AM.DOM.append(lis[i], span);
-//        lis[i].appendChild(span);
-    }
-
-
-
-    /**
-     *  Создаем элемент <div></div> со списком, для указателей
-     */
-    var idCarousel = AM.DOM.$('carousel'), // Находим id="carousel"
-            fragPlus = document.createDocumentFragment(), // Создаем фрагмент для добавления
-            divPlus = document.createElement('div'); // Создаем <div></div>
-    divPlus.id = "indicator";  // Назначаем id
-    divPlus.className = "indicator"; // Назначаем диву класс "indicator"
-    var ulPlus = document.createElement('ul'); // Создаем элемент <ul></ul>
-    ulPlus.id = "indicators";
-    // Проходим в цикле и создаем элементы <li></li>
-    (function(){
-        for( var i=0; i < lis.length-count+1; i++ ) {
-            var liPlus = document.createElement('li'); // Создаем элемент <li></li>
-            liPlus.id = i;
-//            liPlus.textContent = '+'; // Добавляем текст между тегами
-            (function( num ) {
-                // Назначаем обработчик события по клику на каждый li
-                AM.Event.addEvent(liPlus, 'click', function(){
-                    handleScrollAnimate( num );
-                });
-            })( i );
-
-
-            fragPlus.appendChild(liPlus); // Добавляем созданные элементы <li></li> в фрагмент
-        }
-    })();
-    ulPlus.appendChild( fragPlus ); // Добавляем фрагмент к элементу <ul></ul>
-    divPlus.appendChild( ulPlus ); // Добавляем элемент <ul></ul> к элементу <div></div>
-    idCarousel.parentNode.appendChild( divPlus );  // Добавляем к родительскому элементу <div></div>
-
-
-
-    var tUl = document.getElementById('indicator'), // Находим  ul id="indicator"
-        tLi = tUl.getElementsByTagName('li');  // Получаем коллекцию li этого ul
-//        tLi[0].className = 'shown'; // Назначаем класс shown первому элементу
-
-    Carousel.setSelectIndicator();
-
-
-    /**
-     *  Обработчик события при нажатии на указатели под изображениями
-     */
-    function handleScrollAnimate( num ) {
-        if( timeIDIncr != 'null' ) {
-            clearTimeout( timeIDIncr );
-            clearTimeout( timeIDNext );
-        }
-        if( timeIDDecr != 'null' ) {
-            clearTimeout( timeIDDecr );
-            clearTimeout( timeIDPrev );
-        }
-
-        var ulPlus = AM.DOM.$('indicators'),
-            liCollection = AM.DOM.tag('li', ulPlus );
-        AM.DOM.removeClass( 'shown', liCollection );
-        AM.DOM.addClass( 'shown', liCollection[num] );
-        Carousel.setMarginLeft( - num * width );
-
-        switch ( Carousel.direction ) {
-            case 1:
-                setTimeout(function(){
-                    animateNext();
-                }, 10 );
-                break;
-            case -1:
-                setTimeout(function(){
-                    animatePrev();
-                }, 10 );
-                break;
-        }
-    }
-
-
-
-
-    function selectIndicator( direct ) {
-        var pos = Carousel.getMarginLeft(),
-                posPlus = -Math.floor( pos/width ); // находим индикатор позиции карусели( текущее смещение делим на ширину изображения)
-        switch ( direct ) {
-            case 'next':
-                tLi[posPlus].className = '';  // удаляем имя класса у индикатора
-                tLi[posPlus + 1].className = 'shown';
-                break;
-            case 'prev':
-                tLi[posPlus].className = '';  // удаляем имя класса у индикатора
-                tLi[posPlus - 1].className = 'shown';
-                break;
-        }
-    }
-
-
-
-
-
-
-
-
-    // Назначаем обработчик события click
-    AM.Event.addEvent(carousel, 'click', handleAnimate );
 
     /**
      * Управляет направлением вращения изображений
@@ -217,12 +92,13 @@ AM.Event.addEvent(window, 'load', function() {
      */
     function handleAnimate() {
         AM.Event.removeEvent(carousel, 'click', handleAnimate );
-        if( -Carousel.getMarginLeft() <= width * ( imgs.length - count - 1 ) ) {
+        if( -Carousel.getMarginLeft() <= Carousel.width * ( Carousel.imgs.length - Carousel.count - 1 ) ) {
             animateNext(); // вращение влево
         } else {
             animatePrev(); // вращение вправо
         }
     }
+
 
     /**
      * Вращение справа на лево
@@ -232,13 +108,13 @@ AM.Event.addEvent(window, 'load', function() {
      */
     function animateNext() {
         Carousel.direction = 1; // направление карусели
-        timeIDNext = setTimeout( function() {
+        Carousel.timeIDNext = setTimeout( function() {
             // Если текущее смещение карусели меньше или равно длине всех изображений за вычетом
             // видимых изображений минус еще одно
-            if( -Carousel.getMarginLeft() <= width * ( imgs.length - count - 1 ) ) {
+            if( -Carousel.getMarginLeft() <= Carousel.width * ( Carousel.imgs.length - Carousel.count - 1 ) ) {
 
                 var pos = Carousel.getMarginLeft(),  // текущее положение смещения карусели
-                    nextPos = pos - width;  // следующее положение смещения карусели
+                        nextPos = pos - Carousel.width;  // следующее положение смещения карусели
                 // Для определения текущей позиции карусели и переключения имени класса
 //                selectIndicator('next');
 
@@ -251,7 +127,7 @@ AM.Event.addEvent(window, 'load', function() {
                 // видимых изображений минус еще одно
                 animatePrev();  // функция перемещения карусели вправо
             }
-        }, 1 * speedDelay );
+        }, 1 * Carousel.speedDelay );
 
     }
 
@@ -270,13 +146,13 @@ AM.Event.addEvent(window, 'load', function() {
             if( pos >= nextPos ) {
                 Carousel.setMarginLeft( pos );
                 pos--;
-                timeIDIncr = setTimeout( arguments.callee, 1 * speed );
+                Carousel.timeIDIncr = setTimeout( arguments.callee, 1 * Carousel.speed );
                 // Если картинка переместилась полностью на ширину изображения
             } else {
                 // Если позиция больше длине всех изображений за вычетом
                 // видимых изображений минус еще одно (для дебаггинга)
-                if( pos > width * ( imgs.length - count - 1 ) ) {
-                    Carousel.setMarginLeft( width * ( imgs.length - count ) );
+                if( pos > Carousel.width * ( Carousel.imgs.length - Carousel.count - 1 ) ) {
+                    Carousel.setMarginLeft( Carousel.width * ( Carousel.imgs.length - Carousel.count ) );
                 }
                 // Возвращаемся к перемещению всей карусели влево
                 animateNext();
@@ -293,11 +169,11 @@ AM.Event.addEvent(window, 'load', function() {
      */
     function animatePrev() {
         Carousel.direction = -1;
-        timeIDPrev =  setTimeout( function() {
+        Carousel.timeIDPrev =  setTimeout( function() {
             // Если позиция смещения элемента меньше 0
             if( Carousel.getMarginLeft() < 0 ) {
-                var prevPos = Carousel.getMarginLeft() + width, // следующая позиция
-                    pos = Carousel.getMarginLeft(); // текущая позиция
+                var prevPos = Carousel.getMarginLeft() + Carousel.width, // следующая позиция
+                        pos = Carousel.getMarginLeft(); // текущая позиция
 
 
                 Carousel.setSelectIndicator('prev'); // Для определения текущей позиции карусели и переключения имени класса
@@ -307,7 +183,7 @@ AM.Event.addEvent(window, 'load', function() {
             } else {
                 animateNext(); // функция смещения карусели влево
             }
-        }, 1 * speedDelay );
+        }, 1 * Carousel.speedDelay );
     }
 
 
@@ -326,7 +202,7 @@ AM.Event.addEvent(window, 'load', function() {
             if( pos <= prevPos ) {
                 Carousel.setMarginLeft( pos );
                 pos++;
-                timeIDDecr = setTimeout( arguments.callee, 1 * speed );
+                Carousel.timeIDDecr = setTimeout( arguments.callee, 1 * Carousel.speed );
                 // Если картинка переместилась полностью на ширину изображения
             } else {
                 // Если позиция больше 0 (для дебаггинга)
@@ -338,6 +214,89 @@ AM.Event.addEvent(window, 'load', function() {
                 animatePrev();
             }
         })();
+    }
+
+
+    // Назначаем обработчик события click
+    AM.Event.addEvent(Carousel.carousel, 'click', handleAnimate );
+
+
+    /**
+     *  Создаем <span></span> с необходимым классом
+     *  и нумерацией в левом верхнем углу изображения
+     */
+    for(var i= 0, len = Carousel.imgs.length; i<len; i++) {
+        Carousel.imgs[i].style.position='relative';
+        var span = document.createElement('span');
+        span.style.cssText='position:absolute;left:0;top:0';
+        span.innerHTML = i+1;
+        AM.DOM.append(Carousel.imgs[i], span);
+    }
+
+
+
+    /**
+     *  Создаем элемент <div></div> со списком, для указателей
+     */
+    var fragPlus = document.createDocumentFragment(), // Создаем фрагмент для добавления
+        divPlus = document.createElement('div'); // Создаем <div></div>
+    divPlus.id = "indicator";  // Назначаем id
+    divPlus.className = "indicator"; // Назначаем диву класс "indicator"
+    var ulPlus = document.createElement('ul'); // Создаем элемент <ul></ul>
+    ulPlus.id = "indicators";
+    // Проходим в цикле и создаем элементы <li></li>
+    (function(){
+        for( var i= 0, len = Carousel.imgs.length - Carousel.count + 1; i < len; i++ ) {
+            var liPlus = document.createElement('li'); // Создаем элемент <li></li>
+            liPlus.id = i;
+//            liPlus.textContent = '+'; // Добавляем текст между тегами
+            (function( num ) {
+                // Назначаем обработчик события по клику на каждый li
+                AM.Event.addEvent(liPlus, 'click', function(){
+                    handleScrollAnimate( num );
+                });
+            })( i );
+            fragPlus.appendChild(liPlus); // Добавляем созданные элементы <li></li> в фрагмент
+        }
+    })();
+    ulPlus.appendChild( fragPlus ); // Добавляем фрагмент к элементу <ul></ul>
+    divPlus.appendChild( ulPlus ); // Добавляем элемент <ul></ul> к элементу <div></div>
+    Carousel.carousel.parentNode.appendChild( divPlus );  // Добавляем к родительскому элементу <div></div>
+
+
+    Carousel.setSelectIndicator();
+
+
+    /**
+     *  Обработчик события при нажатии на указатели под изображениями
+     */
+    function handleScrollAnimate( num ) {
+        if( Carousel.timeIDIncr != 'null' ) {
+            clearTimeout( Carousel.timeIDIncr );
+            clearTimeout( Carousel.timeIDNext );
+        }
+        if( Carousel.timeIDDecr != 'null' ) {
+            clearTimeout( Carousel.timeIDDecr );
+            clearTimeout( Carousel.timeIDPrev );
+        }
+
+        var liCollection = AM.DOM.tag('li', AM.DOM.$('indicators') );
+        AM.DOM.removeClass( 'shown', liCollection );
+        AM.DOM.addClass( 'shown', liCollection[num] );
+        Carousel.setMarginLeft( - num * Carousel.width );
+
+        switch ( Carousel.direction ) {
+            case 1:
+                setTimeout(function(){
+                    animateNext();
+                }, 10 );
+                break;
+            case -1:
+                setTimeout(function(){
+                    animatePrev();
+                }, 10 );
+                break;
+        }
     }
 });
 </script>

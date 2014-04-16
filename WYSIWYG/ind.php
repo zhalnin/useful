@@ -20,9 +20,7 @@
     <script type="text/javascript" src="wysiwyg.js"></script>
     <script type="text/javascript">
         AM.Event.addEvent(window, 'load', function() {
-            AM.Event.addEvent(AM.DOM.$('bold'), 'focus', function() {
-               alert("iframe");
-            });
+
         });
 
     </script>
@@ -33,7 +31,7 @@
         }
     </style>
 </head>
-<body onload="init();">
+<body>
 
 
 
@@ -47,17 +45,17 @@
                     <table>
                         <tr>
                             <td class=""><span></span></td>
-                            <td><a href="#" id="bold" value="Жирный" class="editorBold" title="Жирный текст"><span class="editorIcon editorBold"></span></a></td>
-                            <td><a href="#" id="italic" value="Курсив" class="editorItalic" title="Наклонный текст"><span class="editorIcon editorItalic"></span></a></td>
-                            <td><a href="#" id="underline" value="Подчеркнутый" class="editorUnderline" title="Подчеркнутый текст"><span class="editorIcon editorUnderline"></span></a></td>
-                            <td><a href="#" id="strikethrough" value="Перечеркнутый" class="editorStrikethrough" title="Перечеркнутый текст"><span class="editorIcon editorStrikethrough"></span></a></td>
+                            <td><a href="#" id="bold" value="Жирный" class="editor_bold" title="Жирный текст"><span class="editorIcon editor_bold"></span></a></td>
+                            <td><a href="#" id="italic" value="Курсив" class="editor_italic" title="Наклонный текст"><span class="editorIcon editor_italic"></span></a></td>
+                            <td><a href="#" id="underline" value="Подчеркнутый" class="editor_underline" title="Подчеркнутый текст"><span class="editorIcon editor_underline"></span></a></td>
+                            <td><a href="#" id="strikethrough" value="Перечеркнутый" class="editor_strikethrough" title="Перечеркнутый текст"><span class="editorIcon editor_strikethrough"></span></a></td>
                             <td><a href="javascript:;" class="editorSpacer" ><span class="editorIcon editorSpacer"></span></a></td>
-                            <td><a href="#" id="justifyleft" value="Выровнять влево" class="editorJustifyleft" title="Выравнивание влево"><span class="editorIcon editorJustifyleft"></span></a></td>
-                            <td><a href="#" id="justifycenter" value="Выровнять по центру" class="editorJustifycenter" title="Выравнивание по центру"><span class="editorIcon editorJustifycenter"></span></a></td>
-                            <td><a href="#" id="justifyright" value="Выровнять вправо" class="editorJustifyright" title="Выравнивание вправо"><span class="editorIcon editorJustifyright"></span></a></td>
+                            <td><a href="#" id="justifyleft" value="Выровнять влево" class="editor_justifyleft" title="Выравнивание влево"><span class="editorIcon editor_justifyleft"></span></a></td>
+                            <td><a href="#" id="justifycenter" value="Выровнять по центру" class="editor_justifycenter" title="Выравнивание по центру"><span class="editorIcon editor_justifycenter"></span></a></td>
+                            <td><a href="#" id="justifyright" value="Выровнять вправо" class="editor_justifyright" title="Выравнивание вправо"><span class="editorIcon editor_justifyright"></span></a></td>
                             <td><a href="javascript:;" class="editorSpacer" ><span class="editorIcon editorSpacer"></span></a></td>
-                            <td><a href="#" id="image" value="Картинка" class="editorImage"><span class="editorIcon editorImage" title="Прикрепить изображение"></span></a></td>
-                            <td><a href="#" id="url" value="Ссылка" class="editorLink"><span class="editorIcon editorLink" title="Добавить ссылку"></span></a></td>
+                            <td><a href="#" id="image" value="Картинка" class="editor_image"><span class="editorIcon editor_image" title="Прикрепить изображение"></span></a></td>
+                            <td><a href="#" id="url" value="Ссылка" class="editor_link"><span class="editorIcon editor_link" title="Добавить ссылку"></span></a></td>
                             <td><a href="javascript:;" class="editorSpacer" ><span class="editorIcon editorSpacer"></span></a></td>
                             <td style="padding-right: 2px;" class=""></td>
                         </tr>

@@ -65,65 +65,65 @@ table, tr, tbody, tfoot, thead {
 .editorIcon {
     background: url("iconmaster.gif") no-repeat scroll 20px 20px rgba(0, 0, 0, 0);
 }
-.editorBold {
+.editor_bold {
     height: 21px;
     width: 23px;
 }
-span.editorBold {
+span.editor_bold {
     display: block;
     background-position: -48px -44px;
     height: 21px;
     width: 23px;
 }
-span.editorBold:hover {
+span.editor_bold:hover {
     display: block;
     background-position: -48px -65px;
     height: 21px;
     width: 23px;
 }
-.editorItalic {
+.editor_italic {
     height: 21px;
     width: 24px;
 }
-span.editorItalic {
+span.editor_italic {
     display: block;
     background-position: -24px -44px;
     height: 21px;
     width: 24px;
 }
-span.editorItalic:hover {
+span.editor_italic:hover {
     display: block;
     background-position: -24px -65px;
     height: 21px;
     width: 24px;
 }
-.editorUnderline {
+.editor_underline {
     height: 21px;
     width: 22px;
 }
-span.editorUnderline {
+span.editor_underline {
     display: block;
     background-position: -100px -92px;
     height: 21px;
     width: 22px;
 }
-span.editorUnderline:hover {
+span.editor_underline:hover {
     display: block;
     background-position: -122px -92px;
     height: 21px;
     width: 22px;
 }
-.editorStrikethrough {
+.editor_strikethrough {
     height: 21px;
     width: 24px;
 }
-span.editorStrikethrough {
+span.editor_strikethrough {
     display: block;
     background-position: 0 -44px;
     height: 21px;
     width: 24px;
 }
-span.editorStrikethrough:hover {
+span.editor_strikethrough:hover {
     display: block;
     background-position: 0 -65px;
     height: 21px;
@@ -139,81 +139,81 @@ span.editorSpacer {
     height: 21px;
     width: 24px;
 }
-.editorJustifyleft {
+.editor_justifyleft {
     height: 21px;
     width: 28px;
 }
-span.editorJustifyleft {
+span.editor_justifyleft {
     display: block;
     background-position: -315px 0;
     height: 21px;
     width: 28px;
 }
-span.editorJustifyleft:hover {
+span.editor_justifyleft:hover {
     display: block;
     background-position: -315px -21px;
     height: 21px;
     width: 28px;
 }
-.editorJustifycenter {
+.editor_justifycenter {
     height: 21px;
     width: 28px;
 }
-span.editorJustifycenter {
+span.editor_justifycenter {
     display: block;
     background-position: -343px 0;
     height: 21px;
     width: 28px;
 }
-span.editorJustifycenter:hover {
+span.editor_justifycenter:hover {
     display: block;
     background-position: -343px -21px;
     height: 21px;
     width: 28px;
 }
-.editorJustifyright {
+.editor_justifyright {
     height: 21px;
     width: 28px;
 }
-span.editorJustifyright {
+span.editor_justifyright {
     display: block;
     background-position: -371px 0;
     height: 21px;
     width: 28px;
 }
-span.editorJustifyright:hover {
+span.editor_justifyright:hover {
     display: block;
     background-position: -371px -21px;
     height: 21px;
     width: 28px;
 }
-.editorImage {
+.editor_image {
     height: 22px;
     width: 26px;
 }
-span.editorImage {
+span.editor_image {
     display: block;
     background-position: -477px 0;
     height: 22px;
     width: 26px;
 }
-span.editorImage:hover {
+span.editor_image:hover {
     display: block;
     background-position: -477px -22px;
     height: 22px;
     width: 26px;
 }
-.editorLink {
+.editor_link {
     height: 22px;
     width: 30px;
 }
-span.editorLink {
+span.editor_link {
     display: block;
     background-position: -27px 0;
     height: 22px;
     width: 30px;
 }
-span.editorLink:hover {
+span.editor_link:hover {
     display: block;
     background-position: -27px -22px;
     height: 22px;

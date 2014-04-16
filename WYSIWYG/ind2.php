@@ -20,7 +20,22 @@
     <script type="text/javascript" src="wysiwyg.js"></script>
     <script type="text/javascript">
         AM.Event.addEvent(window, 'load', function() {
+            AM.Event.addEvent(AM.DOM.$('bold'), 'click', function() {
+                doStyle('b');
+            });
+            AM.Event.addEvent(AM.DOM.$('italic'), 'click', function() {
+                doStyle('i');
+            });
+            AM.Event.addEvent(AM.DOM.$('underline'), 'click', function() {
+                doStyle('u');
+            });
 
+
+
+            function doStyle( stmt ) {
+                var obj = AM.DOM.$('text_editor');
+
+            }
         });
 
     </script>

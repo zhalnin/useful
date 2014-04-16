@@ -219,11 +219,21 @@ span.editor_link:hover {
     height: 22px;
     width: 30px;
 }
-.editorStatusbar a.editorResize {
-    background: url("icons_wysiwyg.gif") repeat scroll -800px 0 rgba(0, 0, 0, 0);
-    cursor: se-resize;
-    display: block;
-    float: right;
-    height: 20px;
-    width: 20px;
+/*.editorStatusbar a.editorResize {*/
+    /*background: url("icons_wysiwyg.gif") repeat scroll -800px 0 rgba(0, 0, 0, 0);*/
+    /*cursor: se-resize;*/
+    /*display: block;*/
+    /*float: right;*/
+    /*height: 20px;*/
+    /*width: 20px;*/
+/*}*/
+.editorTextarea {
+    border: none;
+    margin-bottom: -2px;
+    margin-top: 4px;
+    position: relative;
+    min-width: 400px;
+    min-height: 200px;
+    width: 500px;
+    height: 300px;
 }

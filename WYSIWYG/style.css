@@ -81,6 +81,12 @@ span.editor_bold:hover {
     height: 21px;
     width: 23px;
 }
+span.editor_bold.active {
+    display: block;
+    background-position: -48px -65px;
+    height: 21px;
+    width: 23px;
+}
 .editor_italic {
     height: 21px;
     width: 24px;
@@ -92,6 +98,12 @@ span.editor_italic {
     width: 24px;
 }
 span.editor_italic:hover {
+    display: block;
+    background-position: -24px -65px;
+    height: 21px;
+    width: 24px;
+}
+span.editor_italic.active {
     display: block;
     background-position: -24px -65px;
     height: 21px;
@@ -113,6 +125,12 @@ span.editor_underline:hover {
     height: 21px;
     width: 22px;
 }
+span.editor_underline.active {
+    display: block;
+    background-position: -122px -92px;
+    height: 21px;
+    width: 22px;
+}
 .editor_strikethrough {
     height: 21px;
     width: 24px;
@@ -124,6 +142,12 @@ span.editor_strikethrough {
     width: 24px;
 }
 span.editor_strikethrough:hover {
+    display: block;
+    background-position: 0 -65px;
+    height: 21px;
+    width: 24px;
+}
+span.editor_strikethrough.active {
     display: block;
     background-position: 0 -65px;
     height: 21px;
@@ -155,6 +179,12 @@ span.editor_justifyleft:hover {
     height: 21px;
     width: 28px;
 }
+span.editor_justifyleft.active {
+    display: block;
+    background-position: -315px -21px;
+    height: 21px;
+    width: 28px;
+}
 .editor_justifycenter {
     height: 21px;
     width: 28px;
@@ -171,6 +201,12 @@ span.editor_justifycenter:hover {
     height: 21px;
     width: 28px;
 }
+span.editor_justifycenter.active {
+    display: block;
+    background-position: -343px -21px;
+    height: 21px;
+    width: 28px;
+}
 .editor_justifyright {
     height: 21px;
     width: 28px;
@@ -182,6 +218,12 @@ span.editor_justifyright {
     width: 28px;
 }
 span.editor_justifyright:hover {
+    display: block;
+    background-position: -371px -21px;
+    height: 21px;
+    width: 28px;
+}
+span.editor_justifyright.active {
     display: block;
     background-position: -371px -21px;
     height: 21px;
@@ -214,6 +256,12 @@ span.editor_link {
     width: 30px;
 }
 span.editor_link:hover {
+    display: block;
+    background-position: -27px -22px;
+    height: 22px;
+    width: 30px;
+}
+span.editor_link.active {
     display: block;
     background-position: -27px -22px;
     height: 22px;

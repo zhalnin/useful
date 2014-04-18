@@ -1,0 +1,34 @@
+/* 
+  Wallpaper.strings
+  Convergance
+
+  Created by Matt Clarke on 21/01/2014.
+
+  Translated by Aleksei Zhalnin.
+
+*/
+
+"Text" = "Текст";
+"Override Convergance's brightness detection of your wallpaper." = "Переопределять яркость обоев, заданную в Convergance.";
+"Translucency" = "Полупрозрачность";
+"Override colour" = "Переопределять цвет";
+"Colour" = "Цвет";
+"Light" = "Светлый";
+"Dark" = "Тёмный";
+"Notifications" = "Уведомления";
+"Use the custom notification icons provided by the current Convergance theme." = "Использовать иконки уведомления, выбранной темы Convergance.";
+"Show dismiss button" = "Показывать кнопку отклонить";
+"Square icons" = "Квадратные иконки";
+"Custom icons" = "Обычные иконки";
+"Miscellaneous" = "Смешанные";
+"Lockscreen dim delay" = "Задержка затемнения экрана блокировки";
+"10 seconds" = "10 секунд";
+"15 seconds" = "15 секунд";
+"20 seconds" = "20 секунд";
+"30 seconds" = "30 секунд";
+"40 seconds" = "40 секунд";
+"50 seconds" = "50 секунд";
+"1 minute" = "1 минута";
+"Disable charging bar" = "Не показывать заряд аккумулятора";
+"Some devices may have issues with animations. This option disables CPU intensive effects for a smoother experience." = "На некоторых устройствах могут быть проблемы с анимацией. Эта опция отключает ресурсоемкие эффекты для более плавной работы.";
+"Disable intensive effects" = "Отключить ресурсоемкие эффекты";

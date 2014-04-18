@@ -18,17 +18,7 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <script type="text/javascript" src="../AlezhalModules.js" ></script>
     <script type="text/javascript" src="wysiwyg.js"></script>
-    <script type="text/javascript">
-//        AM.Event.addEvent(window, 'load', function() {
-//            document.getElementById('iframe_redactor').contentWindow.document.designMode = 'On';
-//        });
-//
-//        function addTextToBase2() {
-//            var msg = document.getElementById('showmsg');
-//            msg.innerHTML = document.getElementById('iframe_redactor').contentWindow.document.body.innerHTML ;
-//            document.body.appendChild(document.getElementById('iframe_redactor').contentWindow.document.body.innerHTML );
-//        }
-    </script>
+
     <style>
         .mainIFrame {
             width: 50%;
@@ -48,12 +38,12 @@
             <tr class="editorFirst">
                 <td style="height: 28px; bottom: 0;" class="editorToolbar">
                     <table>
-                        <tr>
+                        <tr id="editorTR">
                             <td class=""><span></span></td>
-                            <td><a href="#" id="bold" value="Жирный" class="editor_bold" title="Жирный текст"><span class="editorIcon editor_bold"></span></a></td>
-                            <td><a href="#" id="italic" value="Курсив" class="editor_italic" title="Наклонный текст"><span class="editorIcon editor_italic"></span></a></td>
-                            <td><a href="#" id="underline" value="Подчеркнутый" class="editor_underline" title="Подчеркнутый текст"><span class="editorIcon editor_underline"></span></a></td>
-                            <td><a href="#" id="strikethrough" value="Перечеркнутый" class="editor_strikethrough" title="Перечеркнутый текст"><span class="editorIcon editor_strikethrough"></span></a></td>
+                            <td><a href="#" onclick="doStyle('bold')" id="bold" value="Жирный" class="editor_bold" title="Жирный текст"><span id="bold" class="editorIcon editor_bold"></span></a></td>
+                            <td><a href="#" onclick="doStyle('italic')" id="italic" value="Курсив" class="editor_italic" title="Наклонный текст"><span id="italic" class="editorIcon editor_italic"></span></a></td>
+                            <td><a href="#" onclick="doStyle('underline')" id="underline" value="Подчеркнутый" class="editor_underline" title="Подчеркнутый текст"><span id="underline" class="editorIcon editor_underline"></span></a></td>
+                            <td><a href="#" onclick="doStyle('strikethrough')" id="strikethrough" value="Перечеркнутый" class="editor_strikethrough" title="Перечеркнутый текст"><span id="strikethrough" class="editorIcon editor_strikethrough"></span></a></td>
                             <td><a href="javascript:;" class="editorSpacer" ><span class="editorIcon editorSpacer"></span></a></td>
                             <td><a href="#" id="justifyleft" value="Выровнять влево" class="editor_justifyleft" title="Выравнивание влево"><span class="editorIcon editor_justifyleft"></span></a></td>
                             <td><a href="#" id="justifycenter" value="Выровнять по центру" class="editor_justifycenter" title="Выравнивание по центру"><span class="editorIcon editor_justifycenter"></span></a></td>
@@ -62,13 +52,13 @@
                             <td><a href="#" id="image" value="Картинка" class="editor_image"><span class="editorIcon editor_image" title="Прикрепить изображение"></span></a></td>
                             <td><a href="#" id="url" value="Ссылка" class="editor_link"><span class="editorIcon editor_link" title="Добавить ссылку"></span></a></td>
                             <td><a href="javascript:;" class="editorSpacer" ><span class="editorIcon editorSpacer"></span></a></td>
-                            <td style="padding-right: 2px;" class=""></td>
+                            <td style="padding-right: 2px;" class=""><span></span></td>
                         </tr>
                     </table>
                 </td>
             </tr>
             <tr class="editorIFrame">
-                <td class="">
+                <td class="" id="iframe_td">
                     <iframe id="iframe_redactor" name="iframe_redactor" style="width: 100%; height: 264px; position: relative;" ></iframe>
                 </td>
             </tr>

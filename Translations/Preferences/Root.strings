@@ -1,0 +1,27 @@
+/* 
+  Root.strings
+  Convergance
+
+  Created by Matt Clarke on 21/01/2014.
+
+  Translated by Aleksei Zhalnin.
+
+
+*/
+
+"Enabled" = "Включен";
+"Theming" = "Темы оформления";
+"Theme" = "Тема";
+"Thin Fonts" = "Тонкие Шрифты";
+"Interface" = "Интерфейс";
+"Background" = "Фон";
+"Widgets" = "Виджеты";
+"Toggles" = "Переключатели";
+"Battery Percent" = "Заряд В Процентах";
+"Album Artwork" = "Обложка Альбома";
+"Fullscreen" = "Полноэкранный";
+"Medium" = "Средний";
+"Mini" = "Мини";
+"Advanced" = "Расширенный";
+"Support" = "Поддержка";
+"Legal" = "Законный";

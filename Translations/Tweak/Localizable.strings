@@ -1,0 +1,29 @@
+/* 
+  File.strings
+  Convergance
+
+  Created by Matt Clarke on 21/01/2014.
+
+  Translated by Aleksei Zhalnin.
+
+*/
+
+"Dismiss" = "Отклонить";
+"Snooze" = "Отложить";
+"tap to reply" = "нажать, чтобы ответить";
+"tap to call" = "нажать, чтобы позвонить";
+"tap to open" = "нажать, чтобы открыть";
+"Just now" = "Сейчас";
+"%d seconds" = "%d секунды";
+"1 minute" = "1 минута";
+"%d minutes" = "%d минут";
+"1 hour" = "1 час";
+"2 hours" = "2 часа";
+"Done" = "Готово";
+"emergency" = "экстренный";
+"No music playing" = "Не проигрывать музыку";
+"Passcode required" = "Требуется код доступа";
+"Passcode required due to too many attempts" = "Требуется код доступа из-за слишком большого числа неправильных попыток ввода";
+"Passcode required due to expired fingerprint" = "Требуется код доступа из-за истекшего срока действия отпечатка пальца";
+"Touch ID requires your passcode when iPhone restarts" = "Touch ID требует ввода кода доступа после перезагрузки iPhone";
+"guest" = "гость";

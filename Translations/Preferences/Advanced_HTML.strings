@@ -1,0 +1,16 @@
+/* 
+  Wallpaper.strings
+  Convergance
+
+  Created by Matt Clarke on 21/01/2014.
+
+  Translated by Aleksei Zhalnin.
+
+*/
+
+"Ensures that the HTML lockscreen will remain in the center &apos; page &apos; of Convergance." = "Гарантирует, что HTML экран блокировки будет расположен в центре &apos; страницы &apos; Convergance.";
+"Act as widget" = "Работает как виджет";
+"Music controls will still be displayed after tapping the Home button." = "Управление музыкой будет видимым после нажатия кнопки Home.";
+"Hide lockscreen clock" = "Спрятать часы на экране блокировки";
+"Fades out the HTML lockscreen underneath notifications, and also music controls." = "Медленное исчезание HTML экрана блокировки под уведомления и также под управление музыкой.";
+"Fade under notifications" = "Медленное исчезание под уведомления";

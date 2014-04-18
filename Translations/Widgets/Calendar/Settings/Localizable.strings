@@ -1,0 +1,20 @@
+/* 
+  File.strings
+  Convergance
+
+  Created by Matt Clarke on 21/01/2014.
+
+  Translated by Aleksei Zhalnin.
+
+*/
+
+"Calendar" = "Календарь";
+"Show calendar colours" = "Показать календарные цвета";
+"Days displayed" = "Отображаемые дни";
+"One" = "Один";
+"Two" = "Два";
+"Three" = "Три";
+"Four" = "Четыре";
+"Five" = "Пять";
+"Six" = "Шесть";
+"Seven" = "Семь";

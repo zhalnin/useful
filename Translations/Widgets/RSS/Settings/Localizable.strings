@@ -1,0 +1,19 @@
+/* 
+  File.strings
+  Convergance
+
+  Created by Matt Clarke on 21/01/2014.
+
+  Translated by Aleksei Zhalnin.
+
+*/
+
+"RSS" = "RSS";
+"%d feeds" = "%d каналов";
+"New feed" = "Новый канал";
+"Refresh rate" = "Частота обновления";
+"10 minutes" = "10 минут";
+"20 minutes" = "20 минут";
+"30 minutes" = "30 минут";
+"1 hour" = "1 час";
+"2 hours" = "2 часа";

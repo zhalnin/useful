@@ -37,7 +37,16 @@ var editor_bb = {
 	},
 	im:function(event) {
 		editor_bb.dump=editor_bb.add();
-		var ins_html = '<div class="ed_inp_div_img_0">Изображение</div><div class="ed_inp_div_img">URL картинки: <input class="ed_inp_div_img_i1" id="editor_user_img" type="text" value="http://" /><br />Описание: <input class="ed_inp_div_img_i1" id="editor_user_img_alt" type="text" value="" /><br /><input class="ed_inp_div_img_i2" type="button" value="Добавить" onclick="editor_bb.from_dump_img();" /><br /><br />или воспульзуйтесь <span class="ed_inp_span_img" onclick="editor_bb.from_dump_startload();">загрузкой</span></div>';
+		var ins_html = '<div class="ed_inp_div_img_0">Изображение</div>' +
+            '<div class="ed_inp_div_img">URL картинки: ' +
+            '<input class="ed_inp_div_img_i1" id="editor_user_img" type="text" value="http://" />' +
+            '<br />Описание: ' +
+            '<input class="ed_inp_div_img_i1" id="editor_user_img_alt" type="text" value="" />' +
+            '<br />' +
+            '<input class="ed_inp_div_img_i2" type="button" value="Добавить" onclick="editor_bb.from_dump_img();" />' +
+            '<br /><br />или воспользуйтесь ' +
+            '<span class="ed_inp_span_img" onclick="editor_bb.from_dump_startload();">загрузкой</span>' +
+            '</div>';
 		show_preview_dialog(ins_html);
 	},
 	v:function(event) {
@@ -51,7 +60,18 @@ var editor_bb = {
 		show_preview_dialog(ins_html);
 	},
 	f_x1:function(event) {
-		var ins_html = '<div class="ed_inp_div_file_0">Добавить файл</div><div class="ed_inp_div_file"><form id="editor_upload_file" onsubmit="" enctype="multipart/form-data" method="post"><input class="ed_inp_div_file_i1" type="file" id="editor_user_file" name="e_upload_file"></form><br />Заголовок: <input class="ed_inp_div_file_i1" id="editor_user_file_alt" type="text" value="" /><br /><div id="e_file_but"><input class="ed_inp_div_file_i2" type="button" value="Добавить" onclick="editor_bb.from_dump_file();" /></div></div>';
+		var ins_html = '<div class="ed_inp_div_file_0">Добавить файл' +
+            '</div>' +
+            '<div class="ed_inp_div_file">' +
+            '<form id="editor_upload_file" onsubmit="" enctype="multipart/form-data" method="post">' +
+            '<input class="ed_inp_div_file_i1" type="file" id="editor_user_file" name="e_upload_file">' +
+            '</form>' +
+            '<br />Заголовок: ' +
+            '<input class="ed_inp_div_file_i1" id="editor_user_file_alt" type="text" value="" />' +
+            '<br />' +
+            '<div id="e_file_but">' +
+            '<input class="ed_inp_div_file_i2" type="button" value="Добавить" onclick="editor_bb.from_dump_file();" />' +
+            '</div></div>';
 		show_preview_dialog(ins_html);
 	},
 	ff:function(event) {

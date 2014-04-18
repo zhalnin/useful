@@ -19,10 +19,15 @@
     <script type="text/javascript" src="../AlezhalModules.js" ></script>
     <script type="text/javascript" src="wysiwyg.js"></script>
     <script type="text/javascript">
-        AM.Event.addEvent(window, 'load', function() {
-
-        });
-
+//        AM.Event.addEvent(window, 'load', function() {
+//            document.getElementById('iframe_redactor').contentWindow.document.designMode = 'On';
+//        });
+//
+//        function addTextToBase2() {
+//            var msg = document.getElementById('showmsg');
+//            msg.innerHTML = document.getElementById('iframe_redactor').contentWindow.document.body.innerHTML ;
+//            document.body.appendChild(document.getElementById('iframe_redactor').contentWindow.document.body.innerHTML );
+//        }
     </script>
     <style>
         .mainIFrame {
@@ -64,7 +69,7 @@
             </tr>
             <tr class="editorIFrame">
                 <td class="">
-                    <iframe id="iframe_redactor" style="width: 100%; height: 264px; position: relative;" ></iframe>
+                    <iframe id="iframe_redactor" name="iframe_redactor" style="width: 100%; height: 264px; position: relative;" ></iframe>
                 </td>
             </tr>
             <tr class="editorLast">
@@ -73,7 +78,7 @@
         </table>
     </span>
 
-    <div><input type="button" value="Пердпросмотр" onclick="addTextToBase()"></div>
+    <div><input type="button" value="Пердпросмотр" onclick="addTextToBase2()"></div>
     <p id="showmsg"></p>
 </div>
 

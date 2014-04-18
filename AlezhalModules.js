@@ -432,6 +432,8 @@ var AM = {
          * @param stopIndex - конечная позиция
          */
         selectText: function(textbox, startIndex, stopIndex) {
+            console.log(startIndex);
+            console.log(stopIndex);
             if(textbox.setSelectionRange) {
                 textbox.setSelectionRange(startIndex, stopIndex);
             } else if(textbox.createTextRange) {
@@ -444,9 +446,20 @@ var AM = {
             textbox.focus();
         },
         /**
+         * Флаг установленного открытого тега, пример:
+         * [b] - выставляем true, значит повторное нажатие
+         * после проверки выставит [/b] и вернет тегу значение false
+         */
+        tagStatus: false,
+        tagStr: '',
+        /**
          * Добавялем к выделенному элементу два тега,
          * один перед выделение и второй после выделения
          * затем вызываем selectTxt() для создания выделения нужному выделению
+         *
+         * Либо добавление открытого тега - пользовательский ввод и
+         * при повторном нажатии добавление закрытого тега
+         *
          * @param obj - обычно textarea
          * @param str1 - начальный тег
          * @param str2 - конечный тег
@@ -462,73 +475,203 @@ var AM = {
                     endLen,
                     allLen,
                     subLen,
-                    ar;
-//                AM.DOM.consoleLog(obj);
-//                AM.DOM.pageLog("start");
+                    ar,
+                    trail=0;
+                /**
+                 * Если IE
+                 */
                 if(document.selection) {
-
                     // Сохраняем выделенный текст
                     aim = document.selection.createRange();
 
                     //
                     // Здесь возможно вместо aim.text надо будет использовать просто aim
+                    // надо тестировать в IE
                     //
-                    // Сохраняем текст из позиции 0 до начала выделения
-                    start = obj.value.substring(0, aim.text);
-                    // Сохраняем текст от конца выделения до конца
-                    end = obj.value.substring(aim.text);
-                    // Начальная позиция выделенного текста
-                    // - это длина текста до начала выделения + длина открывающего тега
-                    startLen = start.length + str1.length;
-                    // Длина текста от конца выделения до конца строки
-                    endLen = end.length;
-                    // Длина всего текста
-                    allLen = obj.value.length;
-                    // Конечная позиция выделенного текста
-                    // - это длина текста от конца выделения до конца строки + длина закрывающего тега
-                    subLen = allLen - endLen + str2.length - 1;
-                    // Добавляем startLen и subLen к массиву
-                    ar = [startLen, subLen];
+                    // aim.length > 0 - это тоже не тестировано
+                    //
+
+                    // - ?
+                    if(  aim.text.length > 0  ) {
+                        // Сохраняем текст из позиции 0 до начала выделения
+                        start = obj.value.substring(0, aim.text);
+                        // Сохраняем текст от конца выделения до конца
+                        end = obj.value.substring(aim.text);
+                        // Начальная позиция выделенного текста
+                        // - это длина текста до начала выделения + длина открывающего тега
+                        startLen = start.length + str1.length;
+                        // Длина текста от конца выделения до конца строки
+                        endLen = end.length;
+                        // Длина всего текста
+                        allLen = obj.value.length;
+                        // Конечная позиция выделенного текста
+                        // - это длина текста от конца выделения до конца строки + длина закрывающего тега
+                        subLen = allLen - endLen + str2.length - 1;
+                        // Добавляем startLen и subLen к массиву
+                        ar = [startLen, subLen];
 
 
-                    // К найденной фразе добавляем спереди и сзади теги
-                    aim.text = str1+aim.text+str2;
+                        // К найденной фразе добавляем спереди и сзади теги
+                        aim.text = str1+aim.text+str2;
 
-                    // Вызываем функцию для создания выделения после добавления тегов
-                    AM.DOM.selectText(obj,ar[0],ar[1]);
+                        // Вызываем функцию для создания выделения после добавления тегов
+                        AM.DOM.selectText(obj,ar[0],ar[1]);
+                    // - ?
+                    } else {
+                        // Сохраняем текст из позиции 0 до начала выделения
+                        start = obj.value.substring(0, aim.text);
+                        // Сохраняем текст от конца выделения до конца
+                        end = obj.value.substring(aim.text);
+                        // Начальная позиция выделенного текста
+                        // - это длина текста до начала выделения + длина открывающего тега
+                        startLen = start.length + str1.length;
+                        // Длина текста от конца выделения до конца строки
+                        endLen = end.length;
+                        // Длина всего текста
+                        allLen = obj.value.length;
+                        // Конечная позиция выделенного текста
+                        // - это длина текста от конца выделения до конца строки + длина закрывающего тега
+                        subLen = allLen - endLen + str2.length - 1;
+                        // Добавляем startLen и subLen к массиву
+                        ar = [startLen, subLen];
 
-                } else if(document.getSelection) {
+                        // - ?
+                        if( this.tagStatus === false ) {
+                            // Добавляем startLen и subLen к массиву
+                            ar = [startLen, subLen];
+                            // К найденной фразе добавляем спереди и сзади теги
+                            aim.text = str1+aim.text+str2;
+                            // Вызываем функцию для создания выделения после добавления тегов
+                            AM.DOM.selectText(obj,ar[0],ar[1]);
+                            this.tagStatus = true;
+                        // - ?
+                        } else if( this.tagStatus === true ) {
+                            // - ?
+                            if( this.tagStr.substr(-2, 1) !== str2.substr(-2, 1) ) {
+                                str2 = '[/' + this.tagStr.substr(-2, 1) + ']';
+                            }
+                            // - ?
+                            // Если есть открытый тег и есть выделение
+                            if( aim.text.length > 0 ) {
+                                // Длина выделения
+                                trail = aim.text.length;
+                            }
+                            // Добавляем startLen и subLen к массиву
+                            ar = [startLen, subLen];
+                            // К найденной фразе добавляем спереди и сзади теги
+                            aim.text = str1+aim.text+str2;
+                            // Вызываем функцию для создания выделения после добавления тегов
+                            AM.DOM.selectText(obj,ar[0]+1+trail,ar[1]+1+trail);
+                            this.tagStatus = false;
+                        }
+                    }
 
-                    // Сохраняем текст из позиции 0 до начала выделения
-                    start = obj.value.substring(0, obj.selectionStart);
-                    // Сохраняем выделенный текст
-                    aim = obj.value.substring(obj.selectionStart, obj.selectionEnd);
-                    // Сохраняем текст от конца выделения до конца
-                    end = obj.value.substring(obj.selectionEnd);
+                /**
+                 * Если не IE
+                 */
+                } else if( document.getSelection ) {
+                    // Если начальная позиция равно конечной ( 0 !== 0 ) - текст выделен
+                    // и нет открытого тега this.tagStatus === true
+                    if( ( obj.selectionStart !== obj.selectionEnd ) && ( this.tagStatus === false ) ) {
+                        // Сохраняем текст из позиции 0 до начала выделения
+                        start = obj.value.substring(0, obj.selectionStart);
+                        // Сохраняем выделенный текст
+                        aim = obj.value.substring(obj.selectionStart, obj.selectionEnd);
+                        // Сохраняем текст от конца выделения до конца
+                        end = obj.value.substring(obj.selectionEnd);
 
-                    // Начальная позиция выделенного текста
-                    // - это длина текста до начала выделения + длина открывающего тега
-                    startLen = start.length + str1.length;
-                    // Длина текста от конца выделения до конца строки
-                    endLen = end.length;
-                    // Длина всего текста
-                    allLen = obj.value.length;
-                    // Конечная позиция выделенного текста
-                    // - это длина текста от конца выделения до конца строки + длина закрывающего тега
-                    subLen = allLen - endLen + str2.length - 1;
+                        // Начальная позиция выделенного текста
+                        // - это длина текста до начала выделения + длина открывающего тега
+                        startLen = start.length + str1.length;
+                        // Длина текста от конца выделения до конца строки
+                        endLen = end.length;
+                        // Длина всего текста
+                        allLen = obj.value.length;
+                        // Конечная позиция выделенного текста
+                        // - это длина текста от конца выделения до конца строки + длина закрывающего тега
+                        subLen = allLen - endLen + str2.length - 1;
 
-                    // Добавляем startLen и subLen к массиву
-                    ar = [startLen, subLen];
+                        // Добавляем startLen и subLen к массиву
+                        ar = [startLen, subLen];
 
 
-                    // К найденной фразе добавляем начало строки до выделения спереди, начальный тег
-                    // затем само выделение конечный тег и окончание строки после выделения
-                    res = start+str1+aim+str2+end;
-                    // Возвращаем результат обратно в элемент
-                    obj.value = res;
+                        // К найденной фразе добавляем начало строки до выделения спереди, начальный тег
+                        // затем само выделение конечный тег и окончание строки после выделения
+                        res = start+str1+aim+str2+end;
+                        // Возвращаем результат обратно в элемент
+                        obj.value = res;
 
-                    // Вызываем функцию для создания выделения после добавления тегов
-                    AM.DOM.selectText(obj,ar[0],ar[1]);
+                        // Вызываем функцию для создания выделения после добавления тегов
+                        AM.DOM.selectText(obj,ar[0],ar[1]);
+                    // Если начальная позиция равно конечной ( 0 === 0 ) - текст не выделен
+                    } else {
+                        // Сохраняем текст из позиции 0 до начала выделения
+                        start = obj.value.substring(0, obj.selectionStart);
+                        // Сохраняем выделенный текст
+                        aim = obj.value.substring(obj.selectionStart, obj.selectionEnd);
+                        // Сохраняем текст от конца выделения до конца
+                        end = obj.value.substring(obj.selectionEnd);
+                        // Начальная позиция выделенного текста
+                        // - это длина текста до начала выделения + длина открывающего тега
+                        startLen = start.length + str1.length;
+                        // Длина текста от конца выделения до конца строки
+                        endLen = end.length;
+                        // Длина всего текста
+                        allLen = obj.value.length;
+                        // Конечная позиция выделенного текста
+                        // - это длина текста от конца выделения до конца строки + длина закрывающего тега
+                        subLen = allLen - endLen + str2.length - 1;
+                        // Добавляем startLen и subLen к массиву
+                        ar = [startLen, subLen];
+                        // Флаг false - открывающего тега не было
+                        if( this.tagStatus === false ) {
+                            this.tagStr = str1;
+                            // К найденной фразе добавляем начало строки до выделения спереди, начальный тег
+                            // затем само выделение конечный тег и окончание строки после выделения
+                            res = start+str1+aim+end;
+                            // Возвращаем результат обратно в элемент
+                            obj.value = res;
+                            // Вызываем функцию для создания выделения после добавления тегов
+                            AM.DOM.selectText(obj,ar[0],ar[1]);
+                            this.tagStatus = true;
+                        // Флаг true - открывающий тег был выставлен
+                        } else if( this.tagStatus === true ) {
+                            // Если открытый тег не совпадает с закрывающим, то меняем его
+                            if( this.tagStr.match(/[a-z]+/i) !== str2.match(/[a-z]+/i) ) {
+                                str2 = '[/' + this.tagStr.match(/[a-z]+/i) + ']';
+
+//                                startLen = start.length + str1.length;
+//                                // Длина текста от конца выделения до конца строки
+//                                endLen = end.length;
+//                                // Длина всего текста
+//                                allLen = obj.value.length;
+                                // Конечная позиция выделенного текста
+                                // - это длина текста от конца выделения до конца строки + длина закрывающего тега
+                                subLen = allLen - endLen + str2.length - 1;
+                                // Добавляем startLen и subLen к массиву
+                                ar = [startLen, subLen];
+
+
+                            }
+                                // Если есть открытый тег и есть выделение
+                                if( aim.length > 0 ) {
+                                    // Длина выделения
+                                    trail = aim.length;
+                                }
+                                // К найденной фразе добавляем начало строки до выделения спереди, начальный тег
+                                // затем само выделение конечный тег и окончание строки после выделения
+                                res = start+aim+str2+end;
+                                // Возвращаем результат обратно в элемент
+                                obj.value = res;
+//                            console.log(str1.length);
+//                            console.log(str2.length);
+                                // Вызываем функцию для создания выделения после добавления тегов,
+                                // добавляем по единице, чтобы курсор переместился в конец выделения
+                                AM.DOM.selectText(obj,ar[0]+1+trail,ar[1]+1+trail);
+                                this.tagStatus = false;
+
+                        }
+                    }
 
                 } else {
                     alert('no');

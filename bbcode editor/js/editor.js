@@ -391,7 +391,7 @@ var editor_bb = {
 			if(obj.selectionStart != obj.selectionEnd) {
 				var start = obj.selectionStart;
 				var end = obj.selectionEnd;
-				s = obj.value.substr(start,end-start);
+                s = obj.value.substr(start,end-start);
 				if(str=='') {
 					return {start_d:start,end_d:end,s_d:s};
 				}

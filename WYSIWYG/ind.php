@@ -45,9 +45,9 @@
                             <td><a href="#" onclick="doStyle('underline')" id="underline" value="Подчеркнутый" class="editor_underline" title="Подчеркнутый текст"><span id="underline" class="editorIcon editor_underline"></span></a></td>
                             <td><a href="#" onclick="doStyle('strikethrough')" id="strikethrough" value="Перечеркнутый" class="editor_strikethrough" title="Перечеркнутый текст"><span id="strikethrough" class="editorIcon editor_strikethrough"></span></a></td>
                             <td><a href="javascript:;" class="editorSpacer" ><span class="editorIcon editorSpacer"></span></a></td>
-                            <td><a href="#" id="justifyleft" value="Выровнять влево" class="editor_justifyleft" title="Выравнивание влево"><span class="editorIcon editor_justifyleft"></span></a></td>
-                            <td><a href="#" id="justifycenter" value="Выровнять по центру" class="editor_justifycenter" title="Выравнивание по центру"><span class="editorIcon editor_justifycenter"></span></a></td>
-                            <td><a href="#" id="justifyright" value="Выровнять вправо" class="editor_justifyright" title="Выравнивание вправо"><span class="editorIcon editor_justifyright"></span></a></td>
+                            <td><a href="#" onclick="doStyle('JustifyLeft')"  id="justifyleft" value="Выровнять влево" class="editor_justifyleft" title="Выравнивание влево"><span class="editorIcon editor_justifyleft"></span></a></td>
+                            <td><a href="#" onclick="doStyle('JustifyCenter')"  id="justifycenter" value="Выровнять по центру" class="editor_justifycenter" title="Выравнивание по центру"><span class="editorIcon editor_justifycenter"></span></a></td>
+                            <td><a href="#" onclick="doStyle('JustifyRight')"  id="justifyright" value="Выровнять вправо" class="editor_justifyright" title="Выравнивание вправо"><span class="editorIcon editor_justifyright"></span></a></td>
                             <td><a href="javascript:;" class="editorSpacer" ><span class="editorIcon editorSpacer"></span></a></td>
                             <td><a href="#" id="image" value="Картинка" class="editor_image"><span class="editorIcon editor_image" title="Прикрепить изображение"></span></a></td>
                             <td><a href="#" id="url" value="Ссылка" class="editor_link"><span class="editorIcon editor_link" title="Добавить ссылку"></span></a></td>

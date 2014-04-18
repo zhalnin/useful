@@ -18,6 +18,7 @@ table, tr, tbody, tfoot, thead {
     background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
     display: block;
     position: relative;
+    word-wrap: break-word;
 }
 .editorSpan table td {
     vertical-align: middle;

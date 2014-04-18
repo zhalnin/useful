@@ -26,13 +26,14 @@ AM.Event.addEvent(window, 'load', function() {
         activeStatus = {},
         editorTR = AM.DOM.$('editorTR'),
         editorTD = AM.DOM.tag('td', editorTR),
+        arrayTag = ['bold','italic','underline','strikethrough'],
         i, len;
 
     doc.designMode = "On";
 
     for( i = 0, len = editorTD.length; i < len; i++ ) {
         if( AM.DOM.first(editorTD[i]).tagName == 'A' ) {
-            activeStatus[i] = false;
+            activeStatus[i] = '';
             (function(num){
                 /**
                  * Меняем статус кнопки в редакторе: <span class='acitve'>
@@ -41,13 +42,19 @@ AM.Event.addEvent(window, 'load', function() {
                  */
                 AM.Event.addEvent( AM.DOM.first(editorTD[num]), 'click', function( event ) {
                     var target = AM.Event.getTarget( event );
-                    if( activeStatus[num] == false ) {
-                        AM.DOM.addClass( 'active', target );
-                        activeStatus[num] = true;
-                        theIframe.focus();
-                    } else if( activeStatus[num] == true ) {
-                        AM.DOM.removeClass( 'active', target);
-                        activeStatus[num] = false;
+                    for(var j=0, lenj=arrayTag.length; j < lenj; j++ ) {
+                        // Проверяем, чтобы теги были из тех, которые должны "залипать" в редакторе
+                        if( target.id === arrayTag[j] ) {
+                            if( activeStatus[num] == '' ) {
+                                AM.DOM.addClass( 'active', target );
+                                activeStatus[num] = target.id;
+                                theIframe.focus();
+                            } else if( activeStatus[num] != '' ) {
+                                AM.DOM.removeClass( 'active', target);
+                                activeStatus[num] = '';
+                                theIframe.focus();
+                            }
+                        }
                         theIframe.focus();
                     }
                 });

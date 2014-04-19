@@ -34,7 +34,7 @@
 
 <div class="mainIFrame">
     <span class="editorSpan">
-        <table id="wysiwyg_toolbar" cellspacing="0" cellpadding="0" style="height: 300px;" class="editorMain" >
+        <table id="wysiwyg_toolbar" cellspacing="0" cellpadding="0" style="height: 300px; width: 700px;" class="editorMain" >
             <tr class="editorFirst">
                 <td style="height: 28px; bottom: 0;" class="editorToolbar">
                     <table>
@@ -49,8 +49,8 @@
                             <td><a href="#" onclick="doStyle('JustifyCenter')"  id="justifycenter" value="Выровнять по центру" class="editor_justifycenter" title="Выравнивание по центру"><span class="editorIcon editor_justifycenter"></span></a></td>
                             <td><a href="#" onclick="doStyle('JustifyRight')"  id="justifyright" value="Выровнять вправо" class="editor_justifyright" title="Выравнивание вправо"><span class="editorIcon editor_justifyright"></span></a></td>
                             <td><a href="javascript:;" class="editorSpacer" ><span class="editorIcon editorSpacer"></span></a></td>
-                            <td><a href="#" id="image" value="Картинка" class="editor_image"><span class="editorIcon editor_image" title="Прикрепить изображение"></span></a></td>
-                            <td><a href="#" id="url" value="Ссылка" class="editor_link"><span class="editorIcon editor_link" title="Добавить ссылку"></span></a></td>
+                            <td><a href="#" onclick="doImg()" id="image" value="Картинка" class="editor_image"><span class="editorIcon editor_image" title="Прикрепить изображение"></span></a></td>
+                            <td><a href="#" onclick="doURL()" id="url" value="Ссылка" class="editor_link"><span class="editorIcon editor_link" title="Добавить ссылку"></span></a></td>
                             <td><a href="javascript:;" class="editorSpacer" ><span class="editorIcon editorSpacer"></span></a></td>
                             <td style="padding-right: 2px;" class=""><span></span></td>
                         </tr>
@@ -63,7 +63,7 @@
                 </td>
             </tr>
             <tr class="editorLast">
-                <td class="editorStatusbar"><a href="javascript:;" class="editorResize" ><span class="editorIcon editorResize"></span></a></td>
+                <td class="editorStatusbar"><a href="javascript:;" id="editorResize" class="editorResize" ><span class="editorIcon editorResize"></span></a></td>
             </tr>
         </table>
     </span>

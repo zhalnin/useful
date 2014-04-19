@@ -61,8 +61,156 @@ AM.Event.addEvent(window, 'load', function() {
             })(i);
         }
     }
+
+    var modal = document.createElement("div");
+    modal.id = "modal";
+    modal.innerHTML = '<div id="modalContent"></div>' +
+        '<div id="modalTitle"></div>';
+    document.body.appendChild(modal);
+    var overlay = document.createElement("div");
+    overlay.id = "overlay";
+    overlay.onclick = hideOverlay;
+    document.body.appendChild(overlay);
+
+
+
+
+
+    var editorResize = AM.DOM.$('editorResize');
+    var wysiwyg_toolbar = AM.DOM.$('wysiwyg_toolbar');
+    var iframe_redactor = AM.DOM.$('iframe_redactor');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    var cur = null
+
+    function hook(e) {
+//        e = e || window.event;
+//        e = AM.Event.getEvent(e);
+        // Получаем адаптированный объект "е" (e.pageY, e.pageX, e, e.which)
+        e = AM.Event.fixEventMouse(e);
+//        var el = ( e.srcElement || e.target ).parentNode.parentNode;
+        var el = AM.DOM.$('iframe_redactor');
+        cur = { 'el': el, 'x': e.pageX - el.offsetWidth, 'y': e.pageY - el.offsetHeight }
+    }
+    function unhook(e) {
+        if( cur )
+            cur = null;
+    }
+    function move(e) {
+        if( !cur )
+            return;
+//        e = e || window.event;
+        e = AM.Event.fixEventMouse(e);
+        with( cur ) {
+            var nx = e.pageX - x;
+            var ny = e.pageY - y;
+
+            if( nx < 700 ) nx = 700;
+            if( nx > 700 ) nx = 700;
+            if( ny < 264 ) ny = 264;
+
+//            el.style.width = nx + 'px';
+            el.style.height = ny  + 'px';
+        }
+        (e.preventDefault) ? e.preventDefault() : e.returnValue = false;
+    }
+
+    AM.Event.addEvent(document, 'mouseup', function(e) {
+        console.log('mouseup');
+        unhook(e);
+    });
+    AM.Event.addEvent(document, 'mousemove', function(e) {
+        console.log('mousemove');
+        move(e);
+    });
+    AM.Event.addEvent(document, 'dragstart', function(e) {
+        console.log('dragstart');
+        return false;
+    });
+    AM.Event.addEvent(editorResize, 'mousedown', function(e) {
+        console.log('mousedown');
+        hook(e);
+    });
+
+//Отследить перемещение указателя мыши и добавлять его к iframe
+
+
+
+
+
+
+
+
+
+
+
 });
 
+//function holdMouse( e ) {
+//    var event = AM.Event.getEvent( e );
+//    var target = AM.Event.getTarget( event );
+//    console.log(target);
+//}
+
+
+
+function hideOverlay(){
+    AM.DOM.hide(AM.DOM.$("overlay"));
+    AM.DOM.hide(AM.DOM.$("modal"));
+}
+function showOverlay(){
+    var over = AM.DOM.$("overlay");
+    AM.DOM.fadeIn(over, 50, 10);
+}
+function showForm(){
+    var img = AM.DOM.$("modalContent");
+    if(img.firstChild){
+        img.removeChild(img.firstChild);
+    }
+    var form = '<iframe style="display: none;" id="uploadFrame" name="uploadFrame"></iframe>' +
+        '<form class="main-modal shadowed rounded" enctype="multipart/form-data" action="upload.php" target="uploadFrame" method="post" id="loginForm">'+
+        '<fieldset>'+
+        '<legend>Загрузить изображение</legend>'+
+        '<div class="two"><label for="name">Выберите файл</label><input type="file" name="filename" id="filename" /></div>'+
+        '<p>Максимальный размер файла: 2.0 MB. </p>' +
+        '<p>Изображение будет сжато до размера 450px в ширину или 600px в высоту. </p>'+
+        '<div class="two"><label for="submit"></label><input type="submit" value="Отправить &rarr;" id="submit" /></div>'+
+        '</fieldset>'+
+        '</form>';
+
+    img.innerHTML=form;
+    AM.DOM.fadeIn(modal, 100, 10);
+}
+function openModal(cur){
+    'use strict';
+    showOverlay();
+    showForm();
+    return false;
+}
+
+function uploadSuccess( path ) {
+    var theIframe = AM.DOM.$('iframe_redactor'),
+        doc = theIframe.contentWindow.document || theIframe.contentDocument,
+        img = document.createElement('img');
+    img.src = path;
+    doc.body.appendChild(img);
+    theIframe.focus();
+    hideOverlay();
+}
 
 
 function doStyle(style) {
@@ -70,10 +218,15 @@ function doStyle(style) {
         doc = theIframe.contentWindow.document || theIframe.contentDocument;
     doc.execCommand(style, false, null);
 }
-function doURL() {var mylink = prompt("Enter a URL:", "http://");
-    var theIframe = AM.DOM.$('iframe_redactor'),
+function doURL() {
+    var mylink = prompt("Enter a URL:", "http://"),
+        theIframe = AM.DOM.$('iframe_redactor'),
         doc = theIframe.contentWindow.document || theIframe.contentDocument;
     if ((mylink != null) && (mylink != "")) {
-        doc.execCommand("CreateLink",false,mylink);
+        doc.execCommand("createlink",false,mylink);
     }
+}
+
+function doImg() {
+    openModal();
 }

@@ -1407,11 +1407,15 @@ var AM = {
          */
         getX: function(e) {
             // Нормализация объекта события
-            e = e || window.event;
+            e = AM.Event.getEvent(e);
 
             // Сначала получение позиции из браузеров, не относящихся к IE,
             // а затем из IE
-            return e.pageX || e.clientX + document.body.scrollLeft;
+            return e.pageX || e.clientX
+                +
+                ( document.documentElement && document.documentElement.scrollLeft || document.body && document.body.scrollLeft || 0 )
+                -
+                ( document.documentElement.clientLeft || 0 );
         },
         /**
          * Получение горизонтальной позиции указателя мыши относительно всего
@@ -1421,11 +1425,15 @@ var AM = {
          */
         getY: function(e) {
             // Нормализация объекта
-            e = e || window.event;
+            e = AM.Event.getEvent(e);
 
             // Сначала получение позиции из браузеров, не относящихся к IE,
             // затем из IE
-            return e.pageY || e.clientY + document.body.scrollTop;
+            return e.pageY || e.clientY
+                +
+                ( document.documentElement && document.documentElement.scrollTop || document.body && document.body.scrollTop || 0 )
+                -
+                ( document.body.clientTop || 0 );
         },
         /**
          * Установка горизонтальной позиции элемента
@@ -2055,6 +2063,25 @@ var AM = {
                 // прекращения всплытия события, существующим в IE
                 window.event.cancelBubble = true;
             }
+        },
+        /**
+         * Получения координат курсора из события в обработчике.
+         * Кроме того, необходимо знать нажатую кнопку мыши.
+         * @param e
+         * @returns {event}
+         */
+        fixEventMouse: function( e ) {
+            e = AM.Event.getEvent( e );
+
+            if(e.pageX == null && e.clientX != null ) {
+                e.pageX = AM.Position.getX(e);
+                e.pageY = AM.Position.getY(e);
+            }
+            // добавить which для IE
+            if( !e.which && e.button ) {
+                e.which = e.button & 1 ? 1 : ( e.button & 2 ? 3 : ( e.button & 4 ? 2 : 0 ) )
+            }
+            return e;
         }
     },
 

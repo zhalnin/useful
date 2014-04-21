@@ -26,41 +26,12 @@ AM.Event.addEvent(window, 'load', function() {
         activeStatus = {},
         editorTR = AM.DOM.$('editorTR'),
         editorTD = AM.DOM.tag('td', editorTR),
-        arrayTag = ['bold','italic','underline','strikethrough'],
-        i, len;
+        i, len,
+        editorResize = AM.DOM.$('editorResize'),
+        wysiwyg_toolbar = AM.DOM.$('wysiwyg_toolbar'),
+        iframe_redactor = AM.DOM.$('iframe_redactor');
 
-    doc.designMode = "On";
 
-    for( i = 0, len = editorTD.length; i < len; i++ ) {
-        if( AM.DOM.first(editorTD[i]).tagName == 'A' ) {
-            activeStatus[i] = '';
-            (function(num){
-                /**
-                 * Меняем статус кнопки в редакторе: <span class='acitve'>
-                 * Нажали - кнопка выделена, при повторном нажатии выделение снимается
-                 * Необходимо для визуального восприятия того, что активировано редактирование
-                 */
-                AM.Event.addEvent( AM.DOM.first(editorTD[num]), 'click', function( event ) {
-                    var target = AM.Event.getTarget( event );
-                    for(var j=0, lenj=arrayTag.length; j < lenj; j++ ) {
-                        // Проверяем, чтобы теги были из тех, которые должны "залипать" в редакторе
-                        if( target.id === arrayTag[j] ) {
-                            if( activeStatus[num] == '' ) {
-                                AM.DOM.addClass( 'active', target );
-                                activeStatus[num] = target.id;
-                                theIframe.focus();
-                            } else if( activeStatus[num] != '' ) {
-                                AM.DOM.removeClass( 'active', target);
-                                activeStatus[num] = '';
-                                theIframe.focus();
-                            }
-                        }
-                        theIframe.focus();
-                    }
-                });
-            })(i);
-        }
-    }
 
     var modal = document.createElement("div");
     modal.id = "modal";
@@ -73,12 +44,39 @@ AM.Event.addEvent(window, 'load', function() {
     document.body.appendChild(overlay);
 
 
+    doc.designMode = "On";
+
+    for( i = 0, len = editorTD.length; i < len; i++ ) {
+//        if( AM.DOM.first(editorTD[i]).tagName == 'A' ) {
+            activeStatus[i] = '';
+        with( { num: i }) {
+            /**
+             * Меняем статус кнопки в редакторе: <span class='acitve'>
+             * Нажали - кнопка выделена, при повторном нажатии выделение снимается
+             * Необходимо для визуального восприятия того, что активировано редактирование
+             */
+            AM.Event.addEvent( AM.DOM.first(editorTD[num]), 'click', function( event ) {
+                var targetId = AM.DOM.first(editorTD[num]).id;
+                switch ( targetId ) {
+                    case "image":
+                        doImg();
+                        break;
+                    case "url":
+                        doURL();
+                        break;
+                    default:
+                        doStyle(targetId);
+                        break;
+                }
+            });
+        }
+    }
 
 
 
-    var editorResize = AM.DOM.$('editorResize');
-    var wysiwyg_toolbar = AM.DOM.$('wysiwyg_toolbar');
-    var iframe_redactor = AM.DOM.$('iframe_redactor');
+
+
+
 
 
 
@@ -130,35 +128,33 @@ AM.Event.addEvent(window, 'load', function() {
     }
 
     AM.Event.addEvent(document, 'mouseup', function(e) {
-        console.log('mouseup');
+//        console.log('mouseup');
         unhook(e);
     });
     AM.Event.addEvent(document, 'mousemove', function(e) {
-        console.log('mousemove');
+//        console.log('mousemove');
         move(e);
     });
     AM.Event.addEvent(document, 'dragstart', function(e) {
-        console.log('dragstart');
+//        console.log('dragstart');
         return false;
     });
     AM.Event.addEvent(editorResize, 'mousedown', function(e) {
-        console.log('mousedown');
+//        console.log('mousedown');
         hook(e);
     });
-
-//Отследить перемещение указателя мыши и добавлять его к iframe
-
-
-
-
+    AM.Event.addEvent(editorResize, 'mouseout', function(e) {
+//        console.log('mouseout');
+        unhook(e);
+    });
 
 
-
+}); // End of window.onload
 
 
 
 
-});
+
 
 //function holdMouse( e ) {
 //    var event = AM.Event.getEvent( e );
@@ -195,7 +191,7 @@ function showForm(){
     img.innerHTML=form;
     AM.DOM.fadeIn(modal, 100, 10);
 }
-function openModal(cur){
+function openModal(){
     'use strict';
     showOverlay();
     showForm();
@@ -213,12 +209,63 @@ function uploadSuccess( path ) {
 }
 
 
+var Tags = {
+        styleTag: ['','bold','italic','underline','strikethrough'],
+        styleAlignTag: ['justifyleft', 'justifycenter', 'justifyright'],
+        insertTag: ['image', 'url'],
+        activeStatus: {}
+};
+
 function doStyle(style) {
     var theIframe = AM.DOM.$('iframe_redactor'),
-        doc = theIframe.contentWindow.document || theIframe.contentDocument;
+        doc = theIframe.contentWindow.document || theIframe.contentDocument,
+        editorTR = AM.DOM.$('editorTR'),
+        editorTD = AM.DOM.tag('td', editorTR);
+
+    for( var i = 0, len = editorTD.length; i < len; i++ ) {
+        if( AM.DOM.first(editorTD[i]).id != '' ) {
+            if( style === Tags.styleTag[i] ) {
+                if( ( typeof Tags.activeStatus[style] == 'undefined') || ( Tags.activeStatus[style] == false ) ) {
+                    AM.DOM.addClass( 'active', AM.DOM.first(AM.DOM.first(editorTD[i] ) ) );
+                    Tags.activeStatus[style] = true;
+                } else if ( Tags.activeStatus[style] == true ) {
+                    AM.DOM.removeClass( 'active', AM.DOM.first(AM.DOM.first(editorTD[i] ) ) ) ;
+                    Tags.activeStatus[style] = false;
+                }
+            }
+        }
+    }
     doc.execCommand(style, false, null);
+    theIframe.focus();
 }
+
+
+
 function doURL() {
+    for( var i = 0, len = Tags.styleTag.length; i < len; i++ ) {
+        if( Tags.styleTag[i] != '' ) {
+            var st = Tags.styleTag[i];
+            console.log(Tags.activeStatus[st]);
+        }
+//        console.log(Tags.styleTag[i]);
+//        console.log(Tags.activeStatus[Tags.styleTag[i]]);
+//        if( Tags.activeStatus[Tags.styleTag[i]] == true ) {
+//            console.log(Tags.activeStatus[i]);
+//        }
+    }
+//    if( Tags.activeStatus['bold'] == true ) {
+//        console.log('b');
+//    } else if( Tags.activeStatus['italic'] == true ) {
+//        console.log('i');
+//    } else if ( Tags.activeStatus['underline'] == true ) {
+//        console.log('u');
+//    } else if ( Tags.activeStatus['strikethrough'] == true ) {
+//        console.log('s');
+//    }
+
+
+
+
     var mylink = prompt("Enter a URL:", "http://"),
         theIframe = AM.DOM.$('iframe_redactor'),
         doc = theIframe.contentWindow.document || theIframe.contentDocument;

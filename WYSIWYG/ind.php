@@ -33,8 +33,8 @@
 
 
 <div class="mainIFrame">
-    <span class="editorSpan">
-        <table id="wysiwyg_toolbar" cellspacing="0" cellpadding="0" style="height: 300px; width: 700px;" class="editorMain" >
+    <span class="editorSpan" id="editorSpan">
+        <table id="wysiwyg_toolbar" cellspacing="0" cellpadding="0" style="height: 200px; width: 700px;" class="editorMain" >
             <tr class="editorFirst">
                 <td style="height: 28px; bottom: 0;" class="editorToolbar">
                     <table>
@@ -57,9 +57,9 @@
                     </table>
                 </td>
             </tr>
-            <tr class="editorIFrame">
+            <tr class="editorIFrame" id="editorIFrame">
                 <td class="" id="iframe_td">
-                    <iframe id="iframe_redactor" name="iframe_redactor" style="width: 100%; height: 264px; position: relative;" ></iframe>
+                    <iframe id="iframe_redactor" name="iframe_redactor" style="width: 100%; height: 200px; position: relative;" ></iframe>
                 </td>
             </tr>
             <tr class="editorLast">

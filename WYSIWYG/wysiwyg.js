@@ -50,11 +50,6 @@ AM.Event.addEvent(window, 'load', function() {
 //        if( AM.DOM.first(editorTD[i]).tagName == 'A' ) {
             activeStatus[i] = '';
         with( { num: i }) {
-            /**
-             * Меняем статус кнопки в редакторе: <span class='acitve'>
-             * Нажали - кнопка выделена, при повторном нажатии выделение снимается
-             * Необходимо для визуального восприятия того, что активировано редактирование
-             */
             AM.Event.addEvent( AM.DOM.first(editorTD[num]), 'click', function( event ) {
                 var targetId = AM.DOM.first(editorTD[num]).id;
                 switch ( targetId ) {
@@ -62,7 +57,7 @@ AM.Event.addEvent(window, 'load', function() {
                         doImg();
                         break;
                     case "url":
-                        doURL();
+                            doURL();
                         break;
                     default:
                         doStyle(targetId);
@@ -75,24 +70,6 @@ AM.Event.addEvent(window, 'load', function() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     var cur = null
 
     function hook(e) {
@@ -101,8 +78,9 @@ AM.Event.addEvent(window, 'load', function() {
         // Получаем адаптированный объект "е" (e.pageY, e.pageX, e, e.which)
         e = AM.Event.fixEventMouse(e);
 //        var el = ( e.srcElement || e.target ).parentNode.parentNode;
-        var el = AM.DOM.$('iframe_redactor');
-        cur = { 'el': el, 'x': e.pageX - el.offsetWidth, 'y': e.pageY - el.offsetHeight }
+        var elframe = AM.DOM.$('iframe_redactor');
+        var el = AM.DOM.$('editorIFrame');
+        cur = { 'el': el, 'elframe': elframe, 'x': e.pageX - el.offsetWidth, 'y': e.pageY - el.offsetHeight }
     }
     function unhook(e) {
         if( cur )
@@ -119,10 +97,11 @@ AM.Event.addEvent(window, 'load', function() {
 
             if( nx < 700 ) nx = 700;
             if( nx > 700 ) nx = 700;
-            if( ny < 264 ) ny = 264;
+            if( ny < 200 ) ny = 200;
 
 //            el.style.width = nx + 'px';
             el.style.height = ny  + 'px';
+            elframe.style.height = ny  + 'px';
         }
         (e.preventDefault) ? e.preventDefault() : e.returnValue = false;
     }
@@ -143,10 +122,10 @@ AM.Event.addEvent(window, 'load', function() {
 //        console.log('mousedown');
         hook(e);
     });
-    AM.Event.addEvent(editorResize, 'mouseout', function(e) {
-//        console.log('mouseout');
-        unhook(e);
-    });
+//    AM.Event.addEvent(editorResize, 'mouseout', function(e) {
+////        console.log('mouseout');
+//        unhook(e);
+//    });
 
 
 }); // End of window.onload
@@ -178,10 +157,10 @@ function showForm(){
         img.removeChild(img.firstChild);
     }
     var form = '<iframe style="display: none;" id="uploadFrame" name="uploadFrame"></iframe>' +
-        '<form class="main-modal shadowed rounded" enctype="multipart/form-data" action="upload.php" target="uploadFrame" method="post" id="loginForm">'+
+        '<form class="main-modal shadowed rounded" enctype="multipart/form-data" action="upload.php" target="uploadFrame" method="post" id="uploadForm">'+
         '<fieldset>'+
         '<legend>Загрузить изображение</legend>'+
-        '<div class="two"><label for="name">Выберите файл</label><input type="file" name="filename" id="filename" /></div>'+
+        '<div class="two"><label for="filename">Выберите файл</label><input type="file" name="filename" id="filename" /></div>'+
         '<p>Максимальный размер файла: 2.0 MB. </p>' +
         '<p>Изображение будет сжато до размера 450px в ширину или 600px в высоту. </p>'+
         '<div class="two"><label for="submit"></label><input type="submit" value="Отправить &rarr;" id="submit" /></div>'+
@@ -191,50 +170,44 @@ function showForm(){
     img.innerHTML=form;
     AM.DOM.fadeIn(modal, 100, 10);
 }
-function openModal(){
-    'use strict';
+
+function showFormUrl(){
+    var img = AM.DOM.$("modalContent");
+    if(img.firstChild){
+        img.removeChild(img.firstChild);
+    }
+    var form = '<iframe style="display: none;" id="uploadUrlFrame" name="uploadUrlFrame"></iframe>' +
+        '<form class="main-modal shadowed rounded" action="upload.php" target="uploadUrlFrame" method="post" id="uploadUrlForm">'+
+        '<fieldset>'+
+        '<legend>Вставить ссылку</legend>'+
+        '<div class="two"><label for="url">Введите адрес ссылки</label><input type="text" name="url" id="url" value="http://" /></div>'+
+        '<div class="two"><label for="submit"></label><input type="submit" value="Вставить &rarr;" id="submit" /></div>'+
+        '</fieldset>'+
+        '</form>';
+
+    img.innerHTML=form;
+    AM.DOM.fadeIn(modal, 100, 10);
+}
+
+
+function openModal( param ){
     showOverlay();
-    showForm();
+    switch( param ) {
+        case 'image':
+            showForm();
+            break;
+        case 'url':
+           showFormUrl();
+            break;
+    }
+
     return false;
 }
 
-function uploadSuccess( path ) {
-    var theIframe = AM.DOM.$('iframe_redactor'),
-        doc = theIframe.contentWindow.document || theIframe.contentDocument,
-        img = document.createElement('img');
-    img.src = path;
-    doc.body.appendChild(img);
-    theIframe.focus();
-    hideOverlay();
-}
-
-
-var Tags = {
-        styleTag: ['','bold','italic','underline','strikethrough'],
-        styleAlignTag: ['justifyleft', 'justifycenter', 'justifyright'],
-        insertTag: ['image', 'url'],
-        activeStatus: {}
-};
 
 function doStyle(style) {
     var theIframe = AM.DOM.$('iframe_redactor'),
-        doc = theIframe.contentWindow.document || theIframe.contentDocument,
-        editorTR = AM.DOM.$('editorTR'),
-        editorTD = AM.DOM.tag('td', editorTR);
-
-    for( var i = 0, len = editorTD.length; i < len; i++ ) {
-        if( AM.DOM.first(editorTD[i]).id != '' ) {
-            if( style === Tags.styleTag[i] ) {
-                if( ( typeof Tags.activeStatus[style] == 'undefined') || ( Tags.activeStatus[style] == false ) ) {
-                    AM.DOM.addClass( 'active', AM.DOM.first(AM.DOM.first(editorTD[i] ) ) );
-                    Tags.activeStatus[style] = true;
-                } else if ( Tags.activeStatus[style] == true ) {
-                    AM.DOM.removeClass( 'active', AM.DOM.first(AM.DOM.first(editorTD[i] ) ) ) ;
-                    Tags.activeStatus[style] = false;
-                }
-            }
-        }
-    }
+        doc = theIframe.contentWindow.document || theIframe.contentDocument;
     doc.execCommand(style, false, null);
     theIframe.focus();
 }
@@ -242,38 +215,32 @@ function doStyle(style) {
 
 
 function doURL() {
-    for( var i = 0, len = Tags.styleTag.length; i < len; i++ ) {
-        if( Tags.styleTag[i] != '' ) {
-            var st = Tags.styleTag[i];
-            console.log(Tags.activeStatus[st]);
-        }
-//        console.log(Tags.styleTag[i]);
-//        console.log(Tags.activeStatus[Tags.styleTag[i]]);
-//        if( Tags.activeStatus[Tags.styleTag[i]] == true ) {
-//            console.log(Tags.activeStatus[i]);
-//        }
-    }
-//    if( Tags.activeStatus['bold'] == true ) {
-//        console.log('b');
-//    } else if( Tags.activeStatus['italic'] == true ) {
-//        console.log('i');
-//    } else if ( Tags.activeStatus['underline'] == true ) {
-//        console.log('u');
-//    } else if ( Tags.activeStatus['strikethrough'] == true ) {
-//        console.log('s');
-//    }
-
-
-
-
-    var mylink = prompt("Enter a URL:", "http://"),
-        theIframe = AM.DOM.$('iframe_redactor'),
-        doc = theIframe.contentWindow.document || theIframe.contentDocument;
-    if ((mylink != null) && (mylink != "")) {
-        doc.execCommand("createlink",false,mylink);
-    }
+    openModal( 'url' );
 }
 
 function doImg() {
-    openModal();
+    openModal( 'image' );
+}
+
+
+
+function uploadSuccess( path ) {
+    var theIframe = AM.DOM.$('iframe_redactor'),
+        doc = theIframe.contentWindow.document || theIframe.contentDocument;
+    doc.execCommand('InsertImage', null, path );
+    theIframe.focus();
+    hideOverlay();
+}
+
+function uploadUrlSuccess( url ) {
+    var theIframe = AM.DOM.$('iframe_redactor'),
+        doc = theIframe.contentWindow.document || theIframe.contentDocument;
+    if( url === 'error' ) {
+        hideOverlay();
+        theIframe.focus();
+        return;
+    }
+    doc.execCommand('createlink', null, url );
+    theIframe.focus();
+    hideOverlay();
 }

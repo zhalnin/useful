@@ -8,7 +8,8 @@
  */
 ini_set('memory_limit', '-1');
 
-if( ! empty( $_FILES['filename']['name'] ) ) {
+//if( ! empty( $_FILES['filename']['name'] ) ) {
+if( isset ( $_FILES['filename']['name'] ) ) {
     if( $_FILES['filename']['size'] < ( 1024 * 1024 * 2 ) ) {
         $width = 450;
         $height = 600;
@@ -20,6 +21,19 @@ if( ! empty( $_FILES['filename']['name'] ) ) {
 
     echo '<script type="text/javascript" > parent.uploadSuccess("'.$path.'"); </script>';
 }
+
+if( isset ( $_POST['url'] ) ) {
+    $path = htmlspecialchars( stripslashes( $_POST['url'] ) );
+    if( preg_match('|^https?://|', $path ) == 1 ) {
+        echo '<script type="text/javascript" > parent.uploadUrlSuccess("'.$path.'"); </script>';
+    } else {
+        $error = 'error';
+        echo '<script type="text/javascript" > parent.uploadUrlSuccess("'.$error.'"); </script>';
+
+    }
+}
+
+
 
 function nameServer() {
     $name = $_SERVER['SERVER_NAME'];

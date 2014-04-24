@@ -13,13 +13,13 @@ if( isset ( $_FILES['filename']['name'] ) ) {
     if( $_FILES['filename']['size'] < ( 1024 * 1024 * 2 ) ) {
         $width = 450;
         $height = 600;
-        $dir = "files";
+        $dir = "files/guestbook";
         $path = resizeimg( $_FILES['filename']['tmp_name'], $_FILES['filename']['name'], $width, $height, $dir );
     } else {
         echo "Размер файла не должен превышать 2.0 Mb";
     }
-
-    echo '<script type="text/javascript" > parent.uploadSuccess("'.$path.'"); </script>';
+    $server_path = nameServer();
+    echo '<script type="text/javascript" > parent.uploadSuccess("'.$server_path.$path.'"); </script>';
 }
 
 if( isset ( $_POST['url'] ) ) {
@@ -40,8 +40,16 @@ function nameServer() {
     if( stripos( $name, 'www' ) === 0 ) {
         $name = substr_replace( $name, '', 0, 4 );
     }
-    return $name;
+    if( ! empty( $_SERVER['SERVER_PORT'] ) ) {
+        $port = ':'.$_SERVER['SERVER_PORT'];
+    } else {
+        $port = '';
+    }
+    $path = $_SERVER['PHP_SELF'];
+    preg_match('|(.*)(?:\/.*\.php)|i', $path, $ar);
+    return "http://".$name.$port.$ar[1]."/";
 }
+
 /**
  * Проверяем изображение на соответствие размерам
  * @param $big - $_FILES['<name>']['tmp_name'] - временный файл
@@ -125,6 +133,7 @@ function resizeimg( $big, $small, $width, $height, $dir ){
  * @return mixed - путь к файлу с измененным названием
  */
 function renameImg( $name, $dir ) {
+//    $dir = pathOnServer( $dir );
     $path_parts = pathinfo( $name );  // получаем массив с метаданными изображения
     $ext = ".".$path_parts['extension'];  // получаем точку с расширением, к примеру: ".png"
     $path = basename( $name, $ext ); // получаем имя файла без расширения

@@ -6,10 +6,11 @@
 
     <title>DragandDrop</title>
     <script src="../useful/domdrag.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../useful/AlezhalModules.js"></script>
     <script type="text/javascript" src="../useful/helperFunctions.js"></script>
     <script>document.documentElement.className = "js"</script>
     <script type="text/javascript">
-        addEvent(window,'load',function()
+        AM.Event.addEvent(window,'load',function()
         {
             Drag.init(id('win'));
             Drag.init(document.getElementById('adiv'));

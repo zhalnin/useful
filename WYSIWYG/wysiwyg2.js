@@ -21,7 +21,7 @@ function iFrameInit() {
 
 //console.log(Par.iFrame);
 AM.Event.addEvent(window, 'load', function() {
-    var theIframe = AM.DOM.$('iframe_redactor'),
+    var theIframe = AM.DOM.$('textarea_redactor'),
         doc = theIframe.contentWindow.document || theIframe.contentDocument,
         activeStatus = {},
         editorTR = AM.DOM.$('editorTR'),
@@ -29,7 +29,7 @@ AM.Event.addEvent(window, 'load', function() {
         i, len,
         editorResize = AM.DOM.$('editorResize'),
         wysiwyg_toolbar = AM.DOM.$('wysiwyg_toolbar'),
-        iframe_redactor = AM.DOM.$('iframe_redactor');
+        textarea_redactor = AM.DOM.$('textarea_redactor');
 
 
 
@@ -48,7 +48,7 @@ AM.Event.addEvent(window, 'load', function() {
 
     for( i = 0, len = editorTD.length; i < len; i++ ) {
 //        if( AM.DOM.first(editorTD[i]).tagName == 'A' ) {
-            activeStatus[i] = '';
+        activeStatus[i] = '';
         with( { num: i }) {
             AM.Event.addEvent( AM.DOM.first(editorTD[num]), 'click', function( event ) {
                 var targetId = AM.DOM.first(editorTD[num]).id;
@@ -57,7 +57,7 @@ AM.Event.addEvent(window, 'load', function() {
                         doImg();
                         break;
                     case "url":
-                            doURL();
+                        doURL();
                         break;
                     default:
                         doStyle(targetId);
@@ -70,7 +70,7 @@ AM.Event.addEvent(window, 'load', function() {
 
 
 
-    var cur = null
+    var cur = null;
 
     function hook(e) {
 //        e = e || window.event;
@@ -78,7 +78,7 @@ AM.Event.addEvent(window, 'load', function() {
         // Получаем адаптированный объект "е" (e.pageY, e.pageX, e, e.which)
         e = AM.Event.fixEventMouse(e);
 //        var el = ( e.srcElement || e.target ).parentNode.parentNode;
-        var elframe = AM.DOM.$('iframe_redactor');
+        var elframe = AM.DOM.$('textarea_redactor');
         var el = AM.DOM.$('editorIFrame');
         cur = { 'el': el, 'elframe': elframe, 'x': e.pageX - el.offsetWidth, 'y': e.pageY - el.offsetHeight }
     }
@@ -197,7 +197,7 @@ function openModal( param ){
             showForm();
             break;
         case 'url':
-           showFormUrl();
+            showFormUrl();
             break;
     }
 
@@ -206,9 +206,9 @@ function openModal( param ){
 
 
 function doStyle(style) {
-    var theIframe = AM.DOM.$('iframe_redactor'),
+    var theIframe = AM.DOM.$('textarea_redactor'),
         doc = theIframe.contentWindow.document || theIframe.contentDocument;
-    doc.execCommand(style, false, null);
+    theIframe.execCommand(style, false, null);
     theIframe.focus();
 }
 
@@ -225,7 +225,7 @@ function doImg() {
 
 
 function uploadSuccess( path ) {
-    var theIframe = AM.DOM.$('iframe_redactor'),
+    var theIframe = AM.DOM.$('textarea_redactor'),
         doc = theIframe.contentWindow.document || theIframe.contentDocument;
     doc.execCommand('InsertImage', null, path );
     theIframe.focus();
@@ -233,7 +233,7 @@ function uploadSuccess( path ) {
 }
 
 function uploadUrlSuccess( url ) {
-    var theIframe = AM.DOM.$('iframe_redactor'),
+    var theIframe = AM.DOM.$('textarea_redactor'),
         doc = theIframe.contentWindow.document || theIframe.contentDocument;
     if( url === 'error' ) {
         hideOverlay();

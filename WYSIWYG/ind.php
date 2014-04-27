@@ -18,7 +18,7 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <script type="text/javascript" src="../AlezhalModules.js" ></script>
     <script type="text/javascript" src="wysiwyg.js"></script>
-
+    <script type="text/javascript" src="dragMaster.js"></script>
     <style>
         .mainIFrame {
             width: 50%;
@@ -34,7 +34,7 @@
 
 <div class="mainIFrame">
     <span class="editorSpan" id="editorSpan">
-        <table id="wysiwyg_toolbar" cellspacing="0" cellpadding="0" style="height: 200px; width: 700px;" class="editorMain" >
+        <table id="wysiwyg_toolbar" cellspacing="0" cellpadding="0" class="editorMain" >
             <tr class="editorFirst">
                 <td style="height: 28px; bottom: 0;" class="editorToolbar">
                     <table>

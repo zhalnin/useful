@@ -2082,7 +2082,54 @@ var AM = {
                 e.which = e.button & 1 ? 1 : ( e.button & 2 ? 3 : ( e.button & 4 ? 2 : 0 ) )
             }
             return e;
+        },
+
+        /**
+         * Высчитываем смещение указателя мыши от
+         * левого верхнего угла самого элемента
+         * @param target - целевой элемент
+         * @param x - горизонт
+         * @param y - вертикаль
+         * @returns {{x: number, y: number}}
+         */
+        getMouseOffset: function( target, x, y ) {
+            var docPos = AM.Event.getOffset( target);
+            return { x: x - docPos.left, y: y - docPos.top }
+        },
+
+        getOffset: function( elem ) {
+            if( elem.getBoundingClientRect ) {
+                return AM.Event.getOffsetRect( elem );
+            } else {
+                return AM.Event.getOffsetSum( elem );
+            }
+        },
+
+        getOffsetRect: function( elem ) {
+            var box = elem.getBoundingClientRect(),
+                body = document.body,
+                docElem = document.documentElement,
+                scrollTop = window.pageYOffset || docElem.scrollTop || body.scrollTop,
+                scrollLeft = window.pageXOffset || docElem.scrollLeft || body.scrollLeft,
+                clientTop = docElem.clientTop || body.clientTop || 0,
+                clientLeft = docElem.clientLeft || body.clientLeft || 0,
+                top = box.top + scrollTop - clientTop,
+                left = box.left + scrollLeft - clientLeft;
+            return { top: Math.round(top), left: Math.round(left) }
+        },
+
+        getOffsetSum: function( elem ) {
+            var top = 0,
+                left = 0;
+            while( elem ) {
+                top = top + parseInt( elem.offsetTop );
+                left = left + parseInt( elem.offsetLeft );
+                elem = elem.offsetParent;
+            }
+            return { top: top, left: left }
         }
+
+
     },
 
     Query: {

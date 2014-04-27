@@ -28,6 +28,7 @@
 #wysiwyg_textarea {
     width: 450px;
     height: 100px;
+    display: inline-block;
 }
 .editorMain {
 

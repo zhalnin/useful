@@ -33,6 +33,63 @@ if( isset ( $_POST['url'] ) ) {
     }
 }
 
+if( isset( $_POST['image'] ) ) {
+    $image = htmlspecialchars( stripslashes( $_POST['image'] ) );
+    $path = resizeimg2( $image, 450, 600 );
+    if( preg_match('|^https?://|i', $image ) == 1 ) {
+        $info = pathinfo($image);
+        if( in_array( strtolower( $info['extension'] ), ['jpg','gif','png','jpeg'] ) ) {
+            $height = $path['height'];
+            $width = $path['width'];
+            echo '<script type="text/javascript"> parent.uploadInsertImageSuccess("'.$image.'","'.$width.'","'.$height.'"); </script>';
+        } else {
+            $error = 'error';
+            echo '<script type="text/javascript"> parent.uploadInsertImageSuccess("'.$error.'"); </script>';
+        }
+    } else {
+        $error = 'error';
+        echo '<script type="text/javascript"> parent.uploadInsertImageSuccess("'.$error.'"); </script>';
+    }
+}
+
+
+/**
+ * Для создания тега img: <img src=.. width=.. height=.. />
+ * @param $big - проверяемое изображение
+ * @param $width - ширина
+ * @param $height - высота
+ * @return array - массив из высоты и ширины изображения
+ */
+function resizeimg2( $big, $width, $height ){
+    // Определяем коэффициент сжатия
+    // генерируемого изображения
+    $ratio = $width / $height;
+    // Получаем размеры исходного изображения 0-ширина;1-высота;2-;3-width="" height=""; mime-image/jpeg
+    $size_img = getimagesize($big);
+    list($width_src, $height_src) = getimagesize($big);
+    // Если размеры меньше, то масштабирования не нужно
+    if( ( $width_src < $width ) && ( $height_src < $height ) ){
+        $arr = array('height'=>$height, 'width'=>$width);
+
+        return $arr;
+    }
+    // Получаем коэффициент сжатия исходного изображения
+    $src_ratio = $width_src/$height_src;
+    // Вычисляем размеры уменьшенной копии, чтобы при
+    // масштабировании сохранились пропорции исходного изображения
+    if($ratio < $src_ratio) {
+        $height = $width / $src_ratio;
+    } else {
+        $width = $height * $src_ratio;
+    }
+
+    $arr = array('height'=>$height, 'width'=>$width);
+
+    return $arr;
+}
+
+
+
 
 
 function nameServer() {
@@ -40,6 +97,8 @@ function nameServer() {
     if( stripos( $name, 'www' ) === 0 ) {
         $name = substr_replace( $name, '', 0, 4 );
     }
+
+    // Для дебаггинга
     if( ! empty( $_SERVER['SERVER_PORT'] ) ) {
         $port = ':'.$_SERVER['SERVER_PORT'];
     } else {
@@ -48,6 +107,10 @@ function nameServer() {
     $path = $_SERVER['PHP_SELF'];
     preg_match('|(.*)(?:\/.*\.php)|i', $path, $ar);
     return "http://".$name.$port.$ar[1]."/";
+    // конец
+
+
+//    return $name;
 }
 
 /**

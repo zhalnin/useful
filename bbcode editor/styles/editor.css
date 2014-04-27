@@ -1,13 +1,15 @@
 .editor div {
 	margin-top:15px;
 	background: url("../img/editor.png");
-	width:25px;
-	height:25px;
+	width:27px;
+	height:27px;
 	float:left;
 }
 .editor div:hover {
 	cursor:pointer;
 	border:1px solid #555555;
+    width:25px;
+    height:25px;
 }
 #editor_b {
 	background-position: -50px 0;

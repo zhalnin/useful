@@ -218,3 +218,33 @@ function uploadInsertImageSuccess( image, img_width, img_height ) {
     theIframe.focus();
     hideOverlay();
 }
+
+function previewPost() {
+
+    var theIframe = AM.DOM.$('iframe_redactor'),
+        doc = theIframe.contentWindow.document || theIframe.contentDocument,
+        content = doc.body.innerHTML;
+    AM.Ajax.ajax({
+        'method':'POST',
+        'url': 'ajax_handle.php',
+        'postParams': 'mode=preview&text='+content,
+        'onSuccess': handleResult
+    });
+
+}
+
+function sendPost() {
+    var theIframe = AM.DOM.$('iframe_redactor'),
+        doc = theIframe.contentWindow.document || theIframe.contentDocument,
+        content = doc.body.innerHTML;
+    AM.Ajax.ajax({
+        'method':'POST',
+        'url': 'ajax_handle.php',
+        'postParams': 'text='+content,
+        'onSuccess': handleResult
+    });
+}
+
+function handleResult( response ) {
+    AM.DOM.$('showmsg').innerHTML = response;
+}

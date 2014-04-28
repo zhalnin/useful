@@ -15,20 +15,22 @@ if( isset ( $_FILES['filename']['name'] ) ) {
         $height = 600;
         $dir = "files/guestbook";
         $path = resizeimg( $_FILES['filename']['tmp_name'], $_FILES['filename']['name'], $width, $height, $dir );
+        $server_path = nameServer();
+        echo '<script type="text/javascript" > var wysiwyg = new parent.WysiwygObject(); wysiwyg.uploadSuccess("'.$server_path.$path.'"); </script>';
     } else {
-        echo "Размер файла не должен превышать 2.0 Mb";
+        $error = 'error';
+        echo '<script type="text/javascript" > var wysiwyg = new parent.WysiwygObject(); wysiwyg.uploadSuccess("'.$error.'"); </script>';
+//        echo "Размер файла не должен превышать 2.0 Mb";
     }
-    $server_path = nameServer();
-    echo '<script type="text/javascript" > parent.uploadSuccess("'.$server_path.$path.'"); </script>';
 }
 
 if( isset ( $_POST['url'] ) ) {
     $path = htmlspecialchars( stripslashes( $_POST['url'] ) );
     if( preg_match('|^https?://|', $path ) == 1 ) {
-        echo '<script type="text/javascript" > parent.uploadUrlSuccess("'.$path.'"); </script>';
+        echo '<script type="text/javascript" > var wysiwyg = new parent.WysiwygObject(); wysiwyg.uploadUrlSuccess("'.$path.'"); </script>';
     } else {
         $error = 'error';
-        echo '<script type="text/javascript" > parent.uploadUrlSuccess("'.$error.'"); </script>';
+        echo '<script type="text/javascript" > var wysiwyg = new parent.WysiwygObject(); wysiwyg.uploadUrlSuccess("'.$error.'"); </script>';
 
     }
 }
@@ -41,14 +43,14 @@ if( isset( $_POST['image'] ) ) {
         if( in_array( strtolower( $info['extension'] ), ['jpg','gif','png','jpeg'] ) ) {
             $height = $path['height'];
             $width = $path['width'];
-            echo '<script type="text/javascript"> parent.uploadInsertImageSuccess("'.$image.'","'.$width.'","'.$height.'"); </script>';
+            echo '<script type="text/javascript"> var wysiwyg = new parent.WysiwygObject(); wysiwyg.uploadInsertImageSuccess("'.$image.'","'.$width.'","'.$height.'"); </script>';
         } else {
             $error = 'error';
-            echo '<script type="text/javascript"> parent.uploadInsertImageSuccess("'.$error.'"); </script>';
+            echo '<script type="text/javascript"> var wysiwyg = new parent.WysiwygObject(); wysiwyg.uploadInsertImageSuccess("'.$error.'"); </script>';
         }
     } else {
         $error = 'error';
-        echo '<script type="text/javascript"> parent.uploadInsertImageSuccess("'.$error.'"); </script>';
+        echo '<script type="text/javascript"> var wysiwyg = new parent.WysiwygObject(); wysiwyg.uploadInsertImageSuccess("'.$error.'"); </script>';
     }
 }
 

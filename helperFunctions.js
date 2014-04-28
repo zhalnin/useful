@@ -8,11 +8,81 @@
 
 
 
-function inheritPrototype(subType, superType)
-{
-  var prototype = Object(superType.prototype);
-  prototype.constructor = subType;
-  subType.prototype = prototype;
+
+
+/**
+ * Combination Constructor/Prototype Pattern
+ * @param name
+ * @param age
+ * @param job
+ * @constructor
+ */
+function Person(name, age, job){
+    this.name = name;
+    this.age = age;
+    this.job = job;
+    this.friends = ['Shelby', 'Court'];
+}
+Person.prototype = {
+    constructor: Person,
+    sayName : function () {
+        alert(this.name);
+    }
+};
+
+
+/**
+ * Durable Constructor Pattern
+ * @param name
+ * @param age
+ * @param job
+ * @returns {Object}
+ * @constructor
+ */
+function Person(name, age, job){
+    //create the object to return
+    //    var o = new Object();
+    var o = {};
+    o.name = name;
+    o.age = age;
+    o.job = job;
+    //optional: define private variables/functions here
+    //attach methods
+    o.sayName = function(){
+        alert(name);
+    };
+//return the object
+return o;
+}
+
+
+/**
+ * Parasitic Combination Inheritance
+ * @param name
+ * @constructor
+ */
+function SuperType(name){
+    this.name = name;
+    this.colors = ['red', 'blue', 'green'];
+}
+SuperType.prototype.sayName = function(){
+    alert(this.name);
+};
+function SubType(name, age){
+    SuperType.call(this, name);
+    this.age = age;
+}
+inheritPrototype(SubType, SuperType);
+SubType.prototype.sayAge = function(){
+    alert(this.age);
+};
+
+//use parasitic inheritance to inherit from the supertype’s prototype
+// and then assign the result to the subtype’s prototype
+function inheritPrototype(subType, superType) {
+    var prototype = Object(superType.prototype);
+    prototype.constructor = subType;
+    subType.prototype = prototype;
 }
 
 

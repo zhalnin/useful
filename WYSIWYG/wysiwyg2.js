@@ -6,31 +6,20 @@
  * To change this template use File | Settings | File Templates.
  */
 
-function iFrameInit() {
-    var iframe = document.createElement("iframe");
-    iframe.setAttributes('id','iframe');
-    var doc = iframe.contentWindow.document || iframe.contentDocument;
-    iframe.addEventListener('load', function () {
-        doc.contentDocument.designMode="on";
-    }, false);
-    document.body.appendChild(iframe);
-}
 
 
-
-
-//console.log(Par.iFrame);
 AM.Event.addEvent(window, 'load', function() {
-    var theIframe = AM.DOM.$('textarea_redactor'),
+
+
+
+    var theIframe = AM.DOM.$('iframe_redactor'),
         doc = theIframe.contentWindow.document || theIframe.contentDocument,
-        activeStatus = {},
         editorTR = AM.DOM.$('editorTR'),
         editorTD = AM.DOM.tag('td', editorTR),
         i, len,
         editorResize = AM.DOM.$('editorResize'),
         wysiwyg_toolbar = AM.DOM.$('wysiwyg_toolbar'),
-        textarea_redactor = AM.DOM.$('textarea_redactor');
-
+        iframe_redactor = AM.DOM.$('iframe_redactor');
 
 
     var modal = document.createElement("div");
@@ -48,16 +37,18 @@ AM.Event.addEvent(window, 'load', function() {
 
     for( i = 0, len = editorTD.length; i < len; i++ ) {
 //        if( AM.DOM.first(editorTD[i]).tagName == 'A' ) {
-        activeStatus[i] = '';
         with( { num: i }) {
             AM.Event.addEvent( AM.DOM.first(editorTD[num]), 'click', function( event ) {
                 var targetId = AM.DOM.first(editorTD[num]).id;
                 switch ( targetId ) {
-                    case "image":
-                        doImg();
+                    case "uploadImage":
+                        doUploadImg();
                         break;
                     case "url":
                         doURL();
+                        break;
+                    case "image":
+                        doImg();
                         break;
                     default:
                         doStyle(targetId);
@@ -67,80 +58,9 @@ AM.Event.addEvent(window, 'load', function() {
         }
     }
 
-
-
-
-    var cur = null;
-
-    function hook(e) {
-//        e = e || window.event;
-//        e = AM.Event.getEvent(e);
-        // Получаем адаптированный объект "е" (e.pageY, e.pageX, e, e.which)
-        e = AM.Event.fixEventMouse(e);
-//        var el = ( e.srcElement || e.target ).parentNode.parentNode;
-        var elframe = AM.DOM.$('textarea_redactor');
-        var el = AM.DOM.$('editorIFrame');
-        cur = { 'el': el, 'elframe': elframe, 'x': e.pageX - el.offsetWidth, 'y': e.pageY - el.offsetHeight }
-    }
-    function unhook(e) {
-        if( cur )
-            cur = null;
-    }
-    function move(e) {
-        if( !cur )
-            return;
-//        e = e || window.event;
-        e = AM.Event.fixEventMouse(e);
-        with( cur ) {
-            var nx = e.pageX - x;
-            var ny = e.pageY - y;
-
-            if( nx < 700 ) nx = 700;
-            if( nx > 700 ) nx = 700;
-            if( ny < 200 ) ny = 200;
-
-//            el.style.width = nx + 'px';
-            el.style.height = ny  + 'px';
-            elframe.style.height = ny  + 'px';
-        }
-        (e.preventDefault) ? e.preventDefault() : e.returnValue = false;
-    }
-
-    AM.Event.addEvent(document, 'mouseup', function(e) {
-//        console.log('mouseup');
-        unhook(e);
-    });
-    AM.Event.addEvent(document, 'mousemove', function(e) {
-//        console.log('mousemove');
-        move(e);
-    });
-    AM.Event.addEvent(document, 'dragstart', function(e) {
-//        console.log('dragstart');
-        return false;
-    });
-    AM.Event.addEvent(editorResize, 'mousedown', function(e) {
-//        console.log('mousedown');
-        hook(e);
-    });
-//    AM.Event.addEvent(editorResize, 'mouseout', function(e) {
-////        console.log('mouseout');
-//        unhook(e);
-//    });
-
+    new DragObject( AM.DOM.$('editorResize' ), AM.DOM.$('wysiwyg_toolbar'), AM.DOM.$('iframe_redactor') );
 
 }); // End of window.onload
-
-
-
-
-
-
-//function holdMouse( e ) {
-//    var event = AM.Event.getEvent( e );
-//    var target = AM.Event.getTarget( event );
-//    console.log(target);
-//}
-
 
 
 function hideOverlay(){
@@ -151,7 +71,7 @@ function showOverlay(){
     var over = AM.DOM.$("overlay");
     AM.DOM.fadeIn(over, 50, 10);
 }
-function showForm(){
+function showFormUploadImage(){
     var img = AM.DOM.$("modalContent");
     if(img.firstChild){
         img.removeChild(img.firstChild);
@@ -189,15 +109,36 @@ function showFormUrl(){
     AM.DOM.fadeIn(modal, 100, 10);
 }
 
+function showFormImage(){
+    var img = AM.DOM.$("modalContent");
+    if(img.firstChild){
+        img.removeChild(img.firstChild);
+    }
+    var form = '<iframe style="display: none;" id="insertImage" name="insertImage"></iframe>' +
+        '<form class="main-modal shadowed rounded" action="upload.php" target="insertImage" method="post" id="insertImageForm">'+
+        '<fieldset>'+
+        '<legend>Прикрепить изображение</legend>'+
+        '<div class="two"><label for="image">Введите адрес изображения</label><input type="text" name="image" id="image" value="http://" /></div>'+
+        '<div class="two"><label for="submit"></label><input type="submit" value="Вставить &rarr;" id="submit" /></div>'+
+        '</fieldset>'+
+        '</form>';
+
+    img.innerHTML=form;
+    AM.DOM.fadeIn(modal, 100, 10);
+}
+
 
 function openModal( param ){
     showOverlay();
     switch( param ) {
-        case 'image':
-            showForm();
+        case 'uploadImage':
+            showFormUploadImage();
             break;
         case 'url':
             showFormUrl();
+            break;
+        case 'image':
+            showFormImage();
             break;
     }
 
@@ -206,9 +147,10 @@ function openModal( param ){
 
 
 function doStyle(style) {
-    var theIframe = AM.DOM.$('textarea_redactor'),
+    var theIframe = AM.DOM.$('iframe_redactor'),
         doc = theIframe.contentWindow.document || theIframe.contentDocument;
-    theIframe.execCommand(style, false, null);
+
+    doc.execCommand(style, false, null);
     theIframe.focus();
 }
 
@@ -218,6 +160,10 @@ function doURL() {
     openModal( 'url' );
 }
 
+function doUploadImg() {
+    openModal( 'uploadImage' );
+}
+
 function doImg() {
     openModal( 'image' );
 }
@@ -225,7 +171,7 @@ function doImg() {
 
 
 function uploadSuccess( path ) {
-    var theIframe = AM.DOM.$('textarea_redactor'),
+    var theIframe = AM.DOM.$('iframe_redactor'),
         doc = theIframe.contentWindow.document || theIframe.contentDocument;
     doc.execCommand('InsertImage', null, path );
     theIframe.focus();
@@ -233,7 +179,7 @@ function uploadSuccess( path ) {
 }
 
 function uploadUrlSuccess( url ) {
-    var theIframe = AM.DOM.$('textarea_redactor'),
+    var theIframe = AM.DOM.$('iframe_redactor'),
         doc = theIframe.contentWindow.document || theIframe.contentDocument;
     if( url === 'error' ) {
         hideOverlay();
@@ -243,4 +189,49 @@ function uploadUrlSuccess( url ) {
     doc.execCommand('createlink', null, url );
     theIframe.focus();
     hideOverlay();
+}
+
+function uploadInsertImageSuccess( image, img_width, img_height ) {
+    var theIframe = AM.DOM.$('iframe_redactor'),
+        doc = theIframe.contentWindow.document || theIframe.contentDocument;
+    if( image === 'error' ) {
+        hideOverlay();
+        theIframe.focus();
+        return;
+    }
+
+    doc.execCommand('insertHtml', false, "<img src="+image+" height="+img_height+" width="+img_width+" />" );
+
+    theIframe.focus();
+    hideOverlay();
+}
+
+function previewPost() {
+
+    var theIframe = AM.DOM.$('iframe_redactor'),
+        doc = theIframe.contentWindow.document || theIframe.contentDocument,
+        content = doc.body.innerHTML;
+    AM.Ajax.ajax({
+        'method':'POST',
+        'url': 'ajax_handle.php',
+        'postParams': 'mode=preview&text='+content,
+        'onSuccess': handleResult
+    });
+
+}
+
+function sendPost() {
+    var theIframe = AM.DOM.$('iframe_redactor'),
+        doc = theIframe.contentWindow.document || theIframe.contentDocument,
+        content = doc.body.innerHTML;
+    AM.Ajax.ajax({
+        'method':'POST',
+        'url': 'ajax_handle.php',
+        'postParams': 'text='+content,
+        'onSuccess': handleResult
+    });
+}
+
+function handleResult( response ) {
+    AM.DOM.$('showmsg').innerHTML = response;
 }

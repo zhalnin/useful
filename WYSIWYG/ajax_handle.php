@@ -11,8 +11,17 @@ if( ( $_POST['mode'] == 'preview' ) && isset( $_POST['text'] ) ) {
 //    echo "Добавим к БД";
 //    echo "<br />";
 //    echo "ok";
+//    $text = html_entity_decode($_POST['text'], ENT_COMPAT, 'UTF-8');
+    $text = $_POST['text'];
+//    $text = preg_replace('|&nbsp;|','', $text);
+//    $text2 = str_replace("&nbsp;",'',$text);
+//    if( preg_match('|&nbsp;|',$text ) ) {
+//        echo "yes";
+//    } else {
+//        echo "no";
+//    }
+    echo $text;
 
-    echo $_POST['text'];
 
 } else {
     echo "Добавим к БД";

@@ -23,7 +23,7 @@ if( ( $_POST['mode'] == 'preview' ) && isset( $_POST['text'] ) ) {
     echo $text;
 
 
-} else {
+} elseif( $_POST['mode'] == 'submit' ) {
     echo "Добавим к БД";
     echo "<br />";
     echo "ok";

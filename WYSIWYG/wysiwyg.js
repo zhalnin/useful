@@ -34,6 +34,13 @@ AM.Event.addEvent(window, 'load', function() {
         '<div id="modalPreviewContent"></div>';
     document.body.appendChild(modal_preview);
 
+    var modal_submit = document.createElement("div");
+    modal_submit.id = "modal_submit";
+    AM.DOM.attr( modal_submit, 'class', 'modal_submit' );
+    modal_submit.innerHTML = '<div id="modalSubmitTitle">Успех</div>'+
+        '<div id="modalSubmitContent"></div>';
+    document.body.appendChild( modal_submit );
+
 
 
     var overlay = document.createElement("div");
@@ -108,6 +115,7 @@ function WysiwygObject() {
         AM.DOM.hide(AM.DOM.$("overlay"));
         AM.DOM.hide(AM.DOM.$("modal"));
         AM.DOM.hide(AM.DOM.$("modal_preview"));
+        AM.DOM.hide(AM.DOM.$("modal_submit"));
     };
     this.showOverlay = function(){
         var over = AM.DOM.$("overlay");
@@ -287,42 +295,51 @@ function previewPost() {
         'method':'POST',
         'url': 'ajax_handle.php',
         'postParams': 'mode=preview&text='+result,
-        'onSuccess': handleResult
+        'onSuccess': handleResultPreview
     });
 
 }
 
 function sendPost() {
-    var modal_preview = AM.DOM.$('modal_preview'),
+    var modal_submit = AM.DOM.$('modal_submit'),
         editor_span = AM.DOM.$('editorSpan'),
         editor_span_width = AM.Position.getElementLeft(editor_span),
         editor_span_height = AM.Position.getElementTop(editor_span);
-    AM.Position.setX(modal_preview, editor_span_width);
-    AM.Position.setY(modal_preview, editor_span_height);
+    AM.Position.setX(modal_submit, editor_span_width);
+    AM.Position.setY(modal_submit, editor_span_height);
     var content = wysiwyg.doc().body.innerHTML;
+    var result = content.replace(/&nbsp;/g,'');
     AM.Ajax.ajax({
         'method':'POST',
         'url': 'ajax_handle.php',
-        'postParams': 'text='+content,
+        'postParams': 'mode=submit&text='+result,
         'onSuccess': handleResult
     });
 }
 
-function handleResult( response ) {
+function handleResultPreview( response ) {
     wysiwyg.showOverlay();
     var img = AM.DOM.$("modalPreviewContent");
     if(img.firstChild){
         img.removeChild(img.firstChild);
     }
     var dialog_response = "<div class=\"dialog_response main-modal rounded shadowed\" style='width: 700px;'>"+response+"</div>";
-//    var form = '<div class="two main-modal shadowed rounded""><label for="filename">Выберите файл</label><input type="file" name="filename" id="filename" /></div>'+
-//        '<p>Максимальный размер файла: 2.0 MB. </p>' +
-//        '<p>Изображение будет сжато до размера 450px в ширину или 600px в высоту. </p>'+
-//        '<div class="two"><label for="submit"></label><input type="submit" value="Отправить &rarr;" id="submit" /></div>'
-//        ;
     img.innerHTML=dialog_response;
-//    img.innerHTML = form;
     AM.DOM.fadeIn(modal_preview, 100, 10);
+
+//    wysiwyg.openModal('preivew');
+//    AM.DOM.$('showmsg').innerHTML = response;
+}
+
+function handleResult( response ) {
+    wysiwyg.showOverlay();
+    var img = AM.DOM.$("modalSubmitContent");
+    if(img.firstChild){
+        img.removeChild(img.firstChild);
+    }
+    var dialogResponseSubmit = "<div class=\"dialog_response main-modal rounded shadowed\" style='width: 700px;'>"+response+"</div>";
+    img.innerHTML=dialogResponseSubmit;
+    AM.DOM.fadeIn(modal_submit, 100, 10);
 
 //    wysiwyg.openModal('preivew');
 //    AM.DOM.$('showmsg').innerHTML = response;

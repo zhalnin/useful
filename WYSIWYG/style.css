@@ -395,6 +395,36 @@ span.editor_link.active {
     z-index: 115;
 }
 
+#modal_submit{
+    width: 700px;
+    /*height: 150px;*/
+    min-height: 100px;
+    /*margin: 15px auto;*/
+    position: absolute;
+    /*top: 13%;*/
+    /*left: 35%;*/
+    z-index: 110;
+    display: none;
+    word-wrap: break-word;
+}
+
+#modalSubmitTitle {
+    border-bottom: 1px solid #393939;
+    display: inline-block;
+    font-style: italic;
+    left: 10px;
+    position: absolute;
+    top: 10px;
+    width: 100%;
+    z-index: 116;
+}
+#modalSubmitContent {
+    /*margin-bottom: 40px;*/
+    position: relative;
+    /*border: 0;*/
+    z-index: 115;
+}
+
 #modalContent {
     position: absolute;
     /*border: 0;*/

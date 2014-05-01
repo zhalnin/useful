@@ -6,6 +6,20 @@
  * Time: 21:28
  * To change this template use File | Settings | File Templates.
  */
+
+$s = "mode=submit&text==================================<br>IMEI : 013425001480221<br>Unlock code : Model&nbsp;&nbsp; : IPHONE 5 16GB BLACKIMEI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 013425001480221Serial&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : DNRJRUM7DTTNProduct Version&nbsp;&nbsp;&nbsp; : 7.1.1ICCID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 89014103255321629876MEID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : MAC Address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 30F7C54FB0F4Bluetooth MAC Address:30:F7:C5:4F:B0:F5Warranty Status&nbsp;&nbsp;&nbsp; : Out Of Warranty (No Coverage)Coverage Start Date&nbsp;&nbsp;&nbsp; : Coverage End Date&nbsp;&nbsp;&nbsp; : Days Remaining&nbsp;&nbsp;&nbsp;&nbsp; : 0Purchase Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 12/26/12Purchase Country&nbsp;&nbsp; : United StatesRegistration Date&nbsp; : 12/26/12Unbricked&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : trueFirst Unbrick Date&nbsp; : 12/27/12Last Unbrick Date&nbsp;&nbsp; : 03/31/14Initial Activation Policy ID : 147Initial Activation Policy Details : US AT&amp;T Reseller .Applied Activation Policy ID:147Applied Activation Details:US AT&amp;T Reseller .Next Activation Policy ID: 147Next Tether Policy Details:US AT&amp;T Reseller .Unlocked&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : falseUnlock Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : <br>Orders details<br>Order ID : 19525<br>Service Name : GSX Check iPhone and iPad (INSTANT_1-5 MIN)&nbsp; 24/7<br>Credit : 0.4<br><br><br>=================================";
+
+echo strlen($s);
+echo "<br />";
+$stre = htmlspecialchars($s);
+$stre = preg_replace('|&nbsp;|', '', $s);
+$stre = preg_replace('|&amp;|', '&', $stre);
+echo strlen($stre);
+echo "<br />";
+echo $stre;
+echo "<br />";
+
+
 ?>
 
 <!doctype html>
@@ -13,6 +27,15 @@
 <head>
     <title>Rich Text Editor</title>
     <script type="text/javascript">
+
+
+        var s = "mode=submit&text==================================<br>IMEI : 013425001480221<br>Unlock code : Model&nbsp;&nbsp; : IPHONE 5 16GB BLACKIMEI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 013425001480221Serial&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : DNRJRUM7DTTNProduct Version&nbsp;&nbsp;&nbsp; : 7.1.1ICCID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 89014103255321629876MEID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : MAC Address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 30F7C54FB0F4Bluetooth MAC Address:30:F7:C5:4F:B0:F5Warranty Status&nbsp;&nbsp;&nbsp; : Out Of Warranty (No Coverage)Coverage Start Date&nbsp;&nbsp;&nbsp; : Coverage End Date&nbsp;&nbsp;&nbsp; : Days Remaining&nbsp;&nbsp;&nbsp;&nbsp; : 0Purchase Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 12/26/12Purchase Country&nbsp;&nbsp; : United StatesRegistration Date&nbsp; : 12/26/12Unbricked&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : trueFirst Unbrick Date&nbsp; : 12/27/12Last Unbrick Date&nbsp;&nbsp; : 03/31/14Initial Activation Policy ID : 147Initial Activation Policy Details : US AT&amp;T Reseller .Applied Activation Policy ID:147Applied Activation Details:US AT&amp;T Reseller .Next Activation Policy ID: 147Next Tether Policy Details:US AT&amp;T Reseller .Unlocked&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : falseUnlock Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : <br>Orders details<br>Order ID : 19525<br>Service Name : GSX Check iPhone and iPad (INSTANT_1-5 MIN)&nbsp; 24/7<br>Credit : 0.4<br><br><br>=================================";
+        var amp = s.replace(/&amp;/g,'&');
+        var nbsp = amp.replace(/&nbsp;/g,'');
+        console.log(nbsp);
+
+
+
         var oDoc, sDefTxt;
 
         function initDoc() {
@@ -63,6 +86,10 @@
             oPrntWin.document.write("<!doctype html><html><head><title>Print<\/title><\/head><body onload=\"print();\">" + oDoc.innerHTML + "<\/body><\/html>");
             oPrntWin.document.close();
         }
+
+        document.onload = function() {
+            document.getElementById('ta').value = "dkfjsdf&lt;br&gt;dskfjskdfj&lt;br&gt;sdfjksdjf&lt;br&gt;sdkfjsdkf&lt;br&gt;";
+        }
     </script>
     <style type="text/css">
         .intLink { cursor: pointer; }
@@ -86,6 +113,9 @@
 </head>
 <body onload="initDoc();">
 <form name="compForm" method="post" action="sample.php" onsubmit="if(validateMode()){this.myDoc.value=oDoc.innerHTML;return true;}return false;">
+    <p id="ta"></p>
+
+
     <input type="hidden" name="myDoc">
     <div id="toolBar1">
         <select onchange="formatDoc('formatblock',this[this.selectedIndex].value);this.selectedIndex=0;">

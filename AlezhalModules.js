@@ -1748,102 +1748,108 @@ var AM = {
         },
 
         ajax: function( option ){
-//            console.log('ajax:');
-            // Загрузка объекта параметров по умолчанию, если пользователь не
-            // представил никаких значений
-            options = {
-                // Метод http-запроса
-                method: option.method || "POST",
-                // URL на который должен быть послан запрос
-                url: option.url || "",
-                // Время ожидания ответа на запрос
-                timeout: option.timeout || 50000,
-                // Функция, запускаемая перед отправкой - типа прогресс
-                onStart: option.onStart || function(){},
-                // Функция, запускаемая после получения данных - типа прогресс
-                onEnd: option.onEnd || function(){},
-                // Функция, вызываемая, когда запрос неудачен, успешен
-                // или завершен (успешно или нет)
-                onComplete: option.onComplete || function(){},
-                onError: option.onError || function(){},
-                onSuccess: option.onSuccess || function(){},
-                // Тип данных, которые будут возвращены с сервера
-                // по умолчанию просто определить, какие данные были
-                // возвращены, и действовать соответственно
-                dataType: option.dataType || "",
-                getParams: option.getParams || "",
-                postParams: option.postParams || ""
-            };
-            // Создание объекта запроса
-            var xhr = new XMLHttpRequest();
-            options.onStart();
-            // Если метод GET и параметры не пусты
-            if( options.method == 'GET' && options.getParams != "" ) {
-//                console.log('options.method==GET');
-                // Открытие асинхронного запроса GET и добавляем параметры в строку запроса
-                xhr.open(options.method, options.url+"?"+options.getParams, true);
-            }
-            // Если метод POST и параметры не пусты
-            if( options.method == 'POST' && options.postParams != "" ) {
-//                console.log('options.method==POST');
-//                console.log('method-'+options.method+'url-'+options.url);
-                // Открытие асинхронного запроса POST
-                xhr.open(options.method, options.url, true);
-            }
-            // Ожидание отклика на запрос в течение 5 секунд
-            // перед тем, как от него отказаться
-            var timeoutLength = options.timeout;
-            // Отслеживание факта успешного завершения запроса
-            var requestDone = false;
-            // Инициализация функции обратного вызова, которая будет запущена через
-            // 5 секунд, отменяя запрос (если он не будет к тому времени выполнен)
-            setTimeout(function()
-            {
-                requestDone = true;
-            }, timeoutLength);
-
-            var that = this;
-            // Отслеживание обновления состояния документа
-            xhr.onreadystatechange = function() {
-//                console.log('onreadystatechange');
-                // Ожидание, полной загрузки данных
-                // и проверки, не истекло ли время запроса
-                if(xhr.readyState == 4 && !requestDone) {
-//                    console.log('xhr.readyState==4');
-                    // Проверка успешности запроса
-                    if(that.httpSuccess(xhr)) {
-//                        console.log('httpSuccess()');
-//                        console.log(that.httpData(xhr, options.dataType));
-                        // Выполнение в случае успеха функции обратного вызова
-                        // с данными, возвращенными с сервера
-                        options.onSuccess(that.httpData(xhr, options.dataType));
-                        options.onEnd();
-                    }
-                    else {
-//                        console.log("error - onreadystatechange");
-                        // В противном случае призошла ошибка, поэтому нужно
-                        // выполнить функцию обратного вызова для обработки ошибки
-                        options.onError();
-                    }
-                    // Выполнение функции обратного вызова, связанной с завершением
-                    // запроса
-                    options.onComplete();
-                    // Подчистка соединения с сервером
-                    xhr = null;
+            console.log('kdsjfksd');
+            try {
+    //            console.log('ajax:');
+                // Загрузка объекта параметров по умолчанию, если пользователь не
+                // представил никаких значений
+                options = {
+                    // Метод http-запроса
+                    method: option.method || "POST",
+                    // URL на который должен быть послан запрос
+                    url: option.url || "",
+                    // Время ожидания ответа на запрос
+                    timeout: option.timeout || 50000,
+                    // Функция, запускаемая перед отправкой - типа прогресс
+                    onStart: option.onStart || function(){},
+                    // Функция, запускаемая после получения данных - типа прогресс
+                    onEnd: option.onEnd || function(){},
+                    // Функция, вызываемая, когда запрос неудачен, успешен
+                    // или завершен (успешно или нет)
+                    onComplete: option.onComplete || function(){},
+                    onError: option.onError || function(){ return false; },
+                    onSuccess: option.onSuccess || function( ){ return true; },
+                    // Тип данных, которые будут возвращены с сервера
+                    // по умолчанию просто определить, какие данные были
+                    // возвращены, и действовать соответственно
+                    dataType: option.dataType || "text/html",
+                    getParams: option.getParams || "",
+                    postParams: option.postParams || "",
+                    async: option.async || true
+                };
+                // Создание объекта запроса
+                var xhr = new XMLHttpRequest();
+                options.onStart();
+                // Если метод GET и параметры не пусты
+                if( options.method == 'GET' && options.getParams != "" ) {
+    //                console.log('options.method==GET');
+                    // Открытие асинхронного запроса GET и добавляем параметры в строку запроса
+                    xhr.open(options.method, options.url+"?"+options.getParams,  options.async);
                 }
-            };
-            // Если метод GET и параметры не пусты
-            if( options.method == 'GET' && options.getParams != "" ) {
-//                console.log('xhr.send()');
-                // Установка соединения с сервером
-                xhr.send();
-            }
-            // Если метод POST и параметры не пусты
-            if( options.method == 'POST' && options.postParams != "" ) {
-//                console.log('xhr.send()');
-                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                // Установка соединения с сервером
-                xhr.send(options.postParams);
+                // Если метод POST и параметры не пусты
+                if( options.method == 'POST' && options.postParams != "" ) {
+    //                console.log('options.method==POST');
+    //                console.log('method-'+options.method+'url-'+options.url);
+                    // Открытие асинхронного запроса POST
+                    xhr.open(options.method, options.url, options.async);
+                }
+                // Ожидание отклика на запрос в течение 5 секунд
+                // перед тем, как от него отказаться
+                var timeoutLength = options.timeout;
+                // Отслеживание факта успешного завершения запроса
+                var requestDone = false;
+                // Инициализация функции обратного вызова, которая будет запущена через
+                // 5 секунд, отменяя запрос (если он не будет к тому времени выполнен)
+                setTimeout(function()
+                {
+                    requestDone = true;
+                }, timeoutLength);
+
+                var that = this;
+                // Отслеживание обновления состояния документа
+                xhr.onreadystatechange = function() {
+    //                console.log('onreadystatechange');
+                    // Ожидание, полной загрузки данных
+                    // и проверки, не истекло ли время запроса
+                    if(xhr.readyState == 4 && !requestDone) {
+    //                    console.log('xhr.readyState==4');
+                        // Проверка успешности запроса
+                        if(that.httpSuccess(xhr)) {
+    //                        console.log('httpSuccess()');
+    //                        console.log(that.httpData(xhr, options.dataType));
+                            // Выполнение в случае успеха функции обратного вызова
+                            // с данными, возвращенными с сервера
+                            options.onSuccess(that.httpData(xhr, options.dataType));
+                            options.onEnd();
+                        }
+                        else {
+    //                        console.log("error - onreadystatechange");
+                            // В противном случае призошла ошибка, поэтому нужно
+                            // выполнить функцию обратного вызова для обработки ошибки
+                            options.onError("unsuccess");
+                        }
+                        // Выполнение функции обратного вызова, связанной с завершением
+                        // запроса
+                        options.onComplete();
+                        // Подчистка соединения с сервером
+                        xhr = null;
+                    }
+                };
+                // Если метод GET и параметры не пусты
+                if( options.method == 'GET' && options.getParams != "" ) {
+    //                console.log('xhr.send()');
+                    // Установка соединения с сервером
+                    xhr.send();
+                }
+                // Если метод POST и параметры не пусты
+                if( options.method == 'POST' && options.postParams != "" ) {
+    //                console.log('xhr.send()');
+                    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    // Установка соединения с сервером
+                    xhr.send(options.postParams);
+                }
+            }catch (ex) {
+                alert(ex.message);
             }
         },
 

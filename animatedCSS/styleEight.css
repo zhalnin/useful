@@ -1,0 +1,123 @@
+.view-first .mask {
+    background-color: rgba(255,255,255,0.7);
+    top: -200px;
+    opacity: 0;
+    transition: all 0.3s ease-out 0.5s;
+    -webkit-transition: all 0.3s ease-out 0.5s;
+    -moz-transition: all 0.3s ease-out 0.5s;
+    -o-transition: all 0.3s ease-out 0.5s;
+}
+.view-first h2 {
+    transform: translateY(-200px);
+    transition: all 0.2s ease-in-out 0.1s;
+}
+.view-first p {
+    color: #333333;
+    transform: translateY(-200px);
+    -webkit-transform: translateY(-200px);
+    -moz-transform: translateY(-200px);
+    -ms-transform: translateY(-200px);
+    -o-transform: translateY(-200px);
+    transition: all 0.2s ease-in-out 0.2s;
+    -webkit-transition: all 0.2s ease-in-out 0.2s;
+    -moz-transition: all 0.2s ease-in-out 0.2s;
+    -o-transition: all 0.2s ease-in-out 0.2s;
+}
+.view-first a.info {
+    transform: translateY(-200px);
+    -webkit-transform: translateY(-200px);
+    -moz-transform: translateY(-200px);
+    -ms-transform: translateY(-200px);
+    -o-transform: translateY(-200px);
+    transition: all 0.2s ease-in-out 0.3s;
+    -webkit-transition: all 0.2s ease-in-out 0.3s;
+    -moz-transition: all 0.2s ease-in-out 0.3s;
+    -o-transition: all 0.2s ease-in-out 0.3s;
+}
+
+
+.view-first:hover .mask {
+    opacity: 1;
+    top: 0px;
+    transition-delay: 0s;
+    -webkit-transition-delay: 0s;
+    -moz-transition-delay: 0s;
+    -o-transition-delay: 0s;
+    animation: bounceY 0.9s linear;
+    -moz-animation: bounceY 0.9s linear;
+    -webkit-animation: bounceY 0.9s linear;
+    -o-animation: bounceY 0.9s linear;
+}
+.view-first:hover h2 {
+    transform: translateY(0px);
+    -webkit-transform: translateY(0px);
+    -moz-transform: translateY(0px);
+    -ms-transform: translateY(0px);
+    -o-transform: translateY(0px);
+    transition-delay: 0.4s;
+    -webkit-transition-delay: 0.4s;
+    -moz-transition-delay: 0.4s;
+    -o-transition-delay: 0.4s;
+}
+.view-first:hover p {
+    transform: translateY(0px);
+    -webkit-transform: translateY(0px);
+    -moz-transform: translateY(0px);
+    -ms-transform: translateY(0px);
+    -o-transform: translateY(0px);
+    transition-delay: 0.2s;
+    -webkit-transition-delay: 0.2s;
+    -moz-transition-delay: 0.2s;
+    -o-transition-delay: 0.2s;
+}
+.view-first:hover a.info {
+    transform: translateY(0px);
+    -webkit-transform: translateY(0px);
+    -moz-transform: translateY(0px);
+    -ms-transform: translateY(0px);
+    -o-transform: translateY(0px);
+    transition-delay: 0s;
+    -webkit-transition-delay: 0s;
+    -moz-transition-delay: 0s;
+    -o-transition-delay: 0s;
+}
+
+
+
+@keyframes bounceY {
+    0% { transform: translateY(-205px);}
+    40% { transform: translateY(-100px);}
+    65% { transform: translateY(-52px);}
+    82% { transform: translateY(-25px);}
+    92% { transform: translateY(-12px);}
+    55%, 75%, 87%, 97%, 100% { transform: translateY(0px);}
+
+
+    0% { -webkit-transform: translateY(-205px);}
+    40% { -webkit-transform: translateY(-100px);}
+    65% { -webkit-transform: translateY(-52px);}
+    82% { -webkit-transform: translateY(-25px);}
+    92% { -webkit-transform: translateY(-12px);}
+    55%, 75%, 87%, 97%, 100% { -webkit-transform: translateY(0px);}
+
+    0% { -moz-transform: translateY(-205px);}
+    40% { -moz-transform: translateY(-100px);}
+    65% { -moz-transform: translateY(-52px);}
+    82% { -moz-transform: translateY(-25px);}
+    92% { -moz-transform: translateY(-12px);}
+    55%, 75%, 87%, 97%, 100% { -moz-transform: translateY(0px);}
+
+    0% { -ms-transform: translateY(-205px);}
+    40% { -ms-transform: translateY(-100px);}
+    65% { -ms-transform: translateY(-52px);}
+    82% { -ms-transform: translateY(-25px);}
+    92% { -ms-transform: translateY(-12px);}
+    55%, 75%, 87%, 97%, 100% { -ms-transform: translateY(0px);}
+
+    0% { -o-transform: translateY(-205px);}
+    40% { -o-transform: translateY(-100px);}
+    65% { -o-transform: translateY(-52px);}
+    82% { -o-transform: translateY(-25px);}
+    92% { -o-transform: translateY(-12px);}
+    55%, 75%, 87%, 97%, 100% { -o-transform: translateY(0px);}
+}

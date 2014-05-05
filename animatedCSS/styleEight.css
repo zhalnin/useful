@@ -2,13 +2,20 @@
     background-color: rgba(255,255,255,0.7);
     top: -200px;
     opacity: 0;
+    -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(Opacity=0);
     transition: all 0.3s ease-out 0.5s;
     -webkit-transition: all 0.3s ease-out 0.5s;
     -moz-transition: all 0.3s ease-out 0.5s;
     -o-transition: all 0.3s ease-out 0.5s;
+    -ms-transition: all 0.3s ease-out 0.5s;
 }
 .view-first h2 {
     transform: translateY(-200px);
+    -webkit-transform: translateY(-200px);
+    -moz-transform: translateY(-200px);
+    -o-transform: translateY(-200px);
+    -ms-transform: translateY(-200px);
     transition: all 0.2s ease-in-out 0.1s;
 }
 .view-first p {
@@ -22,6 +29,7 @@
     -webkit-transition: all 0.2s ease-in-out 0.2s;
     -moz-transition: all 0.2s ease-in-out 0.2s;
     -o-transition: all 0.2s ease-in-out 0.2s;
+    -ms-transition: all 0.2s ease-in-out 0.2s;
 }
 .view-first a.info {
     transform: translateY(-200px);
@@ -33,20 +41,25 @@
     -webkit-transition: all 0.2s ease-in-out 0.3s;
     -moz-transition: all 0.2s ease-in-out 0.3s;
     -o-transition: all 0.2s ease-in-out 0.3s;
+    -ms-transition: all 0.2s ease-in-out 0.3s;
 }
 
 
 .view-first:hover .mask {
     opacity: 1;
+    -ms-filter: "progid: (DXImageTransform.Microsoft.Alpha(Opacity=1)";
+    filter: alpha(Opacity=1);
     top: 0px;
     transition-delay: 0s;
     -webkit-transition-delay: 0s;
     -moz-transition-delay: 0s;
     -o-transition-delay: 0s;
+    -ms-transition-delay: 0s;
     animation: bounceY 0.9s linear;
     -moz-animation: bounceY 0.9s linear;
     -webkit-animation: bounceY 0.9s linear;
     -o-animation: bounceY 0.9s linear;
+    -ms-animation: bounceY 0.9s linear;
 }
 .view-first:hover h2 {
     transform: translateY(0px);
@@ -58,6 +71,7 @@
     -webkit-transition-delay: 0.4s;
     -moz-transition-delay: 0.4s;
     -o-transition-delay: 0.4s;
+    -ms-transition-delay: 0.4s;
 }
 .view-first:hover p {
     transform: translateY(0px);
@@ -69,6 +83,7 @@
     -webkit-transition-delay: 0.2s;
     -moz-transition-delay: 0.2s;
     -o-transition-delay: 0.2s;
+    -ms-transition-delay: 0.2s;
 }
 .view-first:hover a.info {
     transform: translateY(0px);
@@ -80,6 +95,7 @@
     -webkit-transition-delay: 0s;
     -moz-transition-delay: 0s;
     -o-transition-delay: 0s;
+    -ms-transition-delay: 0s;
 }
 
 
@@ -91,29 +107,33 @@
     82% { transform: translateY(-25px);}
     92% { transform: translateY(-12px);}
     55%, 75%, 87%, 97%, 100% { transform: translateY(0px);}
-
-
+}
+@-webkit-keyframes bounceY {
     0% { -webkit-transform: translateY(-205px);}
     40% { -webkit-transform: translateY(-100px);}
     65% { -webkit-transform: translateY(-52px);}
     82% { -webkit-transform: translateY(-25px);}
     92% { -webkit-transform: translateY(-12px);}
     55%, 75%, 87%, 97%, 100% { -webkit-transform: translateY(0px);}
-
+}
+@-moz-keyframes bounceY {
     0% { -moz-transform: translateY(-205px);}
     40% { -moz-transform: translateY(-100px);}
     65% { -moz-transform: translateY(-52px);}
     82% { -moz-transform: translateY(-25px);}
     92% { -moz-transform: translateY(-12px);}
     55%, 75%, 87%, 97%, 100% { -moz-transform: translateY(0px);}
+}
 
+@-ms-keyframes bounceY {
     0% { -ms-transform: translateY(-205px);}
     40% { -ms-transform: translateY(-100px);}
     65% { -ms-transform: translateY(-52px);}
     82% { -ms-transform: translateY(-25px);}
     92% { -ms-transform: translateY(-12px);}
-    55%, 75%, 87%, 97%, 100% { -ms-transform: translateY(0px);}
-
+    55%, 75%, 77%, 80%, 87%, 97%, 100% { -ms-transform: translateY(0px);}
+}
+@-o-keyframes bounceY {
     0% { -o-transform: translateY(-205px);}
     40% { -o-transform: translateY(-100px);}
     65% { -o-transform: translateY(-52px);}

@@ -13,11 +13,11 @@
     opacity: 0;
     -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);
-    transform: scale(1) rotate(-180deg);
-    -webkit-transform: scale(1) rotate(-180deg);
-    -moz-transform: scale(1) rotate(-180deg);
-    -ms-transform: scale(1) rotate(-180deg);
-    -o-transform: scale(1) rotate(-180deg);
+    transform: scale(0) rotate(-180deg);
+    -webkit-transform: scale(0) rotate(-180deg);
+    -moz-transform: scale(0) rotate(-180deg);
+    -ms-transform: scale(0) rotate(-180deg);
+    -o-transform: scale(0) rotate(-180deg);
     -webkit-transition: all 0.4s ease-in;
     -moz-transition: all 0.4s ease-in;
     -ms-transition: all 0.4s ease-in;
@@ -94,8 +94,8 @@
     -o-transition-delay: 0.2s;
 }
 .view-first:hover h2 ,
-.view-first p,
-.view-first a.info {
+.view-first:hover p,
+.view-first:hover a.info {
     -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=1)";
     filter: alpha(opacity=100);
     opacity: 1;

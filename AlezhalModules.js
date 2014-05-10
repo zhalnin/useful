@@ -1748,7 +1748,6 @@ var AM = {
         },
 
         ajax: function( option ){
-            console.log('kdsjfksd');
             try {
     //            console.log('ajax:');
                 // Загрузка объекта параметров по умолчанию, если пользователь не

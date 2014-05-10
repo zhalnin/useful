@@ -6,101 +6,21 @@
  * To change this template use File | Settings | File Templates.
  */
 
-
-
-AM.Event.addEvent(window, 'load', function() {
-
-    var theIframe = AM.DOM.$('iframe_redactor'),
-        doc = theIframe.contentWindow.document || theIframe.contentDocument,
-        editorTR = AM.DOM.$('editorTR'),
-        editorTD = AM.DOM.tag('td', editorTR),
-        i, len,
-        editorResize = AM.DOM.$('editorResize'),
-        wysiwyg_toolbar = AM.DOM.$('wysiwyg_toolbar');
-
-
-    var wysiwyg = new WysiwygObject();
-    var modal = document.createElement("div");
-    modal.id = "modal";
-    modal.innerHTML = '<div id="modalTitle"></div>'+
-        '<div id="modalContent"></div>';
-    document.body.appendChild(modal);
-
-    var editor_span = AM.DOM.$('editorSpan');
-    var modal_preview = document.createElement("div");
-    modal_preview.id = "modal_preview";
-    AM.DOM.attr( modal_preview, 'class', 'modal_preview' );
-    modal_preview.innerHTML = '<div id="modalPreviewTitle">Предпросмотр</div>'+
-        '<div id="modalPreviewContent"></div>';
-    document.body.appendChild(modal_preview);
-
-    var modal_submit = document.createElement("div");
-    modal_submit.id = "modal_submit";
-    AM.DOM.attr( modal_submit, 'class', 'modal_submit' );
-    modal_submit.innerHTML = '<div id="modalSubmitTitle">Успех</div>'+
-        '<div id="modalSubmitContent"></div>';
-    document.body.appendChild( modal_submit );
-
-
-
-    var overlay = document.createElement("div");
-    overlay.id = "overlay";
-    overlay.onclick = wysiwyg.hideOverlay;
-    document.body.appendChild(overlay);
-
-
-    doc.designMode = "On";
-
-
-    for( i = 0, len = editorTD.length; i < len; i++ ) {
-//        if( AM.DOM.first(editorTD[i]).tagName == 'A' ) {
-        with( { num: i }) {
-            AM.Event.addEvent( AM.DOM.first(editorTD[num]), 'click', function( event ) {
-                var getX = AM.Position.getX(event),
-                    getY = AM.Position.getY(event),
-                    targetId = AM.DOM.first(editorTD[num]).id;
-
-                switch ( targetId ) {
-                    case "uploadImage":
-                        doUploadImg(getX, getY);
-                        break;
-                    case "url":
-                        doURL(getX, getY);
-                        break;
-                    case "image":
-                        doImg(getX, getY);
-                        break;
-                    default:
-                        doStyle(targetId);
-                        break;
-                }
-            });
-        }
-    }
-
-
-    new DragObject( editorResize, wysiwyg_toolbar, theIframe );
-
-    AM.Event.addEvent(document, 'scroll', function(event) {
-        adjustAllOverlay();
-    } );
-
-}); // End of window.onload
-
-
-/**
- * Перепозиционирование затемнения на весь экран
- */
-function adjustAllOverlay() {
-    if( AM.DOM.$("overlay") != undefined ) {
-        // Обнаружение затемнения
-        var overl = AM.DOM.$("overlay");
-        // Установка его размеров по высоте и ширине текущей страницы
-        // (что будет полезным при использовании прокрутки)
-        overl.style.height = AM.Position.scrollY() + AM.Position.windowHeight()+ "px";
-        overl.style.width = AM.Position.scrollX() + AM.Position.windowWidth()+"px";
-    }
+// Подгружаем смайлики
+var smiles = [
+    'files/emoticons/happy.gif','files/emoticons/laugh.gif','files/emoticons/silly.gif','files/emoticons/wink.gif',
+    'files/emoticons/plain.gif','files/emoticons/angry.gif','files/emoticons/blush.gif','files/emoticons/confused.gif',
+    'files/emoticons/cool.gif','files/emoticons/cry.gif','files/emoticons/devil.gif','files/emoticons/grin.gif',
+    'files/emoticons/love.gif','files/emoticons/mischief.gif','files/emoticons/sad.gif','files/emoticons/shocked.gif',
+    'files/emoticons/info.gif','files/emoticons/plus.gif','files/emoticons/minus.gif','files/emoticons/alert.gif'
+];
+var arrSmiles = [];
+for( var i=0, len = smiles.length; i<len; i++ ) {
+    arrSmiles[i] = new Image();
+    arrSmiles[i].src = smiles[i];
 }
+
+
 
 
 function WysiwygObject() {
@@ -115,25 +35,39 @@ function WysiwygObject() {
         AM.DOM.hide(AM.DOM.$("overlay"));
         AM.DOM.hide(AM.DOM.$("modal"));
         AM.DOM.hide(AM.DOM.$("modal_preview"));
-        AM.DOM.hide(AM.DOM.$("modal_submit"));
+//        AM.DOM.hide(AM.DOM.$("emoticons"));
     };
     this.showOverlay = function(){
         var over = AM.DOM.$("overlay");
+        adjustAllOverlay();
         AM.DOM.fadeIn(over, 50, 10);
     };
+    this.showOverlayEmoticon = function() {
+        var over = AM.DOM.$("overlay");
+        adjustAllOverlay();
+        AM.DOM.fadeIn(over, 0, 1 );
+    };
+
     this.openModal = function( param, x, y ){
-        this.showOverlay();
         switch( param ) {
             case 'uploadImage':
+                this.showOverlay();
                 this.showFormUploadImage(x,y);
                 break;
             case 'url':
+                this.showOverlay();
                 this.showFormUrl(x,y);
                 break;
             case 'image':
+                this.showOverlay();
                 this.showFormImage(x,y);
                 break;
+            case 'emoticon':
+                this.showOverlayEmoticon();
+                this.showEmoticon(x, y);
+                break;
             case 'preview':
+                this.showOverlay();
                 this.showPreview();
                 break;
         }
@@ -146,10 +80,9 @@ function WysiwygObject() {
             img.removeChild(img.firstChild);
         }
         img.innerHTML=response;
-        AM.DOM.fadeIn(modal_preview, 100, 10);
+        AM.DOM.fadeIn(img, 100, 10);
 //        AM.DOM.$('showmsg').innerHTML = response;
     };
-
     this.showFormUploadImage = function(x, y){
         var modalUploadImage = AM.DOM.$('modal');
         AM.Position.setX(modalUploadImage, x);
@@ -166,12 +99,13 @@ function WysiwygObject() {
             '<div class="two"><label for="filename"><span>Выберите файл</span></label><input type="file" name="filename" id="filename" /></div>'+
             '<p>Максимальный размер файла: 2.0 MB. </p>' +
             '<p>Изображение будет сжато до размера 450px в ширину или 600px в высоту. </p>'+
-            '<div class="two"><label for="submit"></label><input type="submit" value="Отправить" id="submit" /></div>'+
+            '<div class="two"><label for="submit"></label><div type="submit" onclick="submitForm(uploadForm)" class="button" value="Вставить" id="submit">' +
+            '<span style=""><span class="effect"></span><span class="label"> Отправить </span></span></div>'+
             '</fieldset>'+
             '</form>';
 
         img.innerHTML=form;
-        AM.DOM.fadeIn(modal, 100, 10);
+        AM.DOM.fadeIn(modalUploadImage, 100, 10);
     };
     this.showFormUrl = function(x, y){
 
@@ -188,12 +122,13 @@ function WysiwygObject() {
             '<fieldset>'+
             '<legend>Вставить ссылку</legend>'+
             '<div class="two"><label for="url"><span>Введите адрес ссылки</span></label><input type="text" name="url" id="url" value="http://" /></div>'+
-            '<div class="two"><label for="submit"></label><input type="submit" value="Вставить" id="submit" /></div>'+
+            '<div class="two"><label for="submit"></label><div type="submit" onclick="submitForm(uploadUrlForm)" class="button" value="Вставить" id="submit">' +
+            '<span style=""><span class="effect"></span><span class="label"> Отправить </span></span></div>'+
             '</fieldset>'+
             '</form>';
 
         img.innerHTML=form;
-        AM.DOM.fadeIn(modal, 100, 10);
+        AM.DOM.fadeIn(modalUrl, 100, 10);
     };
 
     this.showFormImage = function(x, y){
@@ -201,7 +136,6 @@ function WysiwygObject() {
         var modalImage = AM.DOM.$('modal');
         AM.Position.setX(modalImage, x);
         AM.Position.setY(modalImage, y);
-
         var img = AM.DOM.$("modalContent");
         if(img.firstChild){
             img.removeChild(img.firstChild);
@@ -211,13 +145,127 @@ function WysiwygObject() {
             '<fieldset>'+
             '<legend>Прикрепить изображение</legend>'+
             '<div class="two"><label for="image"><span>Введите адрес изображения</span></label><input type="text" name="image" id="image" value="http://" /></div>'+
-            '<div class="two"><label for="submit"></label><input type="submit" value="Вставить" id="submit" /></div>'+
+            '<div class="two"><label for="submit"></label><div type="submit" onclick="submitForm(insertImageForm)" class="button" value="Вставить" id="submit">' +
+            '<span style=""><span class="effect"></span><span class="label"> Отправить </span></span></div>'+
             '</fieldset>'+
             '</form>';
 
         img.innerHTML=form;
-        AM.DOM.fadeIn(modal, 100, 10);
+        AM.DOM.fadeIn(modalImage, 100, 10);
     };
+
+    this.showEmoticon = function(x, y) {
+
+    var emoticon = AM.DOM.$('modal');
+
+        AM.Position.setX(emoticon, x);
+        AM.Position.setY(emoticon, y);
+        var img = AM.DOM.$("modalContent");
+        if(img.firstChild){
+            img.removeChild(img.firstChild);
+        }
+        var smiles = '<div id="emoticons" style="width: 95px; height: 500px;">'+
+            '<div class="mceMenu">'+
+            '<table id="menu_wysiwyg" cellspacing="0" cellpadding="0" border="0"><tbody>'+
+                    '<tr id="mce_0" class="mceMenuItem">'+
+                        '<td><a href="javascript:;" onclick="return false;" onmousedown="return false;">'+
+                                '<span class="mceIcon mce_emoticon_happy"></span>'+
+                                '<span class="mceText" title="Happy">Happy</span></a></td></tr>'+
+                    '<tr id="mce_1" class="mceMenuItem mceMenuItemEnabled">'+
+                        '<td><a href="javascript:;" onclick="return false;" onmousedown="return false;">'+
+                                '<span class="mceIcon mce_emoticon_laugh"></span>'+
+                                '<span class="mceText" title="Laugh">Laugh</span></a></td></tr>'+
+                    '<tr id="mce_2" class="mceMenuItem mceMenuItemEnabled">'+
+                        '<td><a href="javascript:;" onclick="return false;" onmousedown="return false;">'+
+                                '<span class="mceIcon mce_emoticon_silly"></span>'+
+                                '<span class="mceText" title="Silly">Silly</span></a></td></tr>'+
+                    '<tr id="mce_3" class="mceMenuItem mceMenuItemEnabled">'+
+                        '<td><a href="javascript:;" onclick="return false;" onmousedown="return false;">'+
+                                '<span class="mceIcon mce_emoticon_wink"></span>'+
+                                '<span class="mceText" title="Wink">Wink</span></a></td></tr>'+
+                    '<tr id="mce_4" class="mceMenuItem mceMenuItemEnabled">'+
+                        '<td><a href="javascript:;" onclick="return false;" onmousedown="return false;">'+
+                                '<span class="mceIcon mce_emoticon_plain"></span>'+
+                                '<span class="mceText" title="Plain">Plain</span></a></td></tr>'+
+                    '<tr id="mce_5" class="mceMenuItem mceMenuItemEnabled">'+
+                        '<td><a href="javascript:;" onclick="return false;" onmousedown="return false;">'+
+                                '<span class="mceIcon mce_emoticon_angry"></span>'+
+                                '<span class="mceText" title="Angry">Angry</span></a></td></tr>'+
+                    '<tr id="mce_6" class="mceMenuItem mceMenuItemEnabled">'+
+                        '<td><a href="javascript:;" onclick="return false;" onmousedown="return false;">'+
+                                '<span class="mceIcon mce_emoticon_blush"></span>'+
+                                '<span class="mceText" title="Blush">Blush</span></a></td></tr>'+
+                    '<tr id="mce_7" class="mceMenuItem mceMenuItemEnabled">'+
+                        '<td><a href="javascript:;" onclick="return false;" onmousedown="return false;">'+
+                                '<span class="mceIcon mce_emoticon_confused"></span>'+
+                                '<span class="mceText" title="Confused">Confused</span></a></td></tr>'+
+                    '<tr id="mce_8" class="mceMenuItem mceMenuItemEnabled">'+
+                        '<td><a href="javascript:;" onclick="return false;" onmousedown="return false;">'+
+                                '<span class="mceIcon mce_emoticon_cool"></span>'+
+                                '<span class="mceText" title="Cool">Cool</span></a></td></tr>'+
+                    '<tr id="mce_9" class="mceMenuItem mceMenuItemEnabled">'+
+                        '<td><a href="javascript:;" onclick="return false;" onmousedown="return false;">'+
+                                '<span class="mceIcon mce_emoticon_cry"></span>'+
+                                '<span class="mceText" title="Cry">Cry</span></a></td></tr>'+
+                    '<tr id="mce_10" class="mceMenuItem mceMenuItemEnabled">'+
+                        '<td><a href="javascript:;" onclick="return false;" onmousedown="return false;">'+
+                                '<span class="mceIcon mce_emoticon_devil"></span>'+
+                                '<span class="mceText" title="Devil">Devil</span></a></td></tr>'+
+                    '<tr id="mce_11" class="mceMenuItem mceMenuItemEnabled">'+
+                        '<td><a href="javascript:;" onclick="return false;" onmousedown="return false;">'+
+                                '<span class="mceIcon mce_emoticon_grin"></span>'+
+                                '<span class="mceText" title="Grin">Grin</span></a></td></tr>'+
+                    '<tr id="mce_12" class="mceMenuItem mceMenuItemEnabled">'+
+                        '<td><a href="javascript:;" onclick="return false;" onmousedown="return false;">'+
+                                '<span class="mceIcon mce_emoticon_love"></span>'+
+                                '<span class="mceText" title="Love">Love</span></a></td></tr>'+
+                    '<tr id="mce_13" class="mceMenuItem mceMenuItemEnabled">'+
+                        '<td><a href="javascript:;" onclick="return false;" onmousedown="return false;">'+
+                                '<span class="mceIcon mce_emoticon_mischief"></span>'+
+                                '<span class="mceText" title="Mischief">Mischief</span></a></td></tr>'+
+                    '<tr id="mce_14" class="mceMenuItem mceMenuItemEnabled">'+
+                        '<td><a href="javascript:;" onclick="return false;" onmousedown="return false;">'+
+                                '<span class="mceIcon mce_emoticon_sad"></span>'+
+                                '<span class="mceText" title="Sad">Sad</span></a></td></tr>'+
+                    '<tr id="mce_15" class="mceMenuItem mceMenuItemEnabled">'+
+                        '<td><a href="javascript:;" onclick="return false;" onmousedown="return false;">'+
+                                '<span class="mceIcon mce_emoticon_shocked"></span>'+
+                                '<span class="mceText" title="Shocked">Shocked</span></a></td></tr>'+
+                    '<tr id="mce_16" class="mceMenuItem mceMenuItemEnabled">'+
+                        '<td><a href="javascript:;" onclick="return false;" onmousedown="return false;">'+
+                                '<span class="mceIcon mce_emoticon_info"></span>'+
+                                '<span class="mceText" title="Info">Info</span></a></td></tr>'+
+                    '<tr id="mce_17" class="mceMenuItem mceMenuItemEnabled">'+
+                        '<td><a href="javascript:;" onclick="return false;" onmousedown="return false;">'+
+                                '<span class="mceIcon mce_emoticon_plus"></span>'+
+                                '<span class="mceText" title="Plus">Plus</span></a></td></tr>'+
+                    '<tr id="mce_18" class="mceMenuItem mceMenuItemEnabled">'+
+                        '<td><a href="javascript:;" onclick="console.log(this.lastChild.title);" onmousedown="return false;">'+
+                                '<span class="mceIcon mce_emoticon_minus"></span>'+
+                                '<span class="mceText" title="Minus">Minus</span></a></td></tr>'+
+                    '<tr id="mce_19" class="mceMenuItem mceMenuItemEnabled">'+
+                        '<td><a href="javascript:;" onclick="return false;" onmousedown="return false;">'+
+                                '<span class="mceIcon mce_emoticon_alert"></span>'+
+                                '<span class="mceText" title="Alert">Alert</span></a></td></tr>'+
+                    '</tbody></table></div></div>';
+        img.innerHTML=smiles;
+        AM.Event.addEvent(AM.DOM.$('menu_wysiwyg'), 'click', function(e) {
+            var event = AM.Event.getEvent(e),
+                target = AM.Event.getTarget(event),
+                that = new WysiwygObject();
+            if( target.nodeName == 'SPAN' ) {
+                var targetId = AM.DOM.parent(target,3).id,
+                    targetSplit = targetId.split('_'),
+                    imageSrc = arrSmiles[parseInt(targetSplit[1])].src;
+                that.doc().execCommand('insertHtml', false, "<img src="+imageSrc+" />" );
+                that.hideOverlay();
+                that.theIframe().focus();
+
+            }
+        });
+        emoticon.style.display = 'block';
+    };
+
     this.uploadUrlSuccess = function( url ) {
         if( url === 'error' ) {
             this.hideOverlay();
@@ -225,14 +273,14 @@ function WysiwygObject() {
             return;
         }
         this.doc().execCommand('createlink', null, url );
-        this.theIframe().focus();
         this.hideOverlay();
+        this.theIframe().focus();
     };
 
     this.uploadSuccess = function( path ) {
         this.doc().execCommand('InsertImage', null, path );
-        this.theIframe().focus();
         this.hideOverlay();
+        this.theIframe().focus();
     };
 
     this.uploadInsertImageSuccess = function( image, img_width, img_height ) {
@@ -242,14 +290,11 @@ function WysiwygObject() {
             return;
         }
         this.doc().execCommand('insertHtml', false, "<img src="+image+" height="+img_height+" width="+img_width+" />" );
-        this.theIframe().focus();
         this.hideOverlay();
+        this.theIframe().focus();
     };
 
 }
-
-
-
 
 
 var wysiwyg = new WysiwygObject();
@@ -260,26 +305,38 @@ function doStyle(style) {
     wysiwyg.theIframe().focus();
 }
 
-function doURL(x,y) {
+function doURL(x, y) {
     wysiwyg.openModal( 'url', x, y );
 }
 
-function doUploadImg(x,y) {
+function doUploadImg(x, y) {
     wysiwyg.openModal( 'uploadImage', x, y );
 }
 
-function doImg(x,y) {
+function doImg(x, y) {
     wysiwyg.openModal( 'image', x, y );
 }
 
+function doEmoticon(x, y) {
+    wysiwyg.openModal( 'emoticon', x, y );
+}
 
-
-
-
-
-
-
-
+function submitForm(param) {
+    param.submit();
+}
+/**
+ * Перепозиционирование затемнения на весь экран
+ */
+function adjustAllOverlay() {
+    if( AM.DOM.$("overlay") != undefined ) {
+        // Обнаружение затемнения
+        var overl = AM.DOM.$("overlay");
+        // Установка его размеров по высоте и ширине текущей страницы
+        // (что будет полезным при использовании прокрутки)
+        overl.style.height = AM.Position.scrollY() + AM.Position.windowHeight()+ "px";
+        overl.style.width = AM.Position.scrollX() + AM.Position.windowWidth()+"px";
+    }
+}
 
 function previewPost() {
     var modal_preview = AM.DOM.$('modal_preview'),
@@ -290,34 +347,62 @@ function previewPost() {
     AM.Position.setX(modal_preview, editor_span_width);
     AM.Position.setY(modal_preview, editor_span_height);
     var content = wysiwyg.doc().body.innerHTML;
-    var result = content.replace(/&nbsp;/g,'');
+    var amp = content.replace(/&amp;/g,'');
+    var nbsp = amp.replace(/&nbsp;/g,'');
+
     AM.Ajax.ajax({
         'method':'POST',
         'url': 'ajax_handle.php',
-        'postParams': 'mode=preview&text='+result,
+        'postParams': 'mode=preview&text='+nbsp,
         'onSuccess': handleResultPreview
     });
 
 }
 
+
+function handleResultPreview( response ) {
+//    var amp = response.replace(/&amp;/g,'&');
+//    var nbsp = amp.replace(/&nbsp;/g,'');
+    wysiwyg.showOverlay();
+    var img = AM.DOM.$("modalPreviewContent"),
+        modal_preview = AM.DOM.$('modal_preview');
+    if(img.firstChild){
+        img.removeChild(img.firstChild);
+    }
+    var dialog_response = "<div class=\"dialog_response main-modal rounded shadowed\" style='width: 700px;'>"+response+"</div>";
+    img.innerHTML=dialog_response;
+    AM.DOM.fadeIn(modal_preview, 100, 10);
+
+//    wysiwyg.openModal('preivew');
+//    AM.DOM.$('showmsg').innerHTML = response;
+}
+
+
 function sendPost() {
-    var modal_submit = AM.DOM.$('modal_submit'),
+    var modal_preview = AM.DOM.$('modal_preview'),
         editor_span = AM.DOM.$('editorSpan'),
         editor_span_width = AM.Position.getElementLeft(editor_span),
         editor_span_height = AM.Position.getElementTop(editor_span);
-    AM.Position.setX(modal_submit, editor_span_width);
-    AM.Position.setY(modal_submit, editor_span_height);
+
+    AM.Position.setX(modal_preview, editor_span_width);
+    AM.Position.setY(modal_preview, editor_span_height);
     var content = wysiwyg.doc().body.innerHTML;
-    var result = content.replace(/&nbsp;/g,'');
+    var amp = content.replace(/&amp;/g,'');
+    var nbsp = amp.replace(/&nbsp;/g,'');
+
     AM.Ajax.ajax({
         'method':'POST',
         'url': 'ajax_handle.php',
-        'postParams': 'mode=submit&text='+result,
-        'onSuccess': handleResult
+        'postParams': 'mode=preview&text='+nbsp,
+        'onSuccess': handleResultPost
     });
+
 }
 
-function handleResultPreview( response ) {
+
+function handleResultPost( response ) {
+//    var amp = response.replace(/&amp;/g,'&');
+//    var nbsp = amp.replace(/&nbsp;/g,'');
     wysiwyg.showOverlay();
     var img = AM.DOM.$("modalPreviewContent");
     if(img.firstChild){
@@ -331,16 +416,10 @@ function handleResultPreview( response ) {
 //    AM.DOM.$('showmsg').innerHTML = response;
 }
 
-function handleResult( response ) {
-    wysiwyg.showOverlay();
-    var img = AM.DOM.$("modalSubmitContent");
-    if(img.firstChild){
-        img.removeChild(img.firstChild);
-    }
-    var dialogResponseSubmit = "<div class=\"dialog_response main-modal rounded shadowed\" style='width: 700px;'>"+response+"</div>";
-    img.innerHTML=dialogResponseSubmit;
-    AM.DOM.fadeIn(modal_submit, 100, 10);
 
-//    wysiwyg.openModal('preivew');
-//    AM.DOM.$('showmsg').innerHTML = response;
+
+function handleError( error ) {
+    console.log( error );
+
 }
+

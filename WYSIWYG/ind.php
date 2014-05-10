@@ -17,6 +17,7 @@
 <!--    <link rel="stylesheet" type="text/css" href="wysiwyg.css">-->
     <link rel="stylesheet" type="text/css" href="style.css">
     <script type="text/javascript" src="../AlezhalModules.js" ></script>
+    <script type="text/javascript" src="load.js"></script>
     <script type="text/javascript" src="wysiwyg.js"></script>
     <script type="text/javascript" src="dragMaster.js"></script>
 <style type="text/css">
@@ -68,6 +69,7 @@
                                 <td><a href="#" id="url" value="Ссылка" class="editor_link"
                                        title="Напечатайте описание ссылки, выделите его, и нажмите на иконку. Введите адрес ссылки, нажмите кнопку 'Вставить'" >
                                         <span id="link" class="editorIcon editor_link" ></span></a></td>
+                                <td><a href="#" id="emoticon" value="Вставить смайлик" class="editor_emoticon" title="Вставить смайлик"><span id="editorEmoticon" class="editorIcon editor_emoticon"></span></a></td>
                                 <td><a href="#" class="editorSpacer" ><span class="editorIcon editorSpacer"></span></a></td>
                                 <td style="padding-right: 2px;" class=""><span></span></td>
                             </tr>
@@ -101,8 +103,173 @@
     </div>
 
 </form>
-
-
+<!--<div id="emoticons" style="position: absolute; left: 515px; top: 1323px; z-index: 200000;width: 95px; height: 500px;">-->
+<!--    <div class="mceMenu">-->
+<!--        <table id="menu_wysiwygtext_wysiwygtext_jiveemoticons_menu_tbl" cellspacing="0" cellpadding="0" border="0">-->
+<!--            <tbody>-->
+<!--            <tr id="mce_0" class="mceMenuItem mceMenuItemEnabled mceFirst">-->
+<!--                <td>-->
+<!--                    <a href="javascript:;" onclick="return false;" onmousedown="return false;">-->
+<!--                        <span class="mceIcon mce_jiveMacro_emoticon_happy"></span>-->
+<!--                        <span class="mceText" title="Happy">Happy</span>-->
+<!--                    </a>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr id="mce_1" class="mceMenuItem mceMenuItemEnabled">-->
+<!--                <td>-->
+<!--                    <a href="javascript:;" onclick="return false;" onmousedown="return false;">-->
+<!--                        <span class="mceIcon mce_jiveMacro_emoticon_laugh"></span>-->
+<!--                        <span class="mceText" title="Laugh">Laugh</span>-->
+<!--                    </a>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr id="mce_2" class="mceMenuItem mceMenuItemEnabled">-->
+<!--                <td>-->
+<!--                    <a href="javascript:;" onclick="return false;" onmousedown="return false;">-->
+<!--                        <span class="mceIcon mce_jiveMacro_emoticon_silly"></span>-->
+<!--                        <span class="mceText" title="Silly">Silly</span>-->
+<!--                    </a>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr id="mce_3" class="mceMenuItem mceMenuItemEnabled">-->
+<!--                <td>-->
+<!--                    <a href="javascript:;" onclick="return false;" onmousedown="return false;">-->
+<!--                        <span class="mceIcon mce_jiveMacro_emoticon_wink"></span>-->
+<!--                        <span class="mceText" title="Wink">Wink</span>-->
+<!--                    </a>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr id="mce_4" class="mceMenuItem mceMenuItemEnabled">-->
+<!--                <td>-->
+<!--                    <a href="javascript:;" onclick="return false;" onmousedown="return false;">-->
+<!--                        <span class="mceIcon mce_jiveMacro_emoticon_plain"></span>-->
+<!--                        <span class="mceText" title="Plain">Plain</span>-->
+<!--                    </a>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr id="mce_5" class="mceMenuItem mceMenuItemEnabled">-->
+<!--                <td>-->
+<!--                    <a href="javascript:;" onclick="return false;" onmousedown="return false;">-->
+<!--                        <span class="mceIcon mce_jiveMacro_emoticon_angry"></span>-->
+<!--                        <span class="mceText" title="Angry">Angry</span>-->
+<!--                    </a>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr id="mce_6" class="mceMenuItem mceMenuItemEnabled">-->
+<!--                <td>-->
+<!--                    <a href="javascript:;" onclick="return false;" onmousedown="return false;">-->
+<!--                        <span class="mceIcon mce_jiveMacro_emoticon_blush"></span>-->
+<!--                        <span class="mceText" title="Blush">Blush</span>-->
+<!--                    </a>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr id="mce_7" class="mceMenuItem mceMenuItemEnabled">-->
+<!--                <td>-->
+<!--                    <a href="javascript:;" onclick="return false;" onmousedown="return false;">-->
+<!--                        <span class="mceIcon mce_jiveMacro_emoticon_confused"></span>-->
+<!--                        <span class="mceText" title="Confused">Confused</span>-->
+<!--                    </a>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr id="mce_8" class="mceMenuItem mceMenuItemEnabled">-->
+<!--                <td>-->
+<!--                    <a href="javascript:;" onclick="return false;" onmousedown="return false;">-->
+<!--                        <span class="mceIcon mce_jiveMacro_emoticon_cool"></span>-->
+<!--                        <span class="mceText" title="Cool">Cool</span>-->
+<!--                    </a>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr id="mce_9" class="mceMenuItem mceMenuItemEnabled">-->
+<!--                <td>-->
+<!--                    <a href="javascript:;" onclick="return false;" onmousedown="return false;">-->
+<!--                        <span class="mceIcon mce_jiveMacro_emoticon_cry"></span>-->
+<!--                        <span class="mceText" title="Cry">Cry</span>-->
+<!--                    </a>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr id="mce_10" class="mceMenuItem mceMenuItemEnabled">-->
+<!--                <td>-->
+<!--                    <a href="javascript:;" onclick="return false;" onmousedown="return false;">-->
+<!--                        <span class="mceIcon mce_jiveMacro_emoticon_devil"></span>-->
+<!--                        <span class="mceText" title="Devil">Devil</span>-->
+<!--                    </a>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr id="mce_11" class="mceMenuItem mceMenuItemEnabled">-->
+<!--                <td>-->
+<!--                    <a href="javascript:;" onclick="return false;" onmousedown="return false;">-->
+<!--                        <span class="mceIcon mce_jiveMacro_emoticon_grin"></span>-->
+<!--                        <span class="mceText" title="Grin">Grin</span>-->
+<!--                    </a>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr id="mce_12" class="mceMenuItem mceMenuItemEnabled">-->
+<!--                <td>-->
+<!--                    <a href="javascript:;" onclick="return false;" onmousedown="return false;">-->
+<!--                        <span class="mceIcon mce_jiveMacro_emoticon_love"></span>-->
+<!--                        <span class="mceText" title="Love">Love</span>-->
+<!--                    </a>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr id="mce_13" class="mceMenuItem mceMenuItemEnabled">-->
+<!--                <td>-->
+<!--                    <a href="javascript:;" onclick="return false;" onmousedown="return false;">-->
+<!--                        <span class="mceIcon mce_jiveMacro_emoticon_mischief"></span>-->
+<!--                        <span class="mceText" title="Mischief">Mischief</span>-->
+<!--                    </a>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr id="mce_14" class="mceMenuItem mceMenuItemEnabled">-->
+<!--                <td>-->
+<!--                    <a href="javascript:;" onclick="return false;" onmousedown="return false;">-->
+<!--                        <span class="mceIcon mce_jiveMacro_emoticon_sad"></span>-->
+<!--                        <span class="mceText" title="Sad">Sad</span>-->
+<!--                    </a>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr id="mce_15" class="mceMenuItem mceMenuItemEnabled">-->
+<!--                <td>-->
+<!--                    <a href="javascript:;" onclick="return false;" onmousedown="return false;">-->
+<!--                        <span class="mceIcon mce_jiveMacro_emoticon_shocked"></span>-->
+<!--                        <span class="mceText" title="Shocked">Shocked</span>-->
+<!--                    </a>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr id="mce_16" class="mceMenuItem mceMenuItemEnabled">-->
+<!--                <td>-->
+<!--                    <a href="javascript:;" onclick="return false;" onmousedown="return false;">-->
+<!--                        <span class="mceIcon mce_jiveMacro_emoticon_info"></span>-->
+<!--                        <span class="mceText" title="Info">Info</span>-->
+<!--                    </a>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr id="mce_17" class="mceMenuItem mceMenuItemEnabled">-->
+<!--                <td>-->
+<!--                    <a href="javascript:;" onclick="return false;" onmousedown="return false;">-->
+<!--                        <span class="mceIcon mce_jiveMacro_emoticon_plus"></span>-->
+<!--                        <span class="mceText" title="Plus">Plus</span>-->
+<!--                    </a>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr id="mce_18" class="mceMenuItem mceMenuItemEnabled">-->
+<!--                <td>-->
+<!--                    <a href="javascript:;" onclick="return false;" onmousedown="return false;">-->
+<!--                        <span class="mceIcon mce_jiveMacro_emoticon_minus"></span>-->
+<!--                        <span class="mceText" title="Minus">Minus</span>-->
+<!--                    </a>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr id="mce_19" class="mceMenuItem mceMenuItemEnabled mceLast">-->
+<!--                <td>-->
+<!--                    <a href="javascript:;" onclick="return false;" onmousedown="return false;">-->
+<!--                        <span class="mceIcon mce_jiveMacro_emoticon_alert"></span>-->
+<!--                        <span class="mceText" title="Alert">Alert</span>-->
+<!--                    </a>-->
+<!--                </td>-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--</div>-->
 
 
 </body>

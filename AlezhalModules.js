@@ -2666,3 +2666,9 @@ var client = function() {
 //    }
 //    return elem;
 //}
+
+//var d = document, gi = 'getElementById', ge = 'getElementsByTagName';
+//var hi = d[gi]('start');
+//var he = d[ge]('div')[0]
+//console.log(hi.textContent);
+//console.log(he.textContent);
